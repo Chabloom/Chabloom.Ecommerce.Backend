@@ -1,8 +1,8 @@
-﻿using System;
+﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Chabloom.Ecommerce.Models
 {
