@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-Chabloom.Ecommerce-302201C1-5DCC-4F3F-88FC-6020A622CE8C</UserSecretsId>
+    <UserSecretsId>aspnet-Chabloom.Ecommerce.Backend-302201C1-5DCC-4F3F-88FC-6020A622CE8C</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Chabloom.Ecommerce
+namespace Chabloom.Ecommerce.Backend
 {
     public static class Program
     {

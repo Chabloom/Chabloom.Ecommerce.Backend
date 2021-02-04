@@ -1,7 +1,7 @@
 // Copyright 2020-2021 Chabloom LC. All rights reserved.
 
 using System.Collections.Generic;
-using Chabloom.Ecommerce.Data;
+using Chabloom.Ecommerce.Backend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Chabloom.Ecommerce
+namespace Chabloom.Ecommerce.Backend
 {
     public class Startup
     {
@@ -52,12 +52,12 @@ namespace Chabloom.Ecommerce
                 options.AddPolicy("ApiScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "Chabloom.Ecommerce");
+                    policy.RequireClaim("scope", "Chabloom.Ecommerce.Backend");
                 });
                 options.AddPolicy("IpcScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "Chabloom.Ecommerce.IPC");
+                    policy.RequireClaim("scope", "Chabloom.Ecommerce.Backend.IPC");
                 });
             });
 

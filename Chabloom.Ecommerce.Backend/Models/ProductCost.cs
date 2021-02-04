@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Chabloom.Ecommerce.Models
+namespace Chabloom.Ecommerce.Backend.Models
 {
     public class ProductCost
     {
