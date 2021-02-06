@@ -36,8 +36,16 @@ namespace Chabloom.Ecommerce.Backend
             if (string.IsNullOrEmpty(frontendPublicAddress) ||
                 string.IsNullOrEmpty(accountsBackendPublicAddress))
             {
-                frontendPublicAddress = "http://localhost:3003";
-                accountsBackendPublicAddress = "http://localhost:5000";
+                if (Environment.EnvironmentName == "MicroK8s")
+                {
+                    frontendPublicAddress = "http://localhost:3003";
+                    accountsBackendPublicAddress = "http://chabloom-accounts-backend";
+                }
+                else
+                {
+                    frontendPublicAddress = "http://localhost:3003";
+                    accountsBackendPublicAddress = "http://localhost:5000";
+                }
             }
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -45,6 +53,7 @@ namespace Chabloom.Ecommerce.Backend
                 {
                     options.Authority = accountsBackendPublicAddress;
                     options.Audience = "Chabloom.Payments";
+                    options.RequireHttpsMetadata = false;
                 });
 
             services.AddAuthorization(options =>
