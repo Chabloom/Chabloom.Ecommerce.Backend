@@ -71,12 +71,12 @@ namespace Chabloom.Ecommerce.Backend
                 frontendPublicAddress
             };
             // Add development origins if required
-            if (Environment.IsDevelopment())
+            if (Environment.IsDevelopment() || Environment.EnvironmentName == "MicroK8s")
             {
-                corsOrigins.Add("http://localhost:3000");
-                corsOrigins.Add("http://localhost:3001");
-                corsOrigins.Add("http://localhost:3002");
-                corsOrigins.Add("http://localhost:3003");
+                corsOrigins.Add("http://ecommerce-dev-1.chabloom.com");
+                corsOrigins.Add("https://ecommerce-dev-1.chabloom.com");
+                corsOrigins.Add("http://ecommerce-uat-1.chabloom.com");
+                corsOrigins.Add("https://ecommerce-uat-1.chabloom.com");
             }
 
             // Add the CORS policy
