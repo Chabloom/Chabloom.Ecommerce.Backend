@@ -63,11 +63,6 @@ namespace Chabloom.Ecommerce.Backend
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim("scope", "Chabloom.Ecommerce.Backend");
                 });
-                options.AddPolicy("IpcScope", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "Chabloom.Ecommerce.Backend.IPC");
-                });
             });
 
             // Get CORS origins
