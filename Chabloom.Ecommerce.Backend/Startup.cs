@@ -31,6 +31,13 @@ namespace Chabloom.Ecommerce.Backend
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.All;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
             // Get the public address for the current environment
             var frontendPublicAddress = System.Environment.GetEnvironmentVariable("ECOMMERCE_FRONTEND_ADDRESS");
             var accountsBackendPublicAddress = System.Environment.GetEnvironmentVariable("ACCOUNTS_BACKEND_ADDRESS");
@@ -99,16 +106,9 @@ namespace Chabloom.Ecommerce.Backend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors();
-
-            var forwardOptions = new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-                RequireHeaderSymmetry = false
-            };
-            forwardOptions.KnownNetworks.Clear();
-            forwardOptions.KnownProxies.Clear();
             app.UseForwardedHeaders();
+
+            app.UseCors();
 
             app.UseRouting();
 
