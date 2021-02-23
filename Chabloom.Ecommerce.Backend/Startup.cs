@@ -36,7 +36,7 @@ namespace Chabloom.Ecommerce.Backend
             if (string.IsNullOrEmpty(frontendPublicAddress) ||
                 string.IsNullOrEmpty(accountsBackendPublicAddress))
             {
-                frontendPublicAddress = "http://localhost:3003";
+                frontendPublicAddress = "https://ecommerce-dev-1.chabloom.com";
                 accountsBackendPublicAddress = "http://chabloom-accounts-backend";
             }
 
@@ -65,9 +65,7 @@ namespace Chabloom.Ecommerce.Backend
                 corsOrigins.Add("http://localhost:3001");
                 corsOrigins.Add("http://localhost:3002");
                 corsOrigins.Add("http://localhost:3003");
-                corsOrigins.Add("http://ecommerce-dev-1.chabloom.com");
                 corsOrigins.Add("https://ecommerce-dev-1.chabloom.com");
-                corsOrigins.Add("http://ecommerce-uat-1.chabloom.com");
                 corsOrigins.Add("https://ecommerce-uat-1.chabloom.com");
             }
             else
