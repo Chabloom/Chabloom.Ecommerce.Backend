@@ -50,7 +50,7 @@ ingress:
       proxy_set_header X-Forwarded-Proto https;
   hosts:
     - host: ecommerce-api-dev-1.chabloom.com
-  tls: []
+  tls:
     - secretName: chabloom-ecommerce-backend-tls
       hosts:
         - ecommerce-api-dev-1.chabloom.com
