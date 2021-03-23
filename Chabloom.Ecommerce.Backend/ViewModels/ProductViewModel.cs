@@ -2,26 +2,21 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Chabloom.Ecommerce.Backend.Models
+namespace Chabloom.Ecommerce.Backend.ViewModels
 {
-    [Table("EcommerceProducts")]
-    public class Product
+    public class ProductViewModel
     {
         [Required]
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
         public string Name { get; set; }
 
         [Required]
         public string Description { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18, 2)")]
         public decimal Amount { get; set; }
     }
 }

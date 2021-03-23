@@ -13,7 +13,5 @@ namespace Chabloom.Ecommerce.Backend.Data
         }
 
         public DbSet<Product> Products { get; set; }
-
-        public DbSet<ProductCost> ProductCosts { get; set; }
     }
 }
