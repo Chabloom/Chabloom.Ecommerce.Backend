@@ -3,9 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabloom.Ecommerce.Backend.Models.Authorization
 {
+    [Table("EcommerceRoles")]
     public class Role
     {
         [Required]

@@ -3,48 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 {
-    public partial class EcommerceDbMigration2 : Migration
+    public partial class EcommerceDbMigration1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "ParentCategoryId",
-                table: "EcommerceProductCategories",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "TenantId",
-                table: "EcommerceProductCategories",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
             migrationBuilder.CreateTable(
-                name: "ProductImages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductImages_EcommerceProducts_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "EcommerceProducts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "EcommerceRoles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -56,11 +20,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_EcommerceRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tenants",
+                name: "EcommerceTenants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -72,11 +36,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tenants", x => x.Id);
+                    table.PrimaryKey("PK_EcommerceTenants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "EcommerceUsers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -89,17 +53,48 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_EcommerceUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
+                        name: "FK_EcommerceUsers_EcommerceRoles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "EcommerceRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TenantRoles",
+                name: "EcommerceProductCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EcommerceProductCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EcommerceProductCategories_EcommerceProductCategories_ParentCategoryId",
+                        column: x => x.ParentCategoryId,
+                        principalTable: "EcommerceProductCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EcommerceProductCategories_EcommerceTenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "EcommerceTenants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EcommerceTenantRoles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -112,17 +107,42 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TenantRoles", x => x.Id);
+                    table.PrimaryKey("PK_EcommerceTenantRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TenantRoles_Tenants_TenantId",
+                        name: "FK_EcommerceTenantRoles_EcommerceTenants_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "Tenants",
+                        principalTable: "EcommerceTenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TenantRoleUsers",
+                name: "EcommerceProducts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EcommerceProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EcommerceProducts_EcommerceProductCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "EcommerceProductCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EcommerceTenantRoleUsers",
                 columns: table => new
                 {
                     TenantRoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -130,33 +150,55 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TenantRoleUsers", x => new { x.TenantRoleId, x.UserId });
+                    table.PrimaryKey("PK_EcommerceTenantRoleUsers", x => new { x.TenantRoleId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_TenantRoleUsers_TenantRoles_TenantRoleId",
+                        name: "FK_EcommerceTenantRoleUsers_EcommerceTenantRoles_TenantRoleId",
                         column: x => x.TenantRoleId,
-                        principalTable: "TenantRoles",
+                        principalTable: "EcommerceTenantRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TenantRoleUsers_Users_UserId",
+                        name: "FK_EcommerceTenantRoleUsers_EcommerceUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "EcommerceUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EcommerceProductImages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EcommerceProductImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EcommerceProductImages_EcommerceProducts_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "EcommerceProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Roles",
+                table: "EcommerceRoles",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Name", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[] { new Guid("d4dc0126-c55d-474e-a44b-7e6d90822a59"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Admin", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") });
 
             migrationBuilder.InsertData(
-                table: "Roles",
+                table: "EcommerceRoles",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Name", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[] { new Guid("5ab67841-f85c-416f-8a81-81b85bb7b219"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Manager", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") });
 
             migrationBuilder.InsertData(
-                table: "Tenants",
+                table: "EcommerceTenants",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Name", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[] { new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Joe's Tea Shop", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") });
 
@@ -171,7 +213,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "TenantRoles",
+                table: "EcommerceTenantRoles",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -200,6 +242,16 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
+                table: "EcommerceProductImages",
+                columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
+                values: new object[,]
+                {
+                    { new Guid("5b605894-7618-4b97-a49b-9202f6e2799a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("745b7c71-03af-4ada-b18c-e370e5305e64"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("6f054d9a-f2b9-49b0-86fa-71f328dd2daf"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
+                });
+
+            migrationBuilder.InsertData(
                 table: "EcommerceProducts",
                 columns: new[] { "Id", "CategoryId", "CreatedTimestamp", "CreatedUser", "Description", "Name", "Price", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
@@ -210,27 +262,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "ProductImages",
-                columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
-                values: new object[,]
-                {
-                    { new Guid("5b605894-7618-4b97-a49b-9202f6e2799a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("745b7c71-03af-4ada-b18c-e370e5305e64"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("6f054d9a-f2b9-49b0-86fa-71f328dd2daf"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ProductImages",
+                table: "EcommerceProductImages",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[] { new Guid("de6cac85-5c34-4ea6-b1d5-b1c8ec111070"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") });
 
             migrationBuilder.InsertData(
-                table: "ProductImages",
+                table: "EcommerceProductImages",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[] { new Guid("9a467cbc-8128-44be-addd-b85f65f57cad"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") });
 
             migrationBuilder.InsertData(
-                table: "ProductImages",
+                table: "EcommerceProductImages",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[] { new Guid("622d3d2c-1ff2-43b8-94e8-36ae7c2ca86b"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") });
 
@@ -245,145 +287,56 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImages_ProductId",
-                table: "ProductImages",
+                name: "IX_EcommerceProductImages_ProductId",
+                table: "EcommerceProductImages",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TenantRoles_TenantId",
-                table: "TenantRoles",
+                name: "IX_EcommerceProducts_CategoryId",
+                table: "EcommerceProducts",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EcommerceTenantRoles_TenantId",
+                table: "EcommerceTenantRoles",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TenantRoleUsers_UserId",
-                table: "TenantRoleUsers",
+                name: "IX_EcommerceTenantRoleUsers_UserId",
+                table: "EcommerceTenantRoleUsers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
+                name: "IX_EcommerceUsers_RoleId",
+                table: "EcommerceUsers",
                 column: "RoleId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_EcommerceProductCategories_EcommerceProductCategories_ParentCategoryId",
-                table: "EcommerceProductCategories",
-                column: "ParentCategoryId",
-                principalTable: "EcommerceProductCategories",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_EcommerceProductCategories_Tenants_TenantId",
-                table: "EcommerceProductCategories",
-                column: "TenantId",
-                principalTable: "Tenants",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_EcommerceProductCategories_EcommerceProductCategories_ParentCategoryId",
-                table: "EcommerceProductCategories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_EcommerceProductCategories_Tenants_TenantId",
-                table: "EcommerceProductCategories");
+            migrationBuilder.DropTable(
+                name: "EcommerceProductImages");
 
             migrationBuilder.DropTable(
-                name: "ProductImages");
+                name: "EcommerceTenantRoleUsers");
 
             migrationBuilder.DropTable(
-                name: "TenantRoleUsers");
+                name: "EcommerceProducts");
 
             migrationBuilder.DropTable(
-                name: "TenantRoles");
+                name: "EcommerceTenantRoles");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "EcommerceUsers");
 
             migrationBuilder.DropTable(
-                name: "Tenants");
+                name: "EcommerceProductCategories");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "EcommerceRoles");
 
-            migrationBuilder.DropIndex(
-                name: "IX_EcommerceProductCategories_ParentCategoryId",
-                table: "EcommerceProductCategories");
-
-            migrationBuilder.DropIndex(
-                name: "IX_EcommerceProductCategories_TenantId",
-                table: "EcommerceProductCategories");
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProducts",
-                keyColumn: "Id",
-                keyValue: new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProducts",
-                keyColumn: "Id",
-                keyValue: new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProducts",
-                keyColumn: "Id",
-                keyValue: new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProducts",
-                keyColumn: "Id",
-                keyValue: new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProducts",
-                keyColumn: "Id",
-                keyValue: new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProducts",
-                keyColumn: "Id",
-                keyValue: new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProductCategories",
-                keyColumn: "Id",
-                keyValue: new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProductCategories",
-                keyColumn: "Id",
-                keyValue: new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProductCategories",
-                keyColumn: "Id",
-                keyValue: new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProductCategories",
-                keyColumn: "Id",
-                keyValue: new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProductCategories",
-                keyColumn: "Id",
-                keyValue: new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"));
-
-            migrationBuilder.DeleteData(
-                table: "EcommerceProductCategories",
-                keyColumn: "Id",
-                keyValue: new Guid("7b3a059d-4cda-46cc-890e-2c1f6451d6d6"));
-
-            migrationBuilder.DropColumn(
-                name: "ParentCategoryId",
-                table: "EcommerceProductCategories");
-
-            migrationBuilder.DropColumn(
-                name: "TenantId",
-                table: "EcommerceProductCategories");
+            migrationBuilder.DropTable(
+                name: "EcommerceTenants");
         }
     }
 }

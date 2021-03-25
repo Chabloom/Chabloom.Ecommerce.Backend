@@ -44,7 +44,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("EcommerceRoles");
 
                     b.HasData(
                         new
@@ -92,7 +92,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("EcommerceTenants");
 
                     b.HasData(
                         new
@@ -136,7 +136,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("TenantRoles");
+                    b.ToTable("EcommerceTenantRoles");
 
                     b.HasData(
                         new
@@ -173,7 +173,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TenantRoleUsers");
+                    b.ToTable("EcommerceTenantRoleUsers");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Authorization.User", b =>
@@ -205,7 +205,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("EcommerceUsers");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Product", b =>
@@ -463,7 +463,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("EcommerceProductImages");
 
                     b.HasData(
                         new

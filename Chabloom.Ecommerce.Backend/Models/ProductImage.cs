@@ -2,9 +2,11 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabloom.Ecommerce.Backend.Models
 {
+    [Table("EcommerceProductImages")]
     public class ProductImage
     {
         [Required]
