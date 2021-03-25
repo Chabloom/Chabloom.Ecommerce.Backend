@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabloom.Ecommerce.Backend.Models
 {
-    [Table("EcommerceProducts")]
-    public class Product
+    [Table("EcommerceProductCategories")]
+    public class ProductCategory
     {
         [Required]
         [Key]
@@ -19,16 +19,6 @@ namespace Chabloom.Ecommerce.Backend.Models
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price { get; set; }
-
-        [Required]
-        public Guid CategoryId { get; set; }
-
-        [Required]
-        public ProductCategory Category { get; set; }
 
         #region Auditing
 

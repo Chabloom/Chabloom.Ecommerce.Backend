@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chabloom.Ecommerce.Backend.ViewModels
 {
-    public class ProductViewModel
+    public class ProductCategoryViewModel
     {
         [Required]
         public Guid Id { get; set; }
@@ -15,11 +15,5 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
-        public decimal Price { get; set; }
-
-        [Required]
-        public Guid CategoryId { get; set; }
     }
 }

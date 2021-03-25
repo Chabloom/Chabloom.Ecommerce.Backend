@@ -1,1 +1,1 @@
-dotnet ef migrations script -i --context ApplicationDbContext -o Scripts/ApplicationDb.sql
+dotnet ef migrations script -i --context EcommerceDbContext -o Scripts/EcommerceDb.sql

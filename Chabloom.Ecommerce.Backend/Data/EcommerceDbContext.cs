@@ -5,13 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chabloom.Ecommerce.Backend.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class EcommerceDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions options)
+        public EcommerceDbContext(DbContextOptions options)
             : base(options)
         {
         }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductCategory> ProductCategories { get; set; }
     }
 }

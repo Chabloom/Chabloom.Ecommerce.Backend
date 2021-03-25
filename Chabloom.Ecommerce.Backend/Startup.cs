@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using Chabloom.Ecommerce.Backend.Data;
+using Chabloom.Ecommerce.Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,7 @@ namespace Chabloom.Ecommerce.Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<EcommerceDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
@@ -54,6 +55,8 @@ namespace Chabloom.Ecommerce.Backend
                     policy.RequireClaim("scope", "Chabloom.Ecommerce.Backend");
                 });
             });
+
+            services.AddScoped<IValidator, Validator>();
 
             // Setup CORS origins
             var corsOrigins = new List<string>();

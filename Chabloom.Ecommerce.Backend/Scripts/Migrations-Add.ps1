@@ -1,1 +1,1 @@
-dotnet ef migrations add ApplicationDbMigration1 --context ApplicationDbContext -o Data/Migrations/ApplicationDb
+dotnet ef migrations add EcommerceDbMigration1 --context EcommerceDbContext -o Data/Migrations/EcommerceDb

@@ -19,8 +19,8 @@ namespace Chabloom.Ecommerce.Backend
                 .ConfigureLogging(logging =>
                 {
                     logging.AddApplicationInsights();
-                    logging.AddAzureWebAppDiagnostics();
                     logging.AddConsole();
+                    logging.AddDebug();
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }
