@@ -43,7 +43,7 @@ namespace Chabloom.Ecommerce.Backend
                 .AddJwtBearer(options =>
                 {
                     options.Authority = "https://accounts-api-dev-1.chabloom.com";
-                    options.Audience = "Chabloom.Payments";
+                    options.Audience = "Chabloom.Ecommerce.Backend";
                     options.RequireHttpsMetadata = !Environment.IsDevelopment();
                 });
 
