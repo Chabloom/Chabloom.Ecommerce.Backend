@@ -17,7 +17,7 @@ namespace Chabloom.Ecommerce.Backend.Models.Authorization
         [Required]
         public string Name { get; set; }
 
-        public Guid RoleId { get; set; }
+        public Guid? RoleId { get; set; }
 
         public Role Role { get; set; }
 
