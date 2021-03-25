@@ -38,7 +38,8 @@ namespace Chabloom.Ecommerce.Backend.Services
         public string GetUserName(ClaimsPrincipal user)
         {
             // Get the user's name
-            return user.FindFirst(ClaimTypes.Name)?.Value;
+            var userName = user.FindFirst(ClaimTypes.Name)?.Value;
+            return string.IsNullOrEmpty(userName) ? "" : userName;
         }
     }
 }
