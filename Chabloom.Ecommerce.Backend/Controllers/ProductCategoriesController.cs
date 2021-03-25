@@ -58,7 +58,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Name = x.Name,
                         Description = x.Description,
                         TenantId = x.TenantId,
-                        ParentCategoryId = x.ParentCategoryId
+                        ParentCategoryId = x.ParentCategoryId.GetValueOrDefault()
                     })
                     .ToListAsync();
             }
@@ -71,7 +71,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Name = x.Name,
                         Description = x.Description,
                         TenantId = x.TenantId,
-                        ParentCategoryId = x.ParentCategoryId
+                        ParentCategoryId = x.ParentCategoryId.GetValueOrDefault()
                     })
                     .ToListAsync();
             }
@@ -107,7 +107,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Name = productCategory.Name,
                 Description = productCategory.Description,
                 TenantId = productCategory.TenantId,
-                ParentCategoryId = productCategory.ParentCategoryId
+                ParentCategoryId = productCategory.ParentCategoryId.GetValueOrDefault()
             };
 
             return Ok(viewModel);
@@ -170,7 +170,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Name = productCategory.Name,
                 Description = productCategory.Description,
                 TenantId = productCategory.TenantId,
-                ParentCategoryId = productCategory.ParentCategoryId
+                ParentCategoryId = productCategory.ParentCategoryId.GetValueOrDefault()
             };
 
             _logger.LogInformation($"User {userId} updated product category {productCategory.Id}");

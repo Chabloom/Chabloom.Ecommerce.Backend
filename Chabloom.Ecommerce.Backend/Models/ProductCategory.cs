@@ -28,7 +28,7 @@ namespace Chabloom.Ecommerce.Backend.Models
         [Required]
         public Tenant Tenant { get; set; }
 
-        public Guid ParentCategoryId { get; set; }
+        public Guid? ParentCategoryId { get; set; }
 
         public ProductCategory ParentCategory { get; set; }
 

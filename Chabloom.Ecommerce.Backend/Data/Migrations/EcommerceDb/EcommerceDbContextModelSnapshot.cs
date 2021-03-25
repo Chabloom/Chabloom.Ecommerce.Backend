@@ -343,7 +343,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("ParentCategoryId")
+                    b.Property<Guid?>("ParentCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TenantId")
@@ -371,7 +371,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "While black teas are made from the same Camellia sinensis plant as all teas, the oxidation and processing is what distinguishes black teas from the rest. Premium black teas are withered, rolled, oxidized and fired in an oven, creating a warm and toasty flavor. The lengthier oxidation process causes the tea leaves to develop into dark brown and black colors. The flavors can range from malty or smokey to fruity and sweet. Black teas range from mellow teas from China to full-bodied teas from Assam, India.",
                             Name = "Black",
-                            ParentCategoryId = new Guid("00000000-0000-0000-0000-000000000000"),
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
@@ -407,7 +406,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "All green teas originate from the same species, the Camelia Sinensis. To make green tea, the fresh tea leaves are briefly cooked using either steam or dry heat. This process fixes the green colors and fresh flavors. The Chinese green teas are more mellow and smooth, while the Japanese green teas have the heft of rich, vegetal flavors, which comes from preservation of the chlorophyll.The general rule is that a cup of green tea contains about one-third as much caffeine as a cup of coffee. Green tea production methods vary but the focus is always to fix the green color. Thus, green teas are not oxidized.",
                             Name = "Green",
-                            ParentCategoryId = new Guid("00000000-0000-0000-0000-000000000000"),
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
@@ -431,7 +429,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Herbal teas, also known as herbal infusions, are typically a blend of herbs, flowers, spices, and dried fruit. This blend of ingredients is then brewed in the same way as your favorite traditional tea, either loose or in tea sachets or bags. By combining quality ingredients, blends can be created that calm, invigorate, or treat minor ailments. Colors and flavors range from light and fruity to vibrant and spicy, to match your mood.",
                             Name = "Herbal",
-                            ParentCategoryId = new Guid("00000000-0000-0000-0000-000000000000"),
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
@@ -578,9 +575,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.ProductCategory", "ParentCategory")
                         .WithMany("SubCategories")
-                        .HasForeignKey("ParentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentCategoryId");
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
                         .WithMany()
