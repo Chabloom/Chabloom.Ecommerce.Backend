@@ -1,37 +1,21 @@
 ﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabloom.Ecommerce.Backend.Models
 {
-    [Table("EcommerceProducts")]
-    public class Product
+    public class ProductImage
     {
         [Required]
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [MaxLength(255)]
-        public string Name { get; set; }
+        public Guid ProductId { get; set; }
 
         [Required]
-        public string Description { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price { get; set; }
-
-        [Required]
-        public Guid CategoryId { get; set; }
-
-        [Required]
-        public ProductCategory Category { get; set; }
-
-        public List<ProductImage> ProductImages { get; set; }
+        public Product Product { get; set; }
 
         #region Auditing
 

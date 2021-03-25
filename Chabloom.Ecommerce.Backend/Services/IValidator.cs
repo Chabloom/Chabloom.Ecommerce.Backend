@@ -13,5 +13,12 @@ namespace Chabloom.Ecommerce.Backend.Services
         /// <param name="user">The claims principal to check</param>
         /// <returns>The user id or an empty guid on failure</returns>
         public Guid GetUserId(ClaimsPrincipal user);
+
+        /// <summary>
+        ///     Get a specified user's name
+        /// </summary>
+        /// <param name="user">The claims principal to check</param>
+        /// <returns>The user's name or an empty string on failure</returns>
+        public string GetUserName(ClaimsPrincipal user);
     }
 }

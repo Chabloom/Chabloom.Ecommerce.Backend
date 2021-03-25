@@ -3,12 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Chabloom.Ecommerce.Backend.Models
+namespace Chabloom.Ecommerce.Backend.Models.Authorization
 {
-    [Table("EcommerceProducts")]
-    public class Product
+    public class Tenant
     {
         [Required]
         [Key]
@@ -18,20 +16,7 @@ namespace Chabloom.Ecommerce.Backend.Models
         [MaxLength(255)]
         public string Name { get; set; }
 
-        [Required]
-        public string Description { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price { get; set; }
-
-        [Required]
-        public Guid CategoryId { get; set; }
-
-        [Required]
-        public ProductCategory Category { get; set; }
-
-        public List<ProductImage> ProductImages { get; set; }
+        public List<TenantRole> TenantRoles { get; set; }
 
         #region Auditing
 

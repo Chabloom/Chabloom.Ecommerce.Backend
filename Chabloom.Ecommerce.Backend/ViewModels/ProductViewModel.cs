@@ -7,7 +7,6 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
 {
     public class ProductViewModel
     {
-        [Required]
         public Guid Id { get; set; }
 
         [Required]

@@ -36,7 +36,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<List<ProductViewModel>>> GetProducts()
+        public async Task<ActionResult<List<ProductViewModel>>> GetProducts([FromQuery] Guid? categoryId)
         {
             // Get the user id
             var userId = _validator.GetUserId(User);
@@ -46,16 +46,34 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
 
             // Populate the return data
-            var viewModels = await _context.Products
-                .Select(x => new ProductViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Price = x.Price,
-                    CategoryId = x.CategoryId
-                })
-                .ToListAsync();
+            List<ProductViewModel> viewModels;
+            if (categoryId.HasValue)
+            {
+                viewModels = await _context.Products
+                    .Where(x => x.CategoryId == categoryId.Value)
+                    .Select(x => new ProductViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        Price = x.Price,
+                        CategoryId = x.CategoryId
+                    })
+                    .ToListAsync();
+            }
+            else
+            {
+                viewModels = await _context.Products
+                    .Select(x => new ProductViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        Price = x.Price,
+                        CategoryId = x.CategoryId
+                    })
+                    .ToListAsync();
+            }
 
             return Ok(viewModels);
         }

@@ -34,5 +34,11 @@ namespace Chabloom.Ecommerce.Backend.Services
 
             return userId;
         }
+
+        public string GetUserName(ClaimsPrincipal user)
+        {
+            // Get the user's name
+            return user.FindFirst(ClaimTypes.Name)?.Value;
+        }
     }
 }

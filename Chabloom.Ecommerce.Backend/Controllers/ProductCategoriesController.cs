@@ -37,7 +37,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<List<ProductCategoryViewModel>>> GetProductCategories()
+        public async Task<ActionResult<List<ProductCategoryViewModel>>> GetProductCategories([FromQuery] Guid? tenantId)
         {
             // Get the user id
             var userId = _validator.GetUserId(User);
@@ -47,14 +47,34 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
 
             // Populate the return data
-            var viewModels = await _context.ProductCategories
-                .Select(x => new ProductCategoryViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description
-                })
-                .ToListAsync();
+            List<ProductCategoryViewModel> viewModels;
+            if (tenantId.HasValue)
+            {
+                viewModels = await _context.ProductCategories
+                    .Where(x => x.TenantId == tenantId.Value)
+                    .Select(x => new ProductCategoryViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        TenantId = x.TenantId,
+                        ParentCategoryId = x.ParentCategoryId
+                    })
+                    .ToListAsync();
+            }
+            else
+            {
+                viewModels = await _context.ProductCategories
+                    .Select(x => new ProductCategoryViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        TenantId = x.TenantId,
+                        ParentCategoryId = x.ParentCategoryId
+                    })
+                    .ToListAsync();
+            }
 
             return Ok(viewModels);
         }
@@ -85,7 +105,9 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             {
                 Id = productCategory.Id,
                 Name = productCategory.Name,
-                Description = productCategory.Description
+                Description = productCategory.Description,
+                TenantId = productCategory.TenantId,
+                ParentCategoryId = productCategory.ParentCategoryId
             };
 
             return Ok(viewModel);
@@ -120,9 +142,21 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 return NotFound();
             }
 
+            // Find the specified parent category
+            var parentCategory = await _context.ProductCategories
+                .FirstOrDefaultAsync(x => x.Id == viewModel.ParentCategoryId);
+            if (parentCategory == null)
+            {
+                _logger.LogWarning(
+                    $"Could not find parent category {viewModel.ParentCategoryId} for product category {viewModel.Id}");
+                return BadRequest("Invalid parent category");
+            }
+
             // Update the product category
             productCategory.Name = viewModel.Name;
             productCategory.Description = viewModel.Description;
+            // TenantId cannot be updated
+            productCategory.ParentCategoryId = viewModel.ParentCategoryId;
             productCategory.UpdatedUser = userId;
             productCategory.UpdatedTimestamp = DateTimeOffset.UtcNow;
 
@@ -134,7 +168,9 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             {
                 Id = productCategory.Id,
                 Name = productCategory.Name,
-                Description = productCategory.Description
+                Description = productCategory.Description,
+                TenantId = productCategory.TenantId,
+                ParentCategoryId = productCategory.ParentCategoryId
             };
 
             _logger.LogInformation($"User {userId} updated product category {productCategory.Id}");
@@ -162,11 +198,32 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 return Forbid();
             }
 
+            // Find the specified tenant
+            var tenant = await _context.Tenants
+                .FirstOrDefaultAsync(x => x.Id == viewModel.TenantId);
+            if (tenant == null)
+            {
+                _logger.LogWarning($"Could not find tenant {viewModel.TenantId} to create new product category");
+                return BadRequest("Invalid tenant");
+            }
+
+            // Find the specified parent category
+            var parentCategory = await _context.ProductCategories
+                .FirstOrDefaultAsync(x => x.Id == viewModel.ParentCategoryId);
+            if (parentCategory == null)
+            {
+                _logger.LogWarning(
+                    $"Could not find parent category {viewModel.ParentCategoryId} for product category {viewModel.Id}");
+                return BadRequest("Invalid parent category");
+            }
+
             // Create the product category
             var productCategory = new ProductCategory
             {
                 Name = viewModel.Name,
                 Description = viewModel.Description,
+                TenantId = viewModel.TenantId,
+                ParentCategoryId = viewModel.ParentCategoryId,
                 CreatedUser = userId
             };
 

@@ -3,9 +3,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Chabloom.Ecommerce.Backend.ViewModels
+namespace Chabloom.Ecommerce.Backend.ViewModels.Authorization
 {
-    public class ProductCategoryViewModel
+    public class UserViewModel
     {
         public Guid Id { get; set; }
 
@@ -13,11 +13,6 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
         public string Name { get; set; }
 
         [Required]
-        public string Description { get; set; }
-
-        [Required]
-        public Guid TenantId { get; set; }
-
-        public Guid ParentCategoryId { get; set; }
+        public Guid RoleId { get; set; }
     }
 }
