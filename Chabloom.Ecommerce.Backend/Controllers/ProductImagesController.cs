@@ -47,21 +47,11 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
 
             // Populate the return data
-            List<ProductImageViewModel> viewModels;
+            var viewModels = new List<ProductImageViewModel>();
             if (productId.HasValue)
             {
                 viewModels = await _context.ProductImages
                     .Where(x => x.ProductId == productId.Value)
-                    .Select(x => new ProductImageViewModel
-                    {
-                        Id = x.Id,
-                        ProductId = x.ProductId
-                    })
-                    .ToListAsync();
-            }
-            else
-            {
-                viewModels = await _context.ProductImages
                     .Select(x => new ProductImageViewModel
                     {
                         Id = x.Id,

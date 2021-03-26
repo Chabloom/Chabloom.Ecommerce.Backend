@@ -47,24 +47,11 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
 
             // Populate the return data
-            List<ProductCategoryViewModel> viewModels;
+            var viewModels = new List<ProductCategoryViewModel>();
             if (tenantId.HasValue)
             {
                 viewModels = await _context.ProductCategories
                     .Where(x => x.TenantId == tenantId.Value)
-                    .Select(x => new ProductCategoryViewModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Description = x.Description,
-                        TenantId = x.TenantId,
-                        ParentCategoryId = x.ParentCategoryId.GetValueOrDefault()
-                    })
-                    .ToListAsync();
-            }
-            else
-            {
-                viewModels = await _context.ProductCategories
                     .Select(x => new ProductCategoryViewModel
                     {
                         Id = x.Id,
