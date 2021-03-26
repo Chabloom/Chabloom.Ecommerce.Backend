@@ -64,6 +64,7 @@ namespace Chabloom.Ecommerce.Backend
             {
                 // Allow CORS from ecommerce DEV, UAT, and local environments
                 corsOrigins.Add("http://localhost:3003");
+                corsOrigins.Add("https://localhost:3003");
                 corsOrigins.Add("https://ecommerce-dev-1.chabloom.com");
                 corsOrigins.Add("https://ecommerce-uat-1.chabloom.com");
             }
