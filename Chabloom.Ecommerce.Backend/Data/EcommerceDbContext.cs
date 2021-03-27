@@ -206,6 +206,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Description =
                         "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly " +
                         "lighter liquor, with sweet honey flavor.",
+                    Price = 2.99M,
                     CategoryId = Guid.Parse("66272963-7577-4FB3-8CD6-A0BC411404E9"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
@@ -217,6 +218,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Description = "Our friends at Puttabong have done a great job with this tea. It is owned by " +
                                   "Jayshree and is located north of Darjeeling town.  This tea came towards the end of " +
                                   "the First Flush season in April. Brisk yet flavorful. Hats off!",
+                    Price = 4.99M,
                     CategoryId = Guid.Parse("CF059C18-EC58-4C6E-AE61-4DDDABD61A6D"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
@@ -228,6 +230,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Description = "It seems like it is Yuzu’s time to shine. People are really liking this citrus " +
                                   "fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we " +
                                   "should try it.",
+                    Price = 2.99M,
                     CategoryId = Guid.Parse("6470CA64-4D0A-4D94-8333-0F06D74E7CA1"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
@@ -238,6 +241,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Name = "Organic Matcha",
                     Description = "Matcha powdered green tea has been the pride of Uji for several centuries. This " +
                                   "organic grade is great for everyday use.",
+                    Price = 3.99M,
                     CategoryId = Guid.Parse("B5E4F99F-227E-49BE-A82F-8B4E06D35D96"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
@@ -249,6 +253,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Description = "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit " +
                                   "pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It " +
                                   "looks festive brewed in a glass teapot, and tastes delicious hot or iced. ",
+                    Price = 2.99M,
                     CategoryId = Guid.Parse("7D582944-4E2F-42EE-8A1E-199FD58762A6"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
@@ -260,6 +265,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Description = "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and " +
                                   "distinctive twist found in blood oranges. Delicious hot or cold, it brews an " +
                                   "aromatic and vivid shade of orange.",
+                    Price = 2.99M,
                     CategoryId = Guid.Parse("7D582944-4E2F-42EE-8A1E-199FD58762A6"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
