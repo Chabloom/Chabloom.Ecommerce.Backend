@@ -49,14 +49,14 @@ namespace Chabloom.Ecommerce.Backend.Data
             // Set up default roles
             var roles = new List<Role>
             {
-                new Role
+                new()
                 {
                     Id = Guid.Parse("D4DC0126-C55D-474E-A44B-7E6D90822A59"),
                     Name = "Admin",
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new Role
+                new()
                 {
                     Id = Guid.Parse("5AB67841-F85C-416F-8A81-81B85BB7B219"),
                     Name = "Manager",
@@ -83,7 +83,7 @@ namespace Chabloom.Ecommerce.Backend.Data
             // Set up demo tenant roles
             var demoTenantRoles = new List<TenantRole>
             {
-                new TenantRole
+                new()
                 {
                     Id = Guid.Parse("830C7015-AB6C-4988-A603-AE3DC532D3B7"),
                     Name = "Admin",
@@ -91,7 +91,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new TenantRole
+                new()
                 {
                     Id = Guid.Parse("30F42A18-8821-4913-B562-33D46D28F158"),
                     Name = "Manager",
@@ -107,7 +107,7 @@ namespace Chabloom.Ecommerce.Backend.Data
             // Set up demo product categories
             var demoProductCategories = new List<ProductCategory>
             {
-                new ProductCategory
+                new()
                 {
                     Id = Guid.Parse("7B3A059D-4CDA-46CC-890E-2C1F6451D6D6"),
                     Name = "Black",
@@ -122,7 +122,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductCategory
+                new()
                 {
                     Id = Guid.Parse("66272963-7577-4FB3-8CD6-A0BC411404E9"),
                     Name = "Assam",
@@ -134,7 +134,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductCategory
+                new()
                 {
                     Id = Guid.Parse("CF059C18-EC58-4C6E-AE61-4DDDABD61A6D"),
                     Name = "Darjeeling",
@@ -146,7 +146,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductCategory
+                new()
                 {
                     Id = Guid.Parse("6470CA64-4D0A-4D94-8333-0F06D74E7CA1"),
                     Name = "Green",
@@ -163,7 +163,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductCategory
+                new()
                 {
                     Id = Guid.Parse("B5E4F99F-227E-49BE-A82F-8B4E06D35D96"),
                     Name = "Matcha",
@@ -177,7 +177,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductCategory
+                new()
                 {
                     Id = Guid.Parse("7D582944-4E2F-42EE-8A1E-199FD58762A6"),
                     Name = "Herbal",
@@ -199,7 +199,7 @@ namespace Chabloom.Ecommerce.Backend.Data
             // Set up demo products
             var demoProducts = new List<Product>
             {
-                new Product
+                new()
                 {
                     Id = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
                     Name = "Organic Assam",
@@ -211,7 +211,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new Product
+                new()
                 {
                     Id = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
                     Name = "Puttabong 1st Flush Darjeeling",
@@ -223,7 +223,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new Product
+                new()
                 {
                     Id = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
                     Name = "Yuzu Sencha",
@@ -235,7 +235,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new Product
+                new()
                 {
                     Id = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
                     Name = "Organic Matcha",
@@ -246,7 +246,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new Product
+                new()
                 {
                     Id = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
                     Name = "Strawberry Kiwi Fruit Tea",
@@ -258,7 +258,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new Product
+                new()
                 {
                     Id = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
                     Name = "Blood Orange Fruit Tea",
@@ -278,42 +278,42 @@ namespace Chabloom.Ecommerce.Backend.Data
             // Set up demo product images
             var demoProductImages = new List<ProductImage>
             {
-                new ProductImage
+                new()
                 {
                     Id = Guid.Parse("DE6CAC85-5C34-4EA6-B1D5-B1C8EC111070"),
                     ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductImage
+                new()
                 {
                     Id = Guid.Parse("9A467CBC-8128-44BE-ADDD-B85F65F57CAD"),
                     ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductImage
+                new()
                 {
                     Id = Guid.Parse("5B605894-7618-4B97-A49B-9202F6E2799A"),
                     ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductImage
+                new()
                 {
                     Id = Guid.Parse("622D3D2C-1FF2-43B8-94E8-36AE7C2CA86B"),
                     ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductImage
+                new()
                 {
                     Id = Guid.Parse("745B7C71-03AF-4ADA-B18C-E370E5305E64"),
                     ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
-                new ProductImage
+                new()
                 {
                     Id = Guid.Parse("6F054D9A-F2B9-49B0-86FA-71F328DD2DAF"),
                     ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
