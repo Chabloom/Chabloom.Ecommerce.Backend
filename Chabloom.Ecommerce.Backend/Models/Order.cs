@@ -27,7 +27,7 @@ namespace Chabloom.Ecommerce.Backend.Models
         [Required]
         public User User { get; set; }
 
-        public List<OrderProduct> OrderProducts { get; set; }
+        public List<OrderProduct> Products { get; set; }
 
         #region Auditing
 

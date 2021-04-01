@@ -232,7 +232,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("TenantId")
+                    b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
@@ -256,7 +256,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Charlotte Store",
                             Name = "Charlotte Store",
-                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -268,7 +267,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "San Fransisco Store",
                             Name = "San Fransisco Store",
-                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -390,7 +388,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("TenantId")
+                    b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
@@ -414,7 +412,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Atlanta Warehouse",
                             Name = "Atlanta Warehouse",
-                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -426,7 +423,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "San Diego Warehouse",
                             Name = "San Diego Warehouse",
-                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -443,14 +439,9 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("StoreId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("WarehouseId", "ProductId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("StoreId");
 
                     b.ToTable("EcommerceWarehouseProducts");
 
@@ -934,25 +925,21 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Store", b =>
                 {
-                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", null)
                         .WithMany("Stores")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
+                        .HasForeignKey("TenantId");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.StoreProduct", b =>
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("Stores")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Store", "Store")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -964,26 +951,18 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", b =>
                 {
-                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", null)
                         .WithMany("Warehouses")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
+                        .HasForeignKey("TenantId");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.WarehouseProduct", b =>
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
-                        .WithMany("WarehouseProducts")
+                        .WithMany("Warehouses")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Store", null)
-                        .WithMany("Products")
-                        .HasForeignKey("StoreId");
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", "Warehouse")
                         .WithMany("Products")
@@ -1010,13 +989,13 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.OrderProduct", b =>
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Order", "Order")
-                        .WithMany("OrderProducts")
+                        .WithMany("Products")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
-                        .WithMany("OrderProducts")
+                        .WithMany("Orders")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1103,16 +1082,18 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Order", b =>
                 {
-                    b.Navigation("OrderProducts");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Product", b =>
                 {
-                    b.Navigation("OrderProducts");
+                    b.Navigation("Orders");
 
                     b.Navigation("ProductImages");
 
-                    b.Navigation("WarehouseProducts");
+                    b.Navigation("Stores");
+
+                    b.Navigation("Warehouses");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.ProductCategory", b =>

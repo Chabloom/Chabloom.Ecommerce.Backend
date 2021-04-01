@@ -39,11 +39,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,7 +53,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         column: x => x.TenantId,
                         principalTable: "EcommerceTenants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,11 +64,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,7 +78,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         column: x => x.TenantId,
                         principalTable: "EcommerceTenants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,8 +137,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 {
                     WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Count = table.Column<int>(type: "int", nullable: false),
-                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Count = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,12 +148,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         principalTable: "EcommerceProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EcommerceWarehouseProducts_EcommerceStores_StoreId",
-                        column: x => x.StoreId,
-                        principalTable: "EcommerceStores",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_EcommerceWarehouseProducts_EcommerceWarehouses_WarehouseId",
                         column: x => x.WarehouseId,
@@ -168,8 +161,8 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 columns: new[] { "Id", "Address", "CreatedTimestamp", "CreatedUser", "Description", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("69070b35-9ed3-47dd-a919-300371f54634"), "201 N Tryon St, Charlotte, NC 28202", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Charlotte Store", "Charlotte Store", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), "199 Gough St, San Francisco, CA 94102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Fransisco Store", "San Fransisco Store", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
+                    { new Guid("69070b35-9ed3-47dd-a919-300371f54634"), "201 N Tryon St, Charlotte, NC 28202", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Charlotte Store", "Charlotte Store", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), "199 Gough St, San Francisco, CA 94102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Fransisco Store", "San Fransisco Store", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
                 });
 
             migrationBuilder.InsertData(
@@ -177,8 +170,8 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 columns: new[] { "Id", "Address", "CreatedTimestamp", "CreatedUser", "Description", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), "500 Great SW Pkwy SW, Atlanta, GA 30336", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Atlanta Warehouse", "Atlanta Warehouse", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), "650 Gateway Center Dr, San Diego, CA 92102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Diego Warehouse", "San Diego Warehouse", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
+                    { new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), "500 Great SW Pkwy SW, Atlanta, GA 30336", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Atlanta Warehouse", "Atlanta Warehouse", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), "650 Gateway Center Dr, San Diego, CA 92102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Diego Warehouse", "San Diego Warehouse", null, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
                 });
 
             migrationBuilder.InsertData(
@@ -202,21 +195,21 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             migrationBuilder.InsertData(
                 table: "EcommerceWarehouseProducts",
-                columns: new[] { "ProductId", "WarehouseId", "Count", "StoreId" },
+                columns: new[] { "ProductId", "WarehouseId", "Count" },
                 values: new object[,]
                 {
-                    { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 6655, null },
-                    { new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 1231, null },
-                    { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 0, null },
-                    { new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 7865, null },
-                    { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 1237, null },
-                    { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 1239, null },
-                    { new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 9753, null },
-                    { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 0, null },
-                    { new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 2131, null },
-                    { new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 1235, null },
-                    { new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 1327, null },
-                    { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 2313, null }
+                    { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 6655 },
+                    { new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 1231 },
+                    { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 0 },
+                    { new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 7865 },
+                    { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 1237 },
+                    { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 1239 },
+                    { new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 9753 },
+                    { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 0 },
+                    { new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 2131 },
+                    { new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 1235 },
+                    { new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 1327 },
+                    { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 2313 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -243,11 +236,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 name: "IX_EcommerceWarehouseProducts_ProductId",
                 table: "EcommerceWarehouseProducts",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EcommerceWarehouseProducts_StoreId",
-                table: "EcommerceWarehouseProducts",
-                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EcommerceWarehouses_TenantId",

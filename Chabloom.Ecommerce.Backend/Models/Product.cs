@@ -34,9 +34,11 @@ namespace Chabloom.Ecommerce.Backend.Models
 
         public List<ProductImage> ProductImages { get; set; }
 
-        public List<OrderProduct> OrderProducts { get; set; }
+        public List<OrderProduct> Orders { get; set; }
 
-        public List<WarehouseProduct> WarehouseProducts { get; set; }
+        public List<StoreProduct> Stores { get; set; }
+
+        public List<WarehouseProduct> Warehouses { get; set; }
 
         #region Auditing
 

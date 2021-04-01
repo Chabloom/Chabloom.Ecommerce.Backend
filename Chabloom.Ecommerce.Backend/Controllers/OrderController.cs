@@ -50,7 +50,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             if (userId.HasValue)
             {
                 viewModels = await _context.Orders
-                    .Include(x => x.OrderProducts)
+                    .Include(x => x.Products)
                     .Where(x => x.UserId == userId.Value)
                     .Select(x => new OrderViewModel
                     {
@@ -58,7 +58,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Status = x.Status,
                         UserId = x.UserId,
                         TransactionId = x.TransactionId,
-                        ProductCounts = x.OrderProducts
+                        ProductCounts = x.Products
                             .ToDictionary(y => y.ProductId, y => y.Count)
                     })
                     .ToListAsync();
@@ -66,14 +66,14 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             else
             {
                 viewModels = await _context.Orders
-                    .Include(x => x.OrderProducts)
+                    .Include(x => x.Products)
                     .Select(x => new OrderViewModel
                     {
                         Id = x.Id,
                         Status = x.Status,
                         UserId = x.UserId,
                         TransactionId = x.TransactionId,
-                        ProductCounts = x.OrderProducts
+                        ProductCounts = x.Products
                             .ToDictionary(y => y.ProductId, y => y.Count)
                     })
                     .ToListAsync();
@@ -97,7 +97,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
 
             // Find the specified order
             var order = await _context.Orders
-                .Include(x => x.OrderProducts)
+                .Include(x => x.Products)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (order == null)
             {
@@ -111,7 +111,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Status = order.Status,
                 UserId = order.UserId,
                 TransactionId = order.TransactionId,
-                ProductCounts = order.OrderProducts
+                ProductCounts = order.Products
                     .ToDictionary(x => x.ProductId, x => x.Count)
             };
 
@@ -219,7 +219,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = order.Id,
                 Status = order.Status,
                 TransactionId = order.TransactionId,
-                ProductCounts = order.OrderProducts
+                ProductCounts = order.Products
                     .ToDictionary(x => x.ProductId, x => x.Count)
             };
 
@@ -288,7 +288,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = order.Id,
                 Status = order.Status,
                 TransactionId = order.TransactionId,
-                ProductCounts = order.OrderProducts
+                ProductCounts = order.Products
                     .ToDictionary(x => x.ProductId, x => x.Count)
             };
 
