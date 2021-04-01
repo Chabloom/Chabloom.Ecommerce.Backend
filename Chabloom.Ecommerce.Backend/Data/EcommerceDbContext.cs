@@ -60,6 +60,10 @@ namespace Chabloom.Ecommerce.Backend.Data
                 .WithMany(x => x.SubCategories);
 
             // Set up key for join table
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(x => new { x.OrderId, x.ProductId });
+
+            // Set up key for join table
             modelBuilder.Entity<StoreProduct>()
                 .HasKey(x => new {x.StoreId, x.ProductId});
 
