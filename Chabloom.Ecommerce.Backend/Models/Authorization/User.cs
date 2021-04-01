@@ -23,6 +23,8 @@ namespace Chabloom.Ecommerce.Backend.Models.Authorization
 
         public List<TenantRoleUser> TenantRoleUsers { get; set; }
 
+        public List<Order> Orders { get; set; }
+
         #region Auditing
 
         [Required]

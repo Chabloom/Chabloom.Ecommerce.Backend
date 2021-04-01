@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Chabloom.Ecommerce.Backend.Models;
 using Chabloom.Ecommerce.Backend.Models.Authorization;
+using Chabloom.Ecommerce.Backend.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable StringLiteralTypo
@@ -23,6 +24,10 @@ namespace Chabloom.Ecommerce.Backend.Data
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }
@@ -32,6 +37,14 @@ namespace Chabloom.Ecommerce.Backend.Data
         public DbSet<TenantRole> TenantRoles { get; set; }
 
         public DbSet<TenantRoleUser> TenantRoleUsers { get; set; }
+
+        public DbSet<Store> Stores { get; set; }
+
+        public DbSet<StoreProduct> StoreProducts { get; set; }
+
+        public DbSet<Warehouse> Warehouses { get; set; }
+
+        public DbSet<WarehouseProduct> WarehouseProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +58,14 @@ namespace Chabloom.Ecommerce.Backend.Data
             modelBuilder.Entity<ProductCategory>()
                 .HasOne(x => x.ParentCategory)
                 .WithMany(x => x.SubCategories);
+
+            // Set up key for join table
+            modelBuilder.Entity<StoreProduct>()
+                .HasKey(x => new {x.StoreId, x.ProductId});
+
+            // Set up key for join table
+            modelBuilder.Entity<WarehouseProduct>()
+                .HasKey(x => new {x.WarehouseId, x.ProductId});
 
             // Set up default roles
             var roles = new List<Role>
@@ -324,6 +345,222 @@ namespace Chabloom.Ecommerce.Backend.Data
 
             modelBuilder.Entity<ProductImage>()
                 .HasData(demoProductImages);
+
+            // Set up demo stores
+            var demoStores = new List<Store>
+            {
+                new()
+                {
+                    Id = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    Name = "Charlotte Store",
+                    Description = "Charlotte Store",
+                    Address = "201 N Tryon St, Charlotte, NC 28202",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    Name = "San Fransisco Store",
+                    Description = "San Fransisco Store",
+                    Address = "199 Gough St, San Francisco, CA 94102",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                }
+            };
+
+            modelBuilder.Entity<Store>()
+                .HasData(demoStores);
+
+            // Set up demo store products
+            var demoStoreProducts = new List<StoreProduct>
+            {
+                new()
+                {
+                    StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
+                    Count = 89
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
+                    Count = 78
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
+                    Count = 0
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
+                    Count = 11
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
+                    Count = 55
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
+                    ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    Count = 123
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
+                    Count = 66
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
+                    Count = 15
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
+                    Count = 22
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
+                    Count = 512
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
+                    Count = 33
+                },
+                new()
+                {
+                    StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
+                    ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    Count = 0
+                }
+            };
+
+            modelBuilder.Entity<StoreProduct>()
+                .HasData(demoStoreProducts);
+
+            // Set up demo warehouses
+            var demoWarehouses = new List<Warehouse>
+            {
+                new()
+                {
+                    Id = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    Name = "Atlanta Warehouse",
+                    Description = "Atlanta Warehouse",
+                    Address = "500 Great SW Pkwy SW, Atlanta, GA 30336",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    Name = "San Diego Warehouse",
+                    Description = "San Diego Warehouse",
+                    Address = "650 Gateway Center Dr, San Diego, CA 92102",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                }
+            };
+
+            modelBuilder.Entity<Warehouse>()
+                .HasData(demoWarehouses);
+
+            // Set up demo warehouse products
+            var demoWarehouseProducts = new List<WarehouseProduct>
+            {
+                new()
+                {
+                    WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
+                    Count = 2131
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
+                    Count = 0
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
+                    Count = 9753
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
+                    Count = 1239
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
+                    Count = 1327
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
+                    ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    Count = 1237
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
+                    Count = 7865
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
+                    Count = 0
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
+                    Count = 1231
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
+                    Count = 6655
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
+                    Count = 1235
+                },
+                new()
+                {
+                    WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
+                    ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    Count = 2313
+                }
+            };
+
+            modelBuilder.Entity<WarehouseProduct>()
+                .HasData(demoWarehouseProducts);
         }
     }
 }

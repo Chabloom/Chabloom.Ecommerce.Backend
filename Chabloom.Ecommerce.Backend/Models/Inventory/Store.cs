@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Chabloom.Ecommerce.Backend.Models.Inventory;
+using Chabloom.Ecommerce.Backend.Models.Authorization;
 
-namespace Chabloom.Ecommerce.Backend.Models
+namespace Chabloom.Ecommerce.Backend.Models.Inventory
 {
-    [Table("EcommerceProducts")]
-    public class Product
+    [Table("EcommerceStores")]
+    public class Store
     {
         [Required]
         [Key]
@@ -22,21 +22,15 @@ namespace Chabloom.Ecommerce.Backend.Models
         [Required]
         public string Description { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price { get; set; }
+        public string Address { get; set; }
 
         [Required]
-        public Guid CategoryId { get; set; }
+        public Guid TenantId { get; set; }
 
         [Required]
-        public ProductCategory Category { get; set; }
+        public Tenant Tenant { get; set; }
 
-        public List<ProductImage> ProductImages { get; set; }
-
-        public List<OrderProduct> OrderProducts { get; set; }
-
-        public List<WarehouseProduct> WarehouseProducts { get; set; }
+        public List<WarehouseProduct> Products { get; set; }
 
         #region Auditing
 

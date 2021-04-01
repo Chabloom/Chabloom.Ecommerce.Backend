@@ -1,25 +1,24 @@
 ﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chabloom.Ecommerce.Backend.ViewModels
 {
-    public class ProductViewModel
+    public class OrderViewModel
     {
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string Name { get; set; }
+        public string Status { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public Guid TransactionId { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public Guid UserId { get; set; }
 
-        [Required]
-        public Guid CategoryId { get; set; }
+        public IDictionary<Guid, int> ProductCounts { get; set; }
     }
 }

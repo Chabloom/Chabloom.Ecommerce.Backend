@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Chabloom.Ecommerce.Backend.Models.Inventory;
 
 namespace Chabloom.Ecommerce.Backend.Models.Authorization
 {
@@ -19,6 +20,10 @@ namespace Chabloom.Ecommerce.Backend.Models.Authorization
         public string Name { get; set; }
 
         public List<TenantRole> TenantRoles { get; set; }
+
+        public List<Store> Stores { get; set; }
+
+        public List<Warehouse> Warehouses { get; set; }
 
         #region Auditing
 
