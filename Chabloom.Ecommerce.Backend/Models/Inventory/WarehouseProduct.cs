@@ -25,5 +25,21 @@ namespace Chabloom.Ecommerce.Backend.Models.Inventory
 
         [Required]
         public int Count { get; set; }
+
+        #region Auditing
+
+        [Required]
+        public Guid CreatedUser { get; set; }
+
+        [Required]
+        public DateTimeOffset CreatedTimestamp { get; set; } = DateTimeOffset.UtcNow;
+
+        [Required]
+        public Guid UpdatedUser { get; set; } = Guid.Empty;
+
+        [Required]
+        public DateTimeOffset UpdatedTimestamp { get; set; } = DateTimeOffset.MinValue;
+
+        #endregion
     }
 }

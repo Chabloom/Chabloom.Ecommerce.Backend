@@ -386,75 +386,111 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 new()
                 {
+                    Id = Guid.Parse("67DF3761-D6C8-428A-A614-E737D254C89C"),
                     StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
                     ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
-                    Count = 89
+                    Count = 89,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("24E60557-5726-4FB5-A8F6-9C64496D016D"),
                     StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
                     ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
-                    Count = 78
+                    Count = 78,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("AD1B779A-DAF3-45ED-A23C-2A294F92A28D"),
                     StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
                     ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
-                    Count = 0
+                    Count = 0,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("6F853FF0-1D4C-4905-94F7-CD20E3B18392"),
                     StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
                     ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
-                    Count = 11
+                    Count = 11,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("53B6860E-1611-4859-803F-5F6AAF45F5E0"),
                     StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
                     ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
-                    Count = 55
+                    Count = 55,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("80698015-C9B4-4678-BA49-DFC570A758BC"),
                     StoreId = Guid.Parse("69070B35-9ED3-47DD-A919-300371F54634"),
                     ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
-                    Count = 123
+                    Count = 123,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("139B4E0D-0C3D-47EB-A7A6-8929608A6545"),
                     StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
                     ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
-                    Count = 66
+                    Count = 66,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("08F67210-A91B-486C-87DD-AF4115E54172"),
                     StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
                     ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
-                    Count = 15
+                    Count = 15,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("95989B24-177D-44C8-9B29-3ED56147C524"),
                     StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
                     ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
-                    Count = 22
+                    Count = 22,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("0E3EBFD7-99F3-4D7C-87B2-C0F17DC34731"),
                     StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
                     ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
-                    Count = 512
+                    Count = 512,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("0E3ED181-DB00-4003-B681-1DE443217ED4"),
                     StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
                     ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
-                    Count = 33
+                    Count = 33,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("0062E9E5-C772-4ED3-8AE2-0538934408C1"),
                     StoreId = Guid.Parse("92A73ACA-281A-4CE2-9970-A1D6FBB75802"),
                     ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
-                    Count = 0
+                    Count = 0,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 }
             };
 
@@ -494,75 +530,111 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 new()
                 {
+                    Id = Guid.Parse("BCE64F3A-B012-48D3-89F2-36B84D5F133C"),
                     WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
                     ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
-                    Count = 2131
+                    Count = 2131,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("A43482C7-9549-4F5C-816F-2A6BA40D5115"),
                     WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
                     ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
-                    Count = 0
+                    Count = 0,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("736D93A3-4F54-416A-AB0D-3B2BD8F7C45D"),
                     WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
                     ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
-                    Count = 9753
+                    Count = 9753,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("1ADB29FD-A90D-4C00-86AF-038AB3E0E024"),
                     WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
                     ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
-                    Count = 1239
+                    Count = 1239,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("41533622-4FB8-4C5B-889A-459681765AAF"),
                     WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
                     ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
-                    Count = 1327
+                    Count = 1327,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("6E4EA917-5E80-414E-BC57-0A47F4A6CB8D"),
                     WarehouseId = Guid.Parse("95D98C98-8C88-4A15-B3AE-9DDB9B10848B"),
                     ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
-                    Count = 1237
+                    Count = 1237,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("ACA91FC8-D5AA-4376-9921-F12917434D33"),
                     WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
                     ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
-                    Count = 7865
+                    Count = 7865,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("FB007436-3430-4DCF-BBFF-075040EBD8ED"),
                     WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
                     ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
-                    Count = 0
+                    Count = 0,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("788B957B-033C-455B-9EC7-E9F866F022FE"),
                     WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
                     ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
-                    Count = 1231
+                    Count = 1231,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("DC710497-C38A-49F1-BBB6-91FB58F7630D"),
                     WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
                     ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
-                    Count = 6655
+                    Count = 6655,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("291F2B10-43C4-48F8-8984-AE77C6A15021"),
                     WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
                     ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
-                    Count = 1235
+                    Count = 1235,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("D3F3AECE-660E-482F-A24E-544EA07B516A"),
                     WarehouseId = Guid.Parse("68A72052-18F4-4E2A-A165-C057F61F86B5"),
                     ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
-                    Count = 2313
+                    Count = 2313,
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
                 }
             };
 

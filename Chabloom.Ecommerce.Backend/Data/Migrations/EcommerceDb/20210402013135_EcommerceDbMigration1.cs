@@ -301,7 +301,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Count = table.Column<int>(type: "int", nullable: false)
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -327,7 +331,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Count = table.Column<int>(type: "int", nullable: false)
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    CreatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -440,28 +448,28 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             migrationBuilder.InsertData(
                 table: "EcommerceStoreProducts",
-                columns: new[] { "Id", "Count", "ProductId", "StoreId" },
+                columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "StoreId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("0ad5a574-f8a4-405c-9d64-ce5a127a3b84"), 22, new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") },
-                    { new Guid("a105ee03-3639-4efd-9104-040047175b21"), 0, new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("69070b35-9ed3-47dd-a919-300371f54634") },
-                    { new Guid("e4571be3-9757-4c6f-82e0-e43a6658defc"), 33, new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") },
-                    { new Guid("fa7fd697-59cd-4e6d-a266-9511eae0f54b"), 123, new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("69070b35-9ed3-47dd-a919-300371f54634") },
-                    { new Guid("be87833a-4cc7-4280-964c-596b82d31600"), 0, new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") },
-                    { new Guid("56575824-7eb7-4cf1-b3e5-246b8044d4ca"), 55, new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("69070b35-9ed3-47dd-a919-300371f54634") }
+                    { new Guid("95989b24-177d-44c8-9b29-3ed56147c524"), 22, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("ad1b779a-daf3-45ed-a23c-2a294f92a28d"), 0, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("69070b35-9ed3-47dd-a919-300371f54634"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("0e3ed181-db00-4003-b681-1de443217ed4"), 33, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("80698015-c9b4-4678-ba49-dfc570a758bc"), 123, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("69070b35-9ed3-47dd-a919-300371f54634"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("0062e9e5-c772-4ed3-8ae2-0538934408c1"), 0, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("53b6860e-1611-4859-803f-5f6aaf45f5e0"), 55, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("69070b35-9ed3-47dd-a919-300371f54634"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
                 });
 
             migrationBuilder.InsertData(
                 table: "EcommerceWarehouseProducts",
-                columns: new[] { "Id", "Count", "ProductId", "WarehouseId" },
+                columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser", "WarehouseId" },
                 values: new object[,]
                 {
-                    { new Guid("669f9739-c0df-4888-b9f3-9d6455a6774d"), 1231, new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
-                    { new Guid("f275ef04-1de2-4bc0-84bc-b9d959a14377"), 2313, new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
-                    { new Guid("ca524773-910e-425e-9d6a-5c40ff78f4e8"), 1327, new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
-                    { new Guid("bd9e37f4-d650-4b14-a234-55d14beaac2f"), 1235, new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
-                    { new Guid("34c06c9d-12a3-475e-b642-f09be45bf8ac"), 1237, new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
-                    { new Guid("81cc7e11-c4c3-47d9-aa89-8c55bbdd1b3b"), 9753, new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") }
+                    { new Guid("788b957b-033c-455b-9ec7-e9f866f022fe"), 1231, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
+                    { new Guid("d3f3aece-660e-482f-a24e-544ea07b516a"), 2313, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
+                    { new Guid("41533622-4fb8-4c5b-889a-459681765aaf"), 1327, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
+                    { new Guid("291f2b10-43c4-48f8-8984-ae77c6a15021"), 1235, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
+                    { new Guid("6e4ea917-5e80-414e-bc57-0a47f4a6cb8d"), 1237, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
+                    { new Guid("736d93a3-4f54-416a-ab0d-3b2bd8f7c45d"), 9753, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") }
                 });
 
             migrationBuilder.InsertData(
@@ -476,28 +484,28 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             migrationBuilder.InsertData(
                 table: "EcommerceStoreProducts",
-                columns: new[] { "Id", "Count", "ProductId", "StoreId" },
+                columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "StoreId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("15914c52-621d-4fdf-813a-6c580ca78d84"), 89, new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("69070b35-9ed3-47dd-a919-300371f54634") },
-                    { new Guid("b1e88afc-1b2e-4e37-ae2a-6916d6bbbc88"), 66, new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") },
-                    { new Guid("3e8ca37d-a0a9-499d-bf0e-defa25fe170c"), 78, new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("69070b35-9ed3-47dd-a919-300371f54634") },
-                    { new Guid("4e227039-ef95-4da3-9425-a2fda003439e"), 15, new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") },
-                    { new Guid("b676ec60-143b-4469-a1dd-d0acc0ee5464"), 11, new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("69070b35-9ed3-47dd-a919-300371f54634") },
-                    { new Guid("f5b4a8f6-49ca-4572-b80c-7136c0ff9f6d"), 512, new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") }
+                    { new Guid("67df3761-d6c8-428a-a614-e737d254c89c"), 89, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("69070b35-9ed3-47dd-a919-300371f54634"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("139b4e0d-0c3d-47eb-a7a6-8929608a6545"), 66, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("24e60557-5726-4fb5-a8f6-9c64496d016d"), 78, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("69070b35-9ed3-47dd-a919-300371f54634"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("08f67210-a91b-486c-87dd-af4115e54172"), 15, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("6f853ff0-1d4c-4905-94f7-cd20e3b18392"), 11, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("69070b35-9ed3-47dd-a919-300371f54634"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("0e3ebfd7-99f3-4d7c-87b2-c0f17dc34731"), 512, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
                 });
 
             migrationBuilder.InsertData(
                 table: "EcommerceWarehouseProducts",
-                columns: new[] { "Id", "Count", "ProductId", "WarehouseId" },
+                columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser", "WarehouseId" },
                 values: new object[,]
                 {
-                    { new Guid("4534577c-81ae-4448-8a6e-867c98880616"), 2131, new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
-                    { new Guid("47168e9a-78fc-4027-9eed-13b16ca18259"), 7865, new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
-                    { new Guid("8dc63f9f-7a6b-4641-879c-2df45d639344"), 0, new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
-                    { new Guid("608a8fca-9e3d-422d-9ce0-99e3c5999b6e"), 0, new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
-                    { new Guid("d25de491-6041-441d-90ca-99dfaba97075"), 1239, new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
-                    { new Guid("7ee4a1a6-d9d0-4a32-bf6f-8107410e37d8"), 6655, new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") }
+                    { new Guid("bce64f3a-b012-48d3-89f2-36b84d5f133c"), 2131, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
+                    { new Guid("aca91fc8-d5aa-4376-9921-f12917434d33"), 7865, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
+                    { new Guid("a43482c7-9549-4f5c-816f-2a6ba40d5115"), 0, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
+                    { new Guid("fb007436-3430-4dcf-bbff-075040ebd8ed"), 0, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") },
+                    { new Guid("1adb29fd-a90d-4c00-86af-038ab3e0e024"), 1239, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b") },
+                    { new Guid("dc710497-c38a-49f1-bbb6-91fb58f7630d"), 6655, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5") }
                 });
 
             migrationBuilder.CreateIndex(
