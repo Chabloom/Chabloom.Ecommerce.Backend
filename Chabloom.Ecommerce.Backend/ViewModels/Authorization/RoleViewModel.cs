@@ -1,0 +1,16 @@
+﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
+
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Chabloom.Ecommerce.Backend.ViewModels.Authorization
+{
+    public class RoleViewModel
+    {
+        public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string Name { get; set; }
+    }
+}

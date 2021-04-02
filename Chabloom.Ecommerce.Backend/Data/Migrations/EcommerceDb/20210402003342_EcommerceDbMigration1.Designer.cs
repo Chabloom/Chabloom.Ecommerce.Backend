@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20210325205742_EcommerceDbMigration1")]
+    [Migration("20210402003342_EcommerceDbMigration1")]
     partial class EcommerceDbMigration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,7 +194,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
@@ -208,6 +208,449 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.HasIndex("RoleId");
 
                     b.ToTable("EcommerceUsers");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("UpdatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("EcommerceStores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Address = "201 N Tryon St, Charlotte, NC 28202",
+                            CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Description = "Charlotte Store",
+                            Name = "Charlotte Store",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
+                            UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Address = "199 Gough St, San Francisco, CA 94102",
+                            CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Description = "San Fransisco Store",
+                            Name = "San Fransisco Store",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
+                            UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.StoreProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
+
+                    b.ToTable("EcommerceStoreProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("15914c52-621d-4fdf-813a-6c580ca78d84"),
+                            Count = 89,
+                            ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
+                        },
+                        new
+                        {
+                            Id = new Guid("3e8ca37d-a0a9-499d-bf0e-defa25fe170c"),
+                            Count = 78,
+                            ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
+                        },
+                        new
+                        {
+                            Id = new Guid("a105ee03-3639-4efd-9104-040047175b21"),
+                            Count = 0,
+                            ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
+                        },
+                        new
+                        {
+                            Id = new Guid("b676ec60-143b-4469-a1dd-d0acc0ee5464"),
+                            Count = 11,
+                            ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
+                        },
+                        new
+                        {
+                            Id = new Guid("56575824-7eb7-4cf1-b3e5-246b8044d4ca"),
+                            Count = 55,
+                            ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
+                        },
+                        new
+                        {
+                            Id = new Guid("fa7fd697-59cd-4e6d-a266-9511eae0f54b"),
+                            Count = 123,
+                            ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
+                        },
+                        new
+                        {
+                            Id = new Guid("b1e88afc-1b2e-4e37-ae2a-6916d6bbbc88"),
+                            Count = 66,
+                            ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
+                        },
+                        new
+                        {
+                            Id = new Guid("4e227039-ef95-4da3-9425-a2fda003439e"),
+                            Count = 15,
+                            ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
+                        },
+                        new
+                        {
+                            Id = new Guid("0ad5a574-f8a4-405c-9d64-ce5a127a3b84"),
+                            Count = 22,
+                            ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
+                        },
+                        new
+                        {
+                            Id = new Guid("f5b4a8f6-49ca-4572-b80c-7136c0ff9f6d"),
+                            Count = 512,
+                            ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
+                        },
+                        new
+                        {
+                            Id = new Guid("e4571be3-9757-4c6f-82e0-e43a6658defc"),
+                            Count = 33,
+                            ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
+                        },
+                        new
+                        {
+                            Id = new Guid("be87833a-4cc7-4280-964c-596b82d31600"),
+                            Count = 0,
+                            ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
+                        });
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("UpdatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("EcommerceWarehouses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Address = "500 Great SW Pkwy SW, Atlanta, GA 30336",
+                            CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Description = "Atlanta Warehouse",
+                            Name = "Atlanta Warehouse",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
+                            UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Address = "650 Gateway Center Dr, San Diego, CA 92102",
+                            CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Description = "San Diego Warehouse",
+                            Name = "San Diego Warehouse",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
+                            UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.WarehouseProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("WarehouseId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
+
+                    b.ToTable("EcommerceWarehouseProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("4534577c-81ae-4448-8a6e-867c98880616"),
+                            Count = 2131,
+                            ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
+                        },
+                        new
+                        {
+                            Id = new Guid("8dc63f9f-7a6b-4641-879c-2df45d639344"),
+                            Count = 0,
+                            ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
+                        },
+                        new
+                        {
+                            Id = new Guid("81cc7e11-c4c3-47d9-aa89-8c55bbdd1b3b"),
+                            Count = 9753,
+                            ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
+                        },
+                        new
+                        {
+                            Id = new Guid("d25de491-6041-441d-90ca-99dfaba97075"),
+                            Count = 1239,
+                            ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
+                        },
+                        new
+                        {
+                            Id = new Guid("ca524773-910e-425e-9d6a-5c40ff78f4e8"),
+                            Count = 1327,
+                            ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
+                        },
+                        new
+                        {
+                            Id = new Guid("34c06c9d-12a3-475e-b642-f09be45bf8ac"),
+                            Count = 1237,
+                            ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
+                        },
+                        new
+                        {
+                            Id = new Guid("47168e9a-78fc-4027-9eed-13b16ca18259"),
+                            Count = 7865,
+                            ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
+                        },
+                        new
+                        {
+                            Id = new Guid("608a8fca-9e3d-422d-9ce0-99e3c5999b6e"),
+                            Count = 0,
+                            ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
+                        },
+                        new
+                        {
+                            Id = new Guid("669f9739-c0df-4888-b9f3-9d6455a6774d"),
+                            Count = 1231,
+                            ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
+                        },
+                        new
+                        {
+                            Id = new Guid("7ee4a1a6-d9d0-4a32-bf6f-8107410e37d8"),
+                            Count = 6655,
+                            ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
+                        },
+                        new
+                        {
+                            Id = new Guid("bd9e37f4-d650-4b14-a234-55d14beaac2f"),
+                            Count = 1235,
+                            ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
+                        },
+                        new
+                        {
+                            Id = new Guid("f275ef04-1de2-4bc0-84bc-b9d959a14377"),
+                            Count = 2313,
+                            ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
+                        });
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("UpdatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EcommerceOrders");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.OrderProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("UpdatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("OrderId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
+
+                    b.ToTable("EcommerceOrderProducts");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Product", b =>
@@ -258,7 +701,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.",
                             Name = "Organic Assam",
-                            Price = 0m,
+                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -270,7 +713,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!",
                             Name = "Puttabong 1st Flush Darjeeling",
-                            Price = 0m,
+                            Price = 4.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -282,7 +725,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.",
                             Name = "Yuzu Sencha",
-                            Price = 0m,
+                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -294,7 +737,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.",
                             Name = "Organic Matcha",
-                            Price = 0m,
+                            Price = 3.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -306,7 +749,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ",
                             Name = "Strawberry Kiwi Fruit Tea",
-                            Price = 0m,
+                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -318,7 +761,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.",
                             Name = "Blood Orange Fruit Tea",
-                            Price = 0m,
+                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -555,11 +998,93 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Store", b =>
+                {
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
+                        .WithMany("Stores")
+                        .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.StoreProduct", b =>
+                {
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
+                        .WithMany("Stores")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Store", "Store")
+                        .WithMany("Products")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", b =>
+                {
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.WarehouseProduct", b =>
+                {
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", "Warehouse")
+                        .WithMany("Products")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Order", b =>
+                {
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.OrderProduct", b =>
+                {
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Order", "Order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Product", b =>
@@ -608,7 +1133,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", b =>
                 {
+                    b.Navigation("Stores");
+
                     b.Navigation("TenantRoles");
+
+                    b.Navigation("Warehouses");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Authorization.TenantRole", b =>
@@ -618,12 +1147,35 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Authorization.User", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("TenantRoleUsers");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Store", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Order", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Product", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("ProductImages");
+
+                    b.Navigation("Stores");
+
+                    b.Navigation("Warehouses");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.ProductCategory", b =>

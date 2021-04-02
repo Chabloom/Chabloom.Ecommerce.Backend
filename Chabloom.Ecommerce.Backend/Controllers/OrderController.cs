@@ -59,7 +59,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         UserId = x.UserId,
                         TransactionId = x.TransactionId,
                         ProductCounts = x.Products
-                            .ToDictionary(y => y.ProductId, y => y.Count)
+                            .ToDictionary(y => y.Id, y => y.Count)
                     })
                     .ToListAsync();
             }
@@ -74,7 +74,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         UserId = x.UserId,
                         TransactionId = x.TransactionId,
                         ProductCounts = x.Products
-                            .ToDictionary(y => y.ProductId, y => y.Count)
+                            .ToDictionary(y => y.Id, y => y.Count)
                     })
                     .ToListAsync();
             }
@@ -112,7 +112,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 UserId = order.UserId,
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
-                    .ToDictionary(x => x.ProductId, x => x.Count)
+                    .ToDictionary(x => x.Id, x => x.Count)
             };
 
             return Ok(viewModel);
@@ -155,64 +155,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             _context.Update(order);
             await _context.SaveChangesAsync();
 
-            try
-            {
-                // Update the order products
-                var orderProducts = await _context.OrderProducts
-                    .Where(x => x.OrderId == order.Id)
-                    .ToListAsync();
-                var orderProductsAdded = new List<OrderProduct>();
-                var orderProductsUpdated = new List<OrderProduct>();
-                var orderProductsRemoved = orderProducts
-                    .Where(x => !viewModel.ProductCounts.ContainsKey(x.ProductId))
-                    .ToList();
-                foreach (var (productId, count) in viewModel.ProductCounts)
-                {
-                    var orderProduct = orderProducts
-                        .FirstOrDefault(x => x.ProductId == productId);
-                    if (orderProduct == null)
-                    {
-                        orderProductsAdded.Add(new OrderProduct
-                        {
-                            OrderId = order.Id,
-                            ProductId = productId,
-                            Count = count
-                        });
-                    }
-                    else
-                    {
-                        orderProduct.Count = count;
-                        orderProductsUpdated.Add(orderProduct);
-                    }
-                }
-
-                if (orderProductsAdded.Count != 0)
-                {
-                    await _context.AddRangeAsync(orderProductsAdded);
-                }
-
-                if (orderProductsUpdated.Count != 0)
-                {
-                    _context.UpdateRange(orderProductsUpdated);
-                }
-
-                if (orderProductsRemoved.Count != 0)
-                {
-                    _context.RemoveRange(orderProductsRemoved);
-                }
-
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                _logger.LogWarning($"User {userId} attempted to update order with bad products");
-
-                _context.Remove(order);
-                await _context.SaveChangesAsync();
-
-                return BadRequest("Invalid order products");
-            }
-
             // Populate the return data
             var retViewModel = new OrderViewModel
             {
@@ -220,7 +162,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Status = order.Status,
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
-                    .ToDictionary(x => x.ProductId, x => x.Count)
+                    .ToDictionary(x => x.Id, x => x.Count)
             };
 
             _logger.LogInformation($"User {userId} updated order {order.Id}");
@@ -260,14 +202,18 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             try
             {
                 // Create the order products
-                var orderProducts = viewModel.ProductCounts
-                    .Select(productCount => new OrderProduct
+                var orderProducts = await _context.Products
+                    .Where(x => viewModel.ProductCounts.ContainsKey(x.Id))
+                    .Select(x => new OrderProduct
                     {
-                        OrderId = order.Id,
-                        ProductId = productCount.Key,
-                        Count = productCount.Value
+                        Name = x.Name,
+                        Description = x.Description,
+                        Price = x.Price,
+                        ProductId = x.Id,
+                        Count = viewModel.ProductCounts[x.Id],
+                        CreatedUser = userId
                     })
-                    .ToList();
+                    .ToListAsync();
 
                 await _context.AddAsync(orderProducts);
                 await _context.SaveChangesAsync();
@@ -289,7 +235,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Status = order.Status,
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
-                    .ToDictionary(x => x.ProductId, x => x.Count)
+                    .ToDictionary(x => x.Id, x => x.Count)
             };
 
             _logger.LogInformation($"User {userId} created order {order.Id}");

@@ -215,6 +215,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("CreatedTimestamp")
@@ -232,7 +233,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
@@ -256,6 +257,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Charlotte Store",
                             Name = "Charlotte Store",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -267,6 +269,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "San Fransisco Store",
                             Name = "San Fransisco Store",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -274,93 +277,113 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.StoreProduct", b =>
                 {
-                    b.Property<Guid>("StoreId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.HasKey("StoreId", "ProductId");
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
 
                     b.ToTable("EcommerceStoreProducts");
 
                     b.HasData(
                         new
                         {
-                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Id = new Guid("15914c52-621d-4fdf-813a-6c580ca78d84"),
+                            Count = 89,
                             ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
-                            Count = 89
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
                         },
                         new
                         {
-                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Id = new Guid("3e8ca37d-a0a9-499d-bf0e-defa25fe170c"),
+                            Count = 78,
                             ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
-                            Count = 78
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
                         },
                         new
                         {
-                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Id = new Guid("a105ee03-3639-4efd-9104-040047175b21"),
+                            Count = 0,
                             ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
-                            Count = 0
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
                         },
                         new
                         {
-                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Id = new Guid("b676ec60-143b-4469-a1dd-d0acc0ee5464"),
+                            Count = 11,
                             ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
-                            Count = 11
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
                         },
                         new
                         {
-                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Id = new Guid("56575824-7eb7-4cf1-b3e5-246b8044d4ca"),
+                            Count = 55,
                             ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
-                            Count = 55
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
                         },
                         new
                         {
-                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634"),
+                            Id = new Guid("fa7fd697-59cd-4e6d-a266-9511eae0f54b"),
+                            Count = 123,
                             ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
-                            Count = 123
+                            StoreId = new Guid("69070b35-9ed3-47dd-a919-300371f54634")
                         },
                         new
                         {
-                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Id = new Guid("b1e88afc-1b2e-4e37-ae2a-6916d6bbbc88"),
+                            Count = 66,
                             ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
-                            Count = 66
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
                         },
                         new
                         {
-                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Id = new Guid("4e227039-ef95-4da3-9425-a2fda003439e"),
+                            Count = 15,
                             ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
-                            Count = 15
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
                         },
                         new
                         {
-                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Id = new Guid("0ad5a574-f8a4-405c-9d64-ce5a127a3b84"),
+                            Count = 22,
                             ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
-                            Count = 22
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
                         },
                         new
                         {
-                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Id = new Guid("f5b4a8f6-49ca-4572-b80c-7136c0ff9f6d"),
+                            Count = 512,
                             ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
-                            Count = 512
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
                         },
                         new
                         {
-                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Id = new Guid("e4571be3-9757-4c6f-82e0-e43a6658defc"),
+                            Count = 33,
                             ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
-                            Count = 33
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
                         },
                         new
                         {
-                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"),
+                            Id = new Guid("be87833a-4cc7-4280-964c-596b82d31600"),
+                            Count = 0,
                             ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
-                            Count = 0
+                            StoreId = new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802")
                         });
                 });
 
@@ -371,6 +394,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("CreatedTimestamp")
@@ -388,7 +412,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("TenantId")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
@@ -412,6 +436,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Atlanta Warehouse",
                             Name = "Atlanta Warehouse",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -423,6 +448,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "San Diego Warehouse",
                             Name = "San Diego Warehouse",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -430,93 +456,113 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.WarehouseProduct", b =>
                 {
-                    b.Property<Guid>("WarehouseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.HasKey("WarehouseId", "ProductId");
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("WarehouseId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
 
                     b.ToTable("EcommerceWarehouseProducts");
 
                     b.HasData(
                         new
                         {
-                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Id = new Guid("4534577c-81ae-4448-8a6e-867c98880616"),
+                            Count = 2131,
                             ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
-                            Count = 2131
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
                         },
                         new
                         {
-                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Id = new Guid("8dc63f9f-7a6b-4641-879c-2df45d639344"),
+                            Count = 0,
                             ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
-                            Count = 0
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
                         },
                         new
                         {
-                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Id = new Guid("81cc7e11-c4c3-47d9-aa89-8c55bbdd1b3b"),
+                            Count = 9753,
                             ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
-                            Count = 9753
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
                         },
                         new
                         {
-                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Id = new Guid("d25de491-6041-441d-90ca-99dfaba97075"),
+                            Count = 1239,
                             ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
-                            Count = 1239
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
                         },
                         new
                         {
-                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Id = new Guid("ca524773-910e-425e-9d6a-5c40ff78f4e8"),
+                            Count = 1327,
                             ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
-                            Count = 1327
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
                         },
                         new
                         {
-                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"),
+                            Id = new Guid("34c06c9d-12a3-475e-b642-f09be45bf8ac"),
+                            Count = 1237,
                             ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
-                            Count = 1237
+                            WarehouseId = new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b")
                         },
                         new
                         {
-                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Id = new Guid("47168e9a-78fc-4027-9eed-13b16ca18259"),
+                            Count = 7865,
                             ProductId = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
-                            Count = 7865
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
                         },
                         new
                         {
-                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Id = new Guid("608a8fca-9e3d-422d-9ce0-99e3c5999b6e"),
+                            Count = 0,
                             ProductId = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
-                            Count = 0
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
                         },
                         new
                         {
-                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Id = new Guid("669f9739-c0df-4888-b9f3-9d6455a6774d"),
+                            Count = 1231,
                             ProductId = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
-                            Count = 1231
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
                         },
                         new
                         {
-                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Id = new Guid("7ee4a1a6-d9d0-4a32-bf6f-8107410e37d8"),
+                            Count = 6655,
                             ProductId = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
-                            Count = 6655
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
                         },
                         new
                         {
-                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Id = new Guid("bd9e37f4-d650-4b14-a234-55d14beaac2f"),
+                            Count = 1235,
                             ProductId = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
-                            Count = 1235
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
                         },
                         new
                         {
-                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"),
+                            Id = new Guid("f275ef04-1de2-4bc0-84bc-b9d959a14377"),
+                            Count = 2313,
                             ProductId = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
-                            Count = 2313
+                            WarehouseId = new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5")
                         });
                 });
 
@@ -557,18 +603,50 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.OrderProduct", b =>
                 {
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.Property<DateTimeOffset>("CreatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedTimestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("UpdatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("OrderId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
 
                     b.ToTable("EcommerceOrderProducts");
                 });
@@ -925,18 +1003,20 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Store", b =>
                 {
-                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", null)
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
                         .WithMany("Stores")
-                        .HasForeignKey("TenantId");
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.StoreProduct", b =>
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
                         .WithMany("Stores")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Store", "Store")
                         .WithMany("Products")
@@ -951,18 +1031,20 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", b =>
                 {
-                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", null)
+                    b.HasOne("Chabloom.Ecommerce.Backend.Models.Authorization.Tenant", "Tenant")
                         .WithMany("Warehouses")
-                        .HasForeignKey("TenantId");
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.WarehouseProduct", b =>
                 {
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
                         .WithMany("Warehouses")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Inventory.Warehouse", "Warehouse")
                         .WithMany("Products")
@@ -996,9 +1078,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasOne("Chabloom.Ecommerce.Backend.Models.Product", "Product")
                         .WithMany("Orders")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Order");
 

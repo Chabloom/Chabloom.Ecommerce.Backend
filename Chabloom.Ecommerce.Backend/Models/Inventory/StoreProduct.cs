@@ -10,15 +10,17 @@ namespace Chabloom.Ecommerce.Backend.Models.Inventory
     public class StoreProduct
     {
         [Required]
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
+
+        [Required]
         public Guid StoreId { get; set; }
 
         [Required]
         public Store Store { get; set; }
 
-        [Required]
-        public Guid ProductId { get; set; }
+        public Guid? ProductId { get; set; }
 
-        [Required]
         public Product Product { get; set; }
 
         [Required]

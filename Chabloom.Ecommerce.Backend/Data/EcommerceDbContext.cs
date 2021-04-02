@@ -59,17 +59,20 @@ namespace Chabloom.Ecommerce.Backend.Data
                 .HasOne(x => x.ParentCategory)
                 .WithMany(x => x.SubCategories);
 
-            // Set up order products relations
+            // Set up key for join table
             modelBuilder.Entity<OrderProduct>()
-                .HasKey(x => new {x.OrderId, x.ProductId});
+                .HasIndex(x => new {x.OrderId, x.ProductId})
+                .IsUnique();
 
-            // Set up store products relations
+            // Set up key for join table
             modelBuilder.Entity<StoreProduct>()
-                .HasKey(x => new {x.StoreId, x.ProductId});
+                .HasIndex(x => new {x.StoreId, x.ProductId})
+                .IsUnique();
 
-            // Set up warehouse products relations
+            // Set up key for join table
             modelBuilder.Entity<WarehouseProduct>()
-                .HasKey(x => new {x.WarehouseId, x.ProductId});
+                .HasIndex(x => new {x.WarehouseId, x.ProductId})
+                .IsUnique();
 
             // Set up default roles
             var roles = new List<Role>
@@ -359,6 +362,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Name = "Charlotte Store",
                     Description = "Charlotte Store",
                     Address = "201 N Tryon St, Charlotte, NC 28202",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
@@ -368,6 +372,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Name = "San Fransisco Store",
                     Description = "San Fransisco Store",
                     Address = "199 Gough St, San Francisco, CA 94102",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 }
@@ -465,6 +470,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Name = "Atlanta Warehouse",
                     Description = "Atlanta Warehouse",
                     Address = "500 Great SW Pkwy SW, Atlanta, GA 30336",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
@@ -474,6 +480,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                     Name = "San Diego Warehouse",
                     Description = "San Diego Warehouse",
                     Address = "650 Gateway Center Dr, San Diego, CA 92102",
+                    TenantId = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 }
