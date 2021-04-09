@@ -34,18 +34,12 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         public async Task<ActionResult<List<ProductCategoryViewModel>>> GetProductCategories([FromQuery] Guid? tenantId)
         {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
-            {
-                return Forbid();
-            }
-
             // Populate the return data
             var viewModels = new List<ProductCategoryViewModel>();
             if (tenantId.HasValue)
@@ -67,18 +61,12 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         public async Task<ActionResult<ProductCategoryViewModel>> GetProductCategory(Guid id)
         {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
-            {
-                return Forbid();
-            }
-
             // Find the specified product category
             var productCategory = await _context.ProductCategories
                 .FirstOrDefaultAsync(x => x.Id == id);
