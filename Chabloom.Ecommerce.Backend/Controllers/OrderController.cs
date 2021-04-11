@@ -51,13 +51,12 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             {
                 viewModels = await _context.Orders
                     .Include(x => x.Products)
-                    .Where(x => x.UserId == userId.Value)
+                    .Where(x => x.CreatedUser == userId.Value)
                     .Select(x => new OrderViewModel
                     {
                         Id = x.Id,
                         PickupMethod = x.PickupMethodName,
                         Status = x.Status,
-                        UserId = x.UserId.ToString(),
                         TransactionId = x.TransactionId,
                         ProductCounts = x.Products
                             .ToDictionary(y => y.Id, y => y.Count)
@@ -73,7 +72,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Id = x.Id,
                         PickupMethod = x.PickupMethodName,
                         Status = x.Status,
-                        UserId = x.UserId.ToString(),
                         TransactionId = x.TransactionId,
                         ProductCounts = x.Products
                             .ToDictionary(y => y.Id, y => y.Count)
@@ -106,7 +104,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = order.Id,
                 PickupMethod = order.PickupMethodName,
                 Status = order.Status,
-                UserId = order.UserId.ToString(),
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
                     .ToDictionary(x => x.Id, x => x.Count)
@@ -191,24 +188,12 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Get the user id
-            var userId = Guid.Empty;
-            try
-            {
-                userId = _validator.GetUserId(User);
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning("Could not parse user id");
-            }
-
             // Create the order
             var order = new Order
             {
                 PickupMethodName = viewModel.PickupMethod,
                 TransactionId = viewModel.TransactionId,
-                UserId = Guid.TryParse(viewModel.UserId, out _) ? Guid.Empty : Guid.Parse(viewModel.UserId),
-                CreatedUser = userId
+                CreatedUser = Guid.Empty
             };
 
             await _context.AddAsync(order);
@@ -226,7 +211,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Price = x.Price,
                         ProductId = x.Id,
                         Count = viewModel.ProductCounts[x.Id],
-                        CreatedUser = userId
+                        CreatedUser = Guid.Empty
                     })
                     .ToListAsync();
 
@@ -235,7 +220,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
             catch (DbUpdateException)
             {
-                _logger.LogWarning($"User {userId} attempted to create order with bad products");
+                _logger.LogWarning($"User {Guid.Empty} attempted to create order with bad products");
 
                 _context.Remove(order);
                 await _context.SaveChangesAsync();
@@ -254,7 +239,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                     .ToDictionary(x => x.Id, x => x.Count)
             };
 
-            _logger.LogInformation($"User {userId} created order {order.Id}");
+            _logger.LogInformation($"User {Guid.Empty} created order {order.Id}");
 
             return CreatedAtAction("GetOrder", new {id = retViewModel.Id}, retViewModel);
         }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Chabloom.Ecommerce.Backend.Models.Authorization;
 
 namespace Chabloom.Ecommerce.Backend.Models
 {
@@ -26,12 +25,6 @@ namespace Chabloom.Ecommerce.Backend.Models
 
         [Required]
         public Guid TransactionId { get; set; }
-
-        [Required]
-        public Guid UserId { get; set; }
-
-        [Required]
-        public User User { get; set; }
 
         public List<OrderProduct> Products { get; set; }
 

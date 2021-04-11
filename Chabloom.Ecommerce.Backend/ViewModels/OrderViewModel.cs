@@ -13,13 +13,10 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
         [Required]
         public string PickupMethod { get; set; }
 
-        [Required]
         public string Status { get; set; }
 
         [Required]
         public Guid TransactionId { get; set; }
-
-        public string UserId { get; set; }
 
         public IDictionary<Guid, int> ProductCounts { get; set; }
     }
