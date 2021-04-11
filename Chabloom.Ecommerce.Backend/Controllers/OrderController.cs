@@ -85,6 +85,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -185,6 +186,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
