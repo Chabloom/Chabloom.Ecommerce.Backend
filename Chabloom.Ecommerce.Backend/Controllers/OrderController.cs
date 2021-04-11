@@ -91,13 +91,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         [ProducesResponseType(403)]
         public async Task<ActionResult<OrderViewModel>> GetOrder(Guid id)
         {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
-            {
-                return Forbid();
-            }
-
             // Find the specified order
             var order = await _context.Orders
                 .Include(x => x.Products)
@@ -199,10 +192,14 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
 
             // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
+            var userId = Guid.Empty;
+            try
             {
-                return Forbid();
+                userId = _validator.GetUserId(User);
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning($"Could not parse user id");
             }
 
             // Create the order
