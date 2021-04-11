@@ -202,40 +202,33 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 CreatedUser = Guid.Empty
             };
 
+            var orderProducts = new List<OrderProduct>();
+            foreach (var (productId, count) in viewModel.ProductCounts)
+            {
+                var product = await _context.Products
+                    .FirstOrDefaultAsync(x => x.Id == productId);
+                if (product == null)
+                {
+                    _logger.LogWarning($"User {Guid.Empty} attempted to create order with unknown product {productId}");
+                    return BadRequest($"Product {productId} does not exist");
+                }
+
+                orderProducts.Add(new OrderProduct
+                {
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    ProductId = product.Id,
+                    Count = count,
+                    CreatedUser = Guid.Empty
+                });
+            }
+
             await _context.AddAsync(order);
             await _context.SaveChangesAsync();
 
-            try
-            {
-                var products = await _context.Products
-                    .ToListAsync();
-
-                // Create the order products
-                var orderProducts = products
-                    .Where(x => viewModel.ProductCounts.ContainsKey(x.Id))
-                    .Select(x => new OrderProduct
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Price = x.Price,
-                        ProductId = x.Id,
-                        Count = viewModel.ProductCounts[x.Id],
-                        CreatedUser = Guid.Empty
-                    })
-                    .ToList();
-
-                await _context.AddRangeAsync(orderProducts);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                _logger.LogWarning($"User {Guid.Empty} attempted to create order with bad products");
-
-                _context.Remove(order);
-                await _context.SaveChangesAsync();
-
-                return BadRequest("Invalid order products");
-            }
+            await _context.AddRangeAsync(orderProducts);
+            await _context.SaveChangesAsync();
 
             // Populate the return data
             var retViewModel = new OrderViewModel
