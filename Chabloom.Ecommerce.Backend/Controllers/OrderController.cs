@@ -201,8 +201,11 @@ namespace Chabloom.Ecommerce.Backend.Controllers
 
             try
             {
+                var products = await _context.Products
+                    .ToListAsync();
+
                 // Create the order products
-                var orderProducts = await _context.Products
+                var orderProducts = products
                     .Where(x => viewModel.ProductCounts.ContainsKey(x.Id))
                     .Select(x => new OrderProduct
                     {
@@ -213,7 +216,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Count = viewModel.ProductCounts[x.Id],
                         CreatedUser = Guid.Empty
                     })
-                    .ToListAsync();
+                    .ToList();
 
                 await _context.AddAsync(orderProducts);
                 await _context.SaveChangesAsync();
