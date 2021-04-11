@@ -57,7 +57,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Id = x.Id,
                         PickupMethod = x.PickupMethodName,
                         Status = x.Status,
-                        UserId = x.UserId,
+                        UserId = x.UserId.ToString(),
                         TransactionId = x.TransactionId,
                         ProductCounts = x.Products
                             .ToDictionary(y => y.Id, y => y.Count)
@@ -73,7 +73,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Id = x.Id,
                         PickupMethod = x.PickupMethodName,
                         Status = x.Status,
-                        UserId = x.UserId,
+                        UserId = x.UserId.ToString(),
                         TransactionId = x.TransactionId,
                         ProductCounts = x.Products
                             .ToDictionary(y => y.Id, y => y.Count)
@@ -106,7 +106,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = order.Id,
                 PickupMethod = order.PickupMethodName,
                 Status = order.Status,
-                UserId = order.UserId,
+                UserId = order.UserId.ToString(),
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
                     .ToDictionary(x => x.Id, x => x.Count)
