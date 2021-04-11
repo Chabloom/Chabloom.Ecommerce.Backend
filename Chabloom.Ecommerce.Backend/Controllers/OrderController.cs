@@ -218,6 +218,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                     Name = product.Name,
                     Description = product.Description,
                     Price = product.Price,
+                    OrderId = order.Id,
                     ProductId = product.Id,
                     Count = count,
                     CreatedUser = Guid.Empty
