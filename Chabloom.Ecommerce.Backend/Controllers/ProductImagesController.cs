@@ -34,6 +34,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -55,7 +56,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                     .Select(x => new ProductImageViewModel
                     {
                         Id = x.Id,
-                        ProductId = x.ProductId
+                        ProductId = x.ProductId,
+                        Filename = x.Filename
                     })
                     .ToListAsync();
             }
@@ -64,6 +66,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -88,7 +91,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var viewModel = new ProductImageViewModel
             {
                 Id = productImage.Id,
-                ProductId = productImage.ProductId
+                ProductId = productImage.ProductId,
+                Filename = productImage.Filename
             };
 
             return Ok(viewModel);
@@ -124,7 +128,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
 
             // Update the product image
-            // ProductId cannot be updated
+            productImage.Filename = viewModel.Filename;
             productImage.UpdatedUser = userId;
             productImage.UpdatedTimestamp = DateTimeOffset.UtcNow;
 
@@ -135,7 +139,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var retViewModel = new ProductImageViewModel
             {
                 Id = productImage.Id,
-                ProductId = productImage.ProductId
+                ProductId = productImage.ProductId,
+                Filename = productImage.Filename
             };
 
             _logger.LogInformation($"User {userId} updated product image {productImage.Id}");
@@ -176,6 +181,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var productImage = new ProductImage
             {
                 ProductId = viewModel.ProductId,
+                Filename = viewModel.Filename,
                 CreatedUser = userId
             };
 
@@ -186,7 +192,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var retViewModel = new ProductImageViewModel
             {
                 Id = productImage.Id,
-                ProductId = productImage.ProductId
+                ProductId = productImage.ProductId,
+                Filename = productImage.Filename
             };
 
             _logger.LogInformation($"User {userId} created product image {productImage.Id}");

@@ -28,6 +28,8 @@ namespace Chabloom.Ecommerce.Backend.Data
 
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
+        public DbSet<PickupMethod> PickupMethods { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }
@@ -74,27 +76,48 @@ namespace Chabloom.Ecommerce.Backend.Data
                 .HasIndex(x => new {x.WarehouseId, x.ProductId})
                 .IsUnique();
 
+            modelBuilder.Entity<ProductPickupMethod>()
+                .HasKey(x => new {x.ProductId, x.PickupMethodName});
+
             // Set up default roles
             var roles = new List<Role>
             {
                 new()
                 {
-                    Id = Guid.Parse("D4DC0126-C55D-474E-A44B-7E6D90822A59"),
-                    Name = "Admin",
-                    CreatedUser = Guid.Empty,
-                    CreatedTimestamp = DateTimeOffset.MinValue
+                    Name = "Admin"
                 },
                 new()
                 {
-                    Id = Guid.Parse("5AB67841-F85C-416F-8A81-81B85BB7B219"),
-                    Name = "Manager",
-                    CreatedUser = Guid.Empty,
-                    CreatedTimestamp = DateTimeOffset.MinValue
+                    Name = "Manager"
                 }
             };
 
             modelBuilder.Entity<Role>()
                 .HasData(roles);
+
+            // Set up order methods
+            var orderMethods = new List<PickupMethod>
+            {
+                new()
+                {
+                    Name = "In-Store"
+                },
+                new()
+                {
+                    Name = "Pickup"
+                },
+                new()
+                {
+                    Name = "Delivery"
+                },
+                new()
+                {
+                    Name = "Shipping"
+                },
+            };
+
+            modelBuilder.Entity<PickupMethod>()
+                .HasData(orderMethods);
 
             // Set up demo tenant
             var demoTenant = new Tenant
@@ -230,7 +253,19 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
-                    Name = "Organic Assam",
+                    Name = "Organic Assam (25 tea bags)",
+                    Description =
+                        "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly " +
+                        "lighter liquor, with sweet honey flavor.",
+                    Price = 2.99M,
+                    CategoryId = Guid.Parse("66272963-7577-4FB3-8CD6-A0BC411404E9"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("41E5E396-6757-42F3-9149-3B084976545A"),
+                    Name = "Organic Assam (cup)",
                     Description =
                         "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly " +
                         "lighter liquor, with sweet honey flavor.",
@@ -242,7 +277,19 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
-                    Name = "Puttabong 1st Flush Darjeeling",
+                    Name = "Puttabong 1st Flush Darjeeling (25 tea bags)",
+                    Description = "Our friends at Puttabong have done a great job with this tea. It is owned by " +
+                                  "Jayshree and is located north of Darjeeling town.  This tea came towards the end of " +
+                                  "the First Flush season in April. Brisk yet flavorful. Hats off!",
+                    Price = 4.99M,
+                    CategoryId = Guid.Parse("CF059C18-EC58-4C6E-AE61-4DDDABD61A6D"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("4D0BCD02-9DAB-499E-92CD-8BA9F252B2A9"),
+                    Name = "Puttabong 1st Flush Darjeeling (cup)",
                     Description = "Our friends at Puttabong have done a great job with this tea. It is owned by " +
                                   "Jayshree and is located north of Darjeeling town.  This tea came towards the end of " +
                                   "the First Flush season in April. Brisk yet flavorful. Hats off!",
@@ -254,7 +301,19 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
-                    Name = "Yuzu Sencha",
+                    Name = "Yuzu Sencha (25 tea bags)",
+                    Description = "It seems like it is Yuzu’s time to shine. People are really liking this citrus " +
+                                  "fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we " +
+                                  "should try it.",
+                    Price = 2.99M,
+                    CategoryId = Guid.Parse("6470CA64-4D0A-4D94-8333-0F06D74E7CA1"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("0418AE94-B020-4B2A-9697-7DDCBE2BD72A"),
+                    Name = "Yuzu Sencha (cup)",
                     Description = "It seems like it is Yuzu’s time to shine. People are really liking this citrus " +
                                   "fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we " +
                                   "should try it.",
@@ -266,7 +325,18 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
-                    Name = "Organic Matcha",
+                    Name = "Organic Matcha (25 tea bags)",
+                    Description = "Matcha powdered green tea has been the pride of Uji for several centuries. This " +
+                                  "organic grade is great for everyday use.",
+                    Price = 3.99M,
+                    CategoryId = Guid.Parse("B5E4F99F-227E-49BE-A82F-8B4E06D35D96"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("E95543DA-BB67-4859-8B98-D92041D58D8D"),
+                    Name = "Organic Matcha (cup)",
                     Description = "Matcha powdered green tea has been the pride of Uji for several centuries. This " +
                                   "organic grade is great for everyday use.",
                     Price = 3.99M,
@@ -277,7 +347,19 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
-                    Name = "Strawberry Kiwi Fruit Tea",
+                    Name = "Strawberry Kiwi Fruit Tea (25 tea bags)",
+                    Description = "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit " +
+                                  "pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It " +
+                                  "looks festive brewed in a glass teapot, and tastes delicious hot or iced. ",
+                    Price = 2.99M,
+                    CategoryId = Guid.Parse("7D582944-4E2F-42EE-8A1E-199FD58762A6"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("728617AA-ECD3-48AC-BDAD-CCF660F775A3"),
+                    Name = "Strawberry Kiwi Fruit Tea (cup)",
                     Description = "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit " +
                                   "pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It " +
                                   "looks festive brewed in a glass teapot, and tastes delicious hot or iced. ",
@@ -289,7 +371,19 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
-                    Name = "Blood Orange Fruit Tea",
+                    Name = "Blood Orange Fruit Tea (25 tea bags)",
+                    Description = "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and " +
+                                  "distinctive twist found in blood oranges. Delicious hot or cold, it brews an " +
+                                  "aromatic and vivid shade of orange.",
+                    Price = 2.99M,
+                    CategoryId = Guid.Parse("7D582944-4E2F-42EE-8A1E-199FD58762A6"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("2446BD16-DF0A-4F7E-9E23-18CB1D5D008E"),
+                    Name = "Blood Orange Fruit Tea (cup)",
                     Description = "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and " +
                                   "distinctive twist found in blood oranges. Delicious hot or cold, it brews an " +
                                   "aromatic and vivid shade of orange.",
@@ -309,42 +403,96 @@ namespace Chabloom.Ecommerce.Backend.Data
                 new()
                 {
                     Id = Guid.Parse("DE6CAC85-5C34-4EA6-B1D5-B1C8EC111070"),
+                    Filename = "323565D2-3C93-4E05-81FF-AC745E22AF9E.webp",
                     ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("EF15FAB8-2CE0-4BBF-A8E1-D8E1B541CE6A"),
+                    Filename = "323565D2-3C93-4E05-81FF-AC745E22AF9E.webp",
+                    ProductId = Guid.Parse("41E5E396-6757-42F3-9149-3B084976545A"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
                     Id = Guid.Parse("9A467CBC-8128-44BE-ADDD-B85F65F57CAD"),
+                    Filename = "78E540DE-D2B3-4B1F-BB1E-988BE3245088.webp",
                     ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("0D7936D7-0D94-4F31-9314-135EA1DAF3C9"),
+                    Filename = "78E540DE-D2B3-4B1F-BB1E-988BE3245088.webp",
+                    ProductId = Guid.Parse("4D0BCD02-9DAB-499E-92CD-8BA9F252B2A9"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
                     Id = Guid.Parse("5B605894-7618-4B97-A49B-9202F6E2799A"),
+                    Filename = "CB949DDA-57FB-4731-8379-B6F955B3102E.webp",
                     ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("A030E5D7-45A2-407C-AC56-B7F310542FB9"),
+                    Filename = "CB949DDA-57FB-4731-8379-B6F955B3102E.webp",
+                    ProductId = Guid.Parse("0418AE94-B020-4B2A-9697-7DDCBE2BD72A"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
                     Id = Guid.Parse("622D3D2C-1FF2-43B8-94E8-36AE7C2CA86B"),
+                    Filename = "5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE.webp",
                     ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("0AABEC17-AAA1-4F35-9B27-9B199A2AA67C"),
+                    Filename = "5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE.webp",
+                    ProductId = Guid.Parse("E95543DA-BB67-4859-8B98-D92041D58D8D"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
                     Id = Guid.Parse("745B7C71-03AF-4ADA-B18C-E370E5305E64"),
+                    Filename = "CE3E245B-75C5-418E-98FE-3A115AA7395D.webp",
                     ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 },
                 new()
                 {
+                    Id = Guid.Parse("EE465F84-413C-41F9-A3DA-A149F241BDFA"),
+                    Filename = "CE3E245B-75C5-418E-98FE-3A115AA7395D.webp",
+                    ProductId = Guid.Parse("728617AA-ECD3-48AC-BDAD-CCF660F775A3"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
                     Id = Guid.Parse("6F054D9A-F2B9-49B0-86FA-71F328DD2DAF"),
+                    Filename = "0321E99E-DD3B-402F-9CF6-E2BA284862D0.webp",
                     ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    CreatedUser = Guid.Empty,
+                    CreatedTimestamp = DateTimeOffset.MinValue
+                },
+                new()
+                {
+                    Id = Guid.Parse("C1779DF8-8CC8-425D-9FEA-DCA8531FD228"),
+                    Filename = "0321E99E-DD3B-402F-9CF6-E2BA284862D0.webp",
+                    ProductId = Guid.Parse("2446BD16-DF0A-4F7E-9E23-18CB1D5D008E"),
                     CreatedUser = Guid.Empty,
                     CreatedTimestamp = DateTimeOffset.MinValue
                 }
@@ -352,6 +500,104 @@ namespace Chabloom.Ecommerce.Backend.Data
 
             modelBuilder.Entity<ProductImage>()
                 .HasData(demoProductImages);
+
+            // Set up demo product pickup methods
+            var demoProductPickupMethods = new List<ProductPickupMethod>
+            {
+                new()
+                {
+                    ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
+                    PickupMethodName = "Pickup"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("323565D2-3C93-4E05-81FF-AC745E22AF9E"),
+                    PickupMethodName = "Shipping"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("41E5E396-6757-42F3-9149-3B084976545A"),
+                    PickupMethodName = "In-Store"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
+                    PickupMethodName = "Pickup"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("78E540DE-D2B3-4B1F-BB1E-988BE3245088"),
+                    PickupMethodName = "Shipping"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("4D0BCD02-9DAB-499E-92CD-8BA9F252B2A9"),
+                    PickupMethodName = "In-Store"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
+                    PickupMethodName = "Pickup"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("CB949DDA-57FB-4731-8379-B6F955B3102E"),
+                    PickupMethodName = "Shipping"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("0418AE94-B020-4B2A-9697-7DDCBE2BD72A"),
+                    PickupMethodName = "In-Store"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
+                    PickupMethodName = "Pickup"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("5E152DC1-203D-45E0-9EEE-ACC6F8BB74EE"),
+                    PickupMethodName = "Shipping"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("E95543DA-BB67-4859-8B98-D92041D58D8D"),
+                    PickupMethodName = "In-Store"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
+                    PickupMethodName = "Pickup"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("CE3E245B-75C5-418E-98FE-3A115AA7395D"),
+                    PickupMethodName = "Shipping"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("728617AA-ECD3-48AC-BDAD-CCF660F775A3"),
+                    PickupMethodName = "In-Store"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    PickupMethodName = "Pickup"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("0321E99E-DD3B-402F-9CF6-E2BA284862D0"),
+                    PickupMethodName = "Shipping"
+                },
+                new()
+                {
+                    ProductId = Guid.Parse("2446BD16-DF0A-4F7E-9E23-18CB1D5D008E"),
+                    PickupMethodName = "In-Store"
+                }
+            };
+
+            modelBuilder.Entity<ProductPickupMethod>()
+                .HasData(demoProductPickupMethods);
 
             // Set up demo stores
             var demoStores = new List<Store>

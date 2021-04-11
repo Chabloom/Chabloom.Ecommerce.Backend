@@ -11,6 +11,9 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
         public Guid Id { get; set; }
 
         [Required]
+        public string PickupMethod { get; set; }
+
+        [Required]
         public string Status { get; set; }
 
         [Required]

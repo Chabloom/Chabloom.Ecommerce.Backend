@@ -19,6 +19,9 @@ namespace Chabloom.Ecommerce.Backend.Models
         [Required]
         public Product Product { get; set; }
 
+        [Required]
+        public string Filename { get; set; }
+
         #region Auditing
 
         [Required]

@@ -34,6 +34,8 @@ namespace Chabloom.Ecommerce.Backend.Models
 
         public List<ProductImage> ProductImages { get; set; }
 
+        public List<ProductPickupMethod> ProductPickupMethods { get; set; }
+
         public List<OrderProduct> Orders { get; set; }
 
         public List<StoreProduct> Stores { get; set; }

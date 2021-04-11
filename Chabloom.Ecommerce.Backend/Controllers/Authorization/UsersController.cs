@@ -73,7 +73,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Authorization
             {
                 Id = user.Id,
                 Name = user.Name,
-                RoleId = user.RoleId.GetValueOrDefault()
+                RoleName = user.RoleName
             };
 
             return Ok(viewModel);

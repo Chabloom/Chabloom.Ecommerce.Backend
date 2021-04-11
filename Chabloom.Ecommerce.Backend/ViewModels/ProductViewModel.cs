@@ -1,6 +1,7 @@
 ﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chabloom.Ecommerce.Backend.ViewModels
@@ -21,5 +22,9 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
 
         [Required]
         public Guid CategoryId { get; set; }
+
+        public List<string> Images { get; set; }
+
+        public List<string> PickupMethods { get; set; }
     }
 }

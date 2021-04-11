@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Chabloom.Ecommerce.Backend.Models.Authorization
+namespace Chabloom.Ecommerce.Backend.Models
 {
-    [Table("EcommerceRoles")]
-    public class Role
+    [Table("EcommercePickupMethods")]
+    public class PickupMethod
     {
         [Required]
         [Key]
         [MaxLength(255)]
         public string Name { get; set; }
 
-        public List<User> Users { get; set; }
+        public List<Order> Orders { get; set; }
+
+        public List<ProductPickupMethod> ProductPickupMethods { get; set; }
     }
 }

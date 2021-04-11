@@ -11,5 +11,8 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
 
         [Required]
         public Guid ProductId { get; set; }
+
+        [Required]
+        public string Filename { get; set; }
     }
 }

@@ -16,6 +16,12 @@ namespace Chabloom.Ecommerce.Backend.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
+        public string PickupMethodName { get; set; }
+
+        [Required]
+        public PickupMethod PickupMethod { get; set; }
+
+        [Required]
         public string Status { get; set; } = "Pending";
 
         [Required]

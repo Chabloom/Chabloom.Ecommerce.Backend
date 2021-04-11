@@ -37,23 +37,35 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<List<ProductViewModel>>> GetProducts([FromQuery] Guid? categoryId)
+        public async Task<ActionResult<List<ProductViewModel>>> GetProducts([FromQuery] Guid? categoryId,
+            [FromQuery] string method)
         {
             // Populate the return data
             var viewModels = new List<ProductViewModel>();
             if (categoryId.HasValue)
             {
-                viewModels = await _context.Products
-                    .Where(x => x.CategoryId == categoryId.Value)
-                    .Select(x => new ProductViewModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Description = x.Description,
-                        Price = x.Price,
-                        CategoryId = x.CategoryId
-                    })
-                    .ToListAsync();
+                if (!string.IsNullOrEmpty(method))
+                {
+                    viewModels = await _context.Products
+                        .Include(x => x.ProductImages)
+                        .Where(x => x.CategoryId == categoryId.Value)
+                        .Where(x => x.ProductPickupMethods.Select(y => y.PickupMethodName).Contains(method))
+                        .Select(x => new ProductViewModel
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            Description = x.Description,
+                            Price = x.Price,
+                            CategoryId = x.CategoryId,
+                            Images = x.ProductImages
+                                .Select(y => y.Filename)
+                                .ToList(),
+                            PickupMethods = x.ProductPickupMethods
+                                .Select(y => y.PickupMethodName)
+                                .ToList()
+                        })
+                        .ToListAsync();
+                }
             }
 
             return Ok(viewModels);
@@ -68,6 +80,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
         {
             // Find the specified product
             var product = await _context.Products
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductPickupMethods)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (product == null)
             {
@@ -81,7 +95,13 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
+                Images = product.ProductImages
+                    .Select(y => y.Filename)
+                    .ToList(),
+                PickupMethods = product.ProductPickupMethods
+                    .Select(y => y.PickupMethodName)
+                    .ToList()
             };
 
             return Ok(viewModel);
@@ -108,6 +128,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
 
             // Find the specified product
             var product = await _context.Products
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductPickupMethods)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (product == null)
             {
@@ -142,7 +164,13 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
+                Images = product.ProductImages
+                    .Select(y => y.Filename)
+                    .ToList(),
+                PickupMethods = product.ProductPickupMethods
+                    .Select(y => y.PickupMethodName)
+                    .ToList()
             };
 
             _logger.LogInformation($"User {userId} updated product {product.Id}");
@@ -191,6 +219,20 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             await _context.AddAsync(product);
             await _context.SaveChangesAsync();
 
+            var productPickupMethods = new List<ProductPickupMethod>();
+            foreach (var pickupMethod in viewModel.PickupMethods)
+            {
+                var productPickupMethod = new ProductPickupMethod
+                {
+                    ProductId = product.Id,
+                    PickupMethodName = pickupMethod
+                };
+                productPickupMethods.Add(productPickupMethod);
+            }
+
+            await _context.AddRangeAsync(productPickupMethods);
+            await _context.SaveChangesAsync();
+
             // Populate the return data
             var retViewModel = new ProductViewModel
             {
@@ -198,7 +240,11 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
+                Images = new List<string>(),
+                PickupMethods = productPickupMethods
+                    .Select(x => x.PickupMethodName)
+                    .ToList()
             };
 
             _logger.LogInformation($"User {userId} created product {product.Id}");

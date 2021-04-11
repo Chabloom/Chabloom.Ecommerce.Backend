@@ -13,6 +13,6 @@ namespace Chabloom.Ecommerce.Backend.ViewModels.Authorization
         public string Name { get; set; }
 
         [Required]
-        public Guid RoleId { get; set; }
+        public string RoleName { get; set; }
     }
 }

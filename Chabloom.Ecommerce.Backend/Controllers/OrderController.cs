@@ -55,6 +55,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                     .Select(x => new OrderViewModel
                     {
                         Id = x.Id,
+                        PickupMethod = x.PickupMethodName,
                         Status = x.Status,
                         UserId = x.UserId,
                         TransactionId = x.TransactionId,
@@ -70,6 +71,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                     .Select(x => new OrderViewModel
                     {
                         Id = x.Id,
+                        PickupMethod = x.PickupMethodName,
                         Status = x.Status,
                         UserId = x.UserId,
                         TransactionId = x.TransactionId,
@@ -108,6 +110,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var viewModel = new OrderViewModel
             {
                 Id = order.Id,
+                PickupMethod = order.PickupMethodName,
                 Status = order.Status,
                 UserId = order.UserId,
                 TransactionId = order.TransactionId,
@@ -146,7 +149,17 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 return NotFound();
             }
 
+            // Find the specified pickup method
+            var pickupMethod = await _context.PickupMethods
+                .FirstOrDefaultAsync(x => x.Name == viewModel.PickupMethod);
+            if (pickupMethod == null)
+            {
+                _logger.LogWarning($"Could not find pickup method {viewModel.PickupMethod} to update order {order.Id}");
+                return BadRequest("Invalid pickup method");
+            }
+
             // Update the order
+            order.PickupMethodName = viewModel.PickupMethod;
             order.Status = viewModel.Status;
             order.TransactionId = viewModel.TransactionId;
             order.UpdatedUser = userId;
@@ -159,6 +172,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var retViewModel = new OrderViewModel
             {
                 Id = order.Id,
+                PickupMethod = order.PickupMethodName,
                 Status = order.Status,
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
@@ -192,6 +206,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             // Create the order
             var order = new Order
             {
+                PickupMethodName = viewModel.PickupMethod,
                 TransactionId = viewModel.TransactionId,
                 CreatedUser = userId
             };
@@ -232,6 +247,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             var retViewModel = new OrderViewModel
             {
                 Id = order.Id,
+                PickupMethod = order.PickupMethodName,
                 Status = order.Status,
                 TransactionId = order.TransactionId,
                 ProductCounts = order.Products
