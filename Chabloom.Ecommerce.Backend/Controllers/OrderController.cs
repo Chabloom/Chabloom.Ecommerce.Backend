@@ -188,6 +188,12 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (viewModel.ProductCounts.Count == 0)
+            {
+                _logger.LogWarning($"User {Guid.Empty} attempted to create order with no products");
+                return BadRequest("Order must contain products");
+            }
+
             // Create the order
             var order = new Order
             {
