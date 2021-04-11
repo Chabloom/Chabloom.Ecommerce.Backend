@@ -224,7 +224,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                     })
                     .ToList();
 
-                await _context.AddAsync(orderProducts);
+                await _context.AddRangeAsync(orderProducts);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
