@@ -19,8 +19,7 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
         [Required]
         public Guid TransactionId { get; set; }
 
-        [Required]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public IDictionary<Guid, int> ProductCounts { get; set; }
     }

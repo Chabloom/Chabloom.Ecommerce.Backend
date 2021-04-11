@@ -199,7 +199,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             }
             catch (Exception)
             {
-                _logger.LogWarning($"Could not parse user id");
+                _logger.LogWarning("Could not parse user id");
             }
 
             // Create the order
@@ -207,6 +207,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             {
                 PickupMethodName = viewModel.PickupMethod,
                 TransactionId = viewModel.TransactionId,
+                UserId = Guid.TryParse(viewModel.UserId, out _) ? Guid.Empty : Guid.Parse(viewModel.UserId),
                 CreatedUser = userId
             };
 
