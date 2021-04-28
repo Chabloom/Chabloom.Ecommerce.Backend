@@ -67,7 +67,11 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 Id = Guid.Parse("9AA49AE2-53BB-417A-B1F7-1BD9F6578969"),
                 Name = "Beer",
-                Description = "Beer",
+                Description = "Bud Light is a premium beer with incredible drinkability that has made it a top selling " +
+                              "American beer that everybody knows and loves. This light beer is brewed using a " +
+                              "combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring " +
+                              "a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate " +
+                              "refreshment with its delicate malt sweetness and crisp finish.",
                 Price = 5.99M,
                 CategoryId = Guid.Parse("1DEF1630-85EF-4A97-A073-FD3BA814BAB0"),
                 CreatedUser = Guid.Empty,
@@ -77,7 +81,9 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 Id = Guid.Parse("0AECBBC7-0E6C-4727-BC05-9D3700397B00"),
                 Name = "Water",
-                Description = "Water",
+                Description = "Designed to be a great tasting water, our water is filtered by reverse osmosis to " +
+                              "remove impurities, then enhanced with a special blend of minerals for a pure, crisp, " +
+                              "fresh taste.",
                 Price = 4.99M,
                 CategoryId = Guid.Parse("1DEF1630-85EF-4A97-A073-FD3BA814BAB0"),
                 CreatedUser = Guid.Empty,
@@ -87,7 +93,9 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 Id = Guid.Parse("781D9646-1156-4CBB-A581-329F2AE34744"),
                 Name = "Hamburger",
-                Description = "Hamburger",
+                Description = "The original burger starts with a 100% pure beef burger seasoned with just a pinch of " +
+                              "salt and pepper. Then, the burger is topped with a tangy pickle, chopped onions, " +
+                              "ketchup and mustard.",
                 Price = 3.99M,
                 CategoryId = Guid.Parse("F2B822FC-4E6E-4C65-A5BB-74D080C9E33A"),
                 CreatedUser = Guid.Empty,
@@ -97,7 +105,8 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 Id = Guid.Parse("C615100B-E2D9-48A4-81C1-824A3BB12CB7"),
                 Name = "Hot dog",
-                Description = "Hot dog",
+                Description = "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef " +
+                              "that’s never given antibiotics.",
                 Price = 1.99M,
                 CategoryId = Guid.Parse("F2B822FC-4E6E-4C65-A5BB-74D080C9E33A"),
                 CreatedUser = Guid.Empty,
