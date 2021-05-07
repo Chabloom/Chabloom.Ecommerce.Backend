@@ -18,7 +18,6 @@ namespace Chabloom.Ecommerce.Backend
             return Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
-                    logging.AddApplicationInsights();
                     logging.AddConsole();
                     logging.AddDebug();
                 })
