@@ -28,7 +28,7 @@ namespace Chabloom.Ecommerce.Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EcommerceDbContext>(options =>
-                options.UseSqlServer(
+                options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.Configure<ForwardedHeadersOptions>(options =>
