@@ -8,50 +8,33 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "EcommercePickupMethods",
+                name: "PickupMethods",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommercePickupMethods", x => x.Name);
+                    table.PrimaryKey("PK_PickupMethods", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceRoles",
+                name: "Roles",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceRoles", x => x.Name);
+                    table.PrimaryKey("PK_Roles", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceTenants",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedUser = table.Column<Guid>(type: "uuid", nullable: false),
-                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EcommerceTenants", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EcommerceUsers",
+                name: "Tenants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    RoleName = table.Column<string>(type: "character varying(255)", nullable: true),
                     CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedUser = table.Column<Guid>(type: "uuid", nullable: false),
@@ -59,21 +42,38 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceUsers", x => x.Id);
+                    table.PrimaryKey("PK_Tenants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    RoleName = table.Column<string>(type: "text", nullable: true),
+                    CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedUser = table.Column<Guid>(type: "uuid", nullable: false),
+                    UpdatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceUsers_EcommerceRoles_RoleName",
+                        name: "FK_Users_Roles_RoleName",
                         column: x => x.RoleName,
-                        principalTable: "EcommerceRoles",
+                        principalTable: "Roles",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceProductCategories",
+                name: "ProductCategories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     ParentCategoryId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -84,27 +84,27 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceProductCategories", x => x.Id);
+                    table.PrimaryKey("PK_ProductCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceProductCategories_EcommerceProductCategories_Paren~",
+                        name: "FK_ProductCategories_ProductCategories_ParentCategoryId",
                         column: x => x.ParentCategoryId,
-                        principalTable: "EcommerceProductCategories",
+                        principalTable: "ProductCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EcommerceProductCategories_EcommerceTenants_TenantId",
+                        name: "FK_ProductCategories_Tenants_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "EcommerceTenants",
+                        principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceStores",
+                name: "Stores",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -115,21 +115,21 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceStores", x => x.Id);
+                    table.PrimaryKey("PK_Stores", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceStores_EcommerceTenants_TenantId",
+                        name: "FK_Stores_Tenants_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "EcommerceTenants",
+                        principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceTenantRoles",
+                name: "TenantRoles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -138,21 +138,21 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceTenantRoles", x => x.Id);
+                    table.PrimaryKey("PK_TenantRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceTenantRoles_EcommerceTenants_TenantId",
+                        name: "FK_TenantRoles_Tenants_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "EcommerceTenants",
+                        principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceWarehouses",
+                name: "Warehouses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -163,21 +163,21 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceWarehouses", x => x.Id);
+                    table.PrimaryKey("PK_Warehouses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceWarehouses_EcommerceTenants_TenantId",
+                        name: "FK_Warehouses_Tenants_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "EcommerceTenants",
+                        principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceOrders",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PickupMethodName = table.Column<string>(type: "character varying(255)", nullable: false),
+                    PickupMethodName = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     TransactionId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
@@ -188,29 +188,30 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceOrders", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceOrders_EcommercePickupMethods_PickupMethodName",
+                        name: "FK_Orders_PickupMethods_PickupMethodName",
                         column: x => x.PickupMethodName,
-                        principalTable: "EcommercePickupMethods",
+                        principalTable: "PickupMethods",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EcommerceOrders_EcommerceUsers_UserId",
+                        name: "FK_Orders_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "EcommerceUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceProducts",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    CurrencyId = table.Column<string>(type: "text", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -219,17 +220,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceProducts", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceProducts_EcommerceProductCategories_CategoryId",
+                        name: "FK_Products_ProductCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "EcommerceProductCategories",
+                        principalTable: "ProductCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceTenantRoleUsers",
+                name: "TenantRoleUsers",
                 columns: table => new
                 {
                     TenantRoleId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -237,32 +238,33 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceTenantRoleUsers", x => new { x.TenantRoleId, x.UserId });
+                    table.PrimaryKey("PK_TenantRoleUsers", x => new { x.TenantRoleId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_EcommerceTenantRoleUsers_EcommerceTenantRoles_TenantRoleId",
+                        name: "FK_TenantRoleUsers_TenantRoles_TenantRoleId",
                         column: x => x.TenantRoleId,
-                        principalTable: "EcommerceTenantRoles",
+                        principalTable: "TenantRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EcommerceTenantRoleUsers_EcommerceUsers_UserId",
+                        name: "FK_TenantRoleUsers_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "EcommerceUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceOrderProducts",
+                name: "OrderProducts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    CurrencyId = table.Column<string>(type: "text", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: true),
                     Count = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedUser = table.Column<Guid>(type: "uuid", nullable: false),
@@ -270,23 +272,23 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceOrderProducts", x => x.Id);
+                    table.PrimaryKey("PK_OrderProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceOrderProducts_EcommerceOrders_OrderId",
+                        name: "FK_OrderProducts_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "EcommerceOrders",
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EcommerceOrderProducts_EcommerceProducts_ProductId",
+                        name: "FK_OrderProducts_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "EcommerceProducts",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceProductImages",
+                name: "ProductImages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -299,41 +301,41 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceProductImages", x => x.Id);
+                    table.PrimaryKey("PK_ProductImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceProductImages_EcommerceProducts_ProductId",
+                        name: "FK_ProductImages_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "EcommerceProducts",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceProductPickupMethods",
+                name: "ProductPickupMethod",
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PickupMethodName = table.Column<string>(type: "character varying(255)", nullable: false)
+                    PickupMethodName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceProductPickupMethods", x => new { x.ProductId, x.PickupMethodName });
+                    table.PrimaryKey("PK_ProductPickupMethod", x => new { x.ProductId, x.PickupMethodName });
                     table.ForeignKey(
-                        name: "FK_EcommerceProductPickupMethods_EcommercePickupMethods_Pickup~",
+                        name: "FK_ProductPickupMethod_PickupMethods_PickupMethodName",
                         column: x => x.PickupMethodName,
-                        principalTable: "EcommercePickupMethods",
+                        principalTable: "PickupMethods",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EcommerceProductPickupMethods_EcommerceProducts_ProductId",
+                        name: "FK_ProductPickupMethod_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "EcommerceProducts",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceStoreProducts",
+                name: "StoreProducts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -347,23 +349,23 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceStoreProducts", x => x.Id);
+                    table.PrimaryKey("PK_StoreProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceStoreProducts_EcommerceProducts_ProductId",
+                        name: "FK_StoreProducts_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "EcommerceProducts",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EcommerceStoreProducts_EcommerceStores_StoreId",
+                        name: "FK_StoreProducts_Stores_StoreId",
                         column: x => x.StoreId,
-                        principalTable: "EcommerceStores",
+                        principalTable: "Stores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EcommerceWarehouseProducts",
+                name: "WarehouseProducts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -377,23 +379,23 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EcommerceWarehouseProducts", x => x.Id);
+                    table.PrimaryKey("PK_WarehouseProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcommerceWarehouseProducts_EcommerceProducts_ProductId",
+                        name: "FK_WarehouseProducts_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "EcommerceProducts",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EcommerceWarehouseProducts_EcommerceWarehouses_WarehouseId",
+                        name: "FK_WarehouseProducts_Warehouses_WarehouseId",
                         column: x => x.WarehouseId,
-                        principalTable: "EcommerceWarehouses",
+                        principalTable: "Warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommercePickupMethods",
+                table: "PickupMethods",
                 column: "Name",
                 values: new object[]
                 {
@@ -404,7 +406,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceRoles",
+                table: "Roles",
                 column: "Name",
                 values: new object[]
                 {
@@ -413,7 +415,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceTenants",
+                table: "Tenants",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Name", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -422,7 +424,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProductCategories",
+                table: "ProductCategories",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Description", "Name", "ParentCategoryId", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -434,7 +436,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceStores",
+                table: "Stores",
                 columns: new[] { "Id", "Address", "CreatedTimestamp", "CreatedUser", "Description", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -443,7 +445,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceTenantRoles",
+                table: "TenantRoles",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -454,7 +456,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceWarehouses",
+                table: "Warehouses",
                 columns: new[] { "Id", "Address", "CreatedTimestamp", "CreatedUser", "Description", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -463,7 +465,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProductCategories",
+                table: "ProductCategories",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Description", "Name", "ParentCategoryId", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -473,24 +475,24 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProducts",
-                columns: new[] { "Id", "CategoryId", "CreatedTimestamp", "CreatedUser", "Description", "Name", "Price", "UpdatedTimestamp", "UpdatedUser" },
+                table: "Products",
+                columns: new[] { "Id", "Amount", "CategoryId", "CreatedTimestamp", "CreatedUser", "CurrencyId", "Description", "Name", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.", "Yuzu Sencha (25 tea bags)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("0418ae94-b020-4b2a-9697-7ddcbe2bd72a"), new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.", "Yuzu Sencha (cup)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ", "Strawberry Kiwi Fruit Tea (25 tea bags)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("728617aa-ecd3-48ac-bdad-ccf660f775a3"), new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ", "Strawberry Kiwi Fruit Tea (cup)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.", "Blood Orange Fruit Tea (25 tea bags)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("2446bd16-df0a-4f7e-9e23-18cb1d5d008e"), new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.", "Blood Orange Fruit Tea (cup)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("9aa49ae2-53bb-417a-b1f7-1bd9f6578969"), new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Bud Light is a premium beer with incredible drinkability that has made it a top selling American beer that everybody knows and loves. This light beer is brewed using a combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate refreshment with its delicate malt sweetness and crisp finish.", "Beer", 5.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("0aecbbc7-0e6c-4727-bc05-9d3700397b00"), new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Designed to be a great tasting water, our water is filtered by reverse osmosis to remove impurities, then enhanced with a special blend of minerals for a pure, crisp, fresh taste.", "Water", 4.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("781d9646-1156-4cbb-a581-329f2ae34744"), new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "The original burger starts with a 100% pure beef burger seasoned with just a pinch of salt and pepper. Then, the burger is topped with a tangy pickle, chopped onions, ketchup and mustard.", "Hamburger", 3.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("c615100b-e2d9-48a4-81c1-824a3bb12cb7"), new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef that’s never given antibiotics.", "Hot dog", 1.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
+                    { new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"), 299m, new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.", "Yuzu Sencha (25 tea bags)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("0418ae94-b020-4b2a-9697-7ddcbe2bd72a"), 299m, new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.", "Yuzu Sencha (cup)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ", "Strawberry Kiwi Fruit Tea (25 tea bags)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("728617aa-ecd3-48ac-bdad-ccf660f775a3"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ", "Strawberry Kiwi Fruit Tea (cup)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.", "Blood Orange Fruit Tea (25 tea bags)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("2446bd16-df0a-4f7e-9e23-18cb1d5d008e"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.", "Blood Orange Fruit Tea (cup)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("9aa49ae2-53bb-417a-b1f7-1bd9f6578969"), 599m, new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Bud Light is a premium beer with incredible drinkability that has made it a top selling American beer that everybody knows and loves. This light beer is brewed using a combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate refreshment with its delicate malt sweetness and crisp finish.", "Beer", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("0aecbbc7-0e6c-4727-bc05-9d3700397b00"), 499m, new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Designed to be a great tasting water, our water is filtered by reverse osmosis to remove impurities, then enhanced with a special blend of minerals for a pure, crisp, fresh taste.", "Water", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("781d9646-1156-4cbb-a581-329f2ae34744"), 399m, new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "The original burger starts with a 100% pure beef burger seasoned with just a pinch of salt and pepper. Then, the burger is topped with a tangy pickle, chopped onions, ketchup and mustard.", "Hamburger", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("c615100b-e2d9-48a4-81c1-824a3bb12cb7"), 199m, new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef that’s never given antibiotics.", "Hot dog", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProductImages",
+                table: "ProductImages",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Filename", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -507,7 +509,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProductPickupMethods",
+                table: "ProductPickupMethod",
                 columns: new[] { "PickupMethodName", "ProductId" },
                 values: new object[,]
                 {
@@ -531,20 +533,20 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProducts",
-                columns: new[] { "Id", "CategoryId", "CreatedTimestamp", "CreatedUser", "Description", "Name", "Price", "UpdatedTimestamp", "UpdatedUser" },
+                table: "Products",
+                columns: new[] { "Id", "Amount", "CategoryId", "CreatedTimestamp", "CreatedUser", "CurrencyId", "Description", "Name", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.", "Organic Assam (25 tea bags)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("41e5e396-6757-42f3-9149-3b084976545a"), new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.", "Organic Assam (cup)", 2.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("e95543da-bb67-4859-8b98-d92041d58d8d"), new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.", "Organic Matcha (cup)", 3.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.", "Organic Matcha (25 tea bags)", 3.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!", "Puttabong 1st Flush Darjeeling (25 tea bags)", 4.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("4d0bcd02-9dab-499e-92cd-8ba9f252b2a9"), new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!", "Puttabong 1st Flush Darjeeling (cup)", 4.99m, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
+                    { new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"), 299m, new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.", "Organic Assam (25 tea bags)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("41e5e396-6757-42f3-9149-3b084976545a"), 299m, new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.", "Organic Assam (cup)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("e95543da-bb67-4859-8b98-d92041d58d8d"), 399m, new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.", "Organic Matcha (cup)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), 399m, new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.", "Organic Matcha (25 tea bags)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), 499m, new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!", "Puttabong 1st Flush Darjeeling (25 tea bags)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("4d0bcd02-9dab-499e-92cd-8ba9f252b2a9"), 499m, new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "USD", "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!", "Puttabong 1st Flush Darjeeling (cup)", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000") }
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceStoreProducts",
+                table: "StoreProducts",
                 columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "StoreId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -557,7 +559,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceWarehouseProducts",
+                table: "WarehouseProducts",
                 columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser", "WarehouseId" },
                 values: new object[,]
                 {
@@ -570,7 +572,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProductImages",
+                table: "ProductImages",
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "Filename", "ProductId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -583,7 +585,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceProductPickupMethods",
+                table: "ProductPickupMethod",
                 columns: new[] { "PickupMethodName", "ProductId" },
                 values: new object[,]
                 {
@@ -599,7 +601,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceStoreProducts",
+                table: "StoreProducts",
                 columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "StoreId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
@@ -612,7 +614,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.InsertData(
-                table: "EcommerceWarehouseProducts",
+                table: "WarehouseProducts",
                 columns: new[] { "Id", "Count", "CreatedTimestamp", "CreatedUser", "ProductId", "UpdatedTimestamp", "UpdatedUser", "WarehouseId" },
                 values: new object[,]
                 {
@@ -625,148 +627,148 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceOrderProducts_OrderId_ProductId",
-                table: "EcommerceOrderProducts",
+                name: "IX_OrderProducts_OrderId_ProductId",
+                table: "OrderProducts",
                 columns: new[] { "OrderId", "ProductId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceOrderProducts_ProductId",
-                table: "EcommerceOrderProducts",
+                name: "IX_OrderProducts_ProductId",
+                table: "OrderProducts",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceOrders_PickupMethodName",
-                table: "EcommerceOrders",
+                name: "IX_Orders_PickupMethodName",
+                table: "Orders",
                 column: "PickupMethodName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceOrders_UserId",
-                table: "EcommerceOrders",
+                name: "IX_Orders_UserId",
+                table: "Orders",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceProductCategories_ParentCategoryId",
-                table: "EcommerceProductCategories",
+                name: "IX_ProductCategories_ParentCategoryId",
+                table: "ProductCategories",
                 column: "ParentCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceProductCategories_TenantId",
-                table: "EcommerceProductCategories",
+                name: "IX_ProductCategories_TenantId",
+                table: "ProductCategories",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceProductImages_ProductId",
-                table: "EcommerceProductImages",
+                name: "IX_ProductImages_ProductId",
+                table: "ProductImages",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceProductPickupMethods_PickupMethodName",
-                table: "EcommerceProductPickupMethods",
+                name: "IX_ProductPickupMethod_PickupMethodName",
+                table: "ProductPickupMethod",
                 column: "PickupMethodName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceProducts_CategoryId",
-                table: "EcommerceProducts",
+                name: "IX_Products_CategoryId",
+                table: "Products",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceStoreProducts_ProductId",
-                table: "EcommerceStoreProducts",
+                name: "IX_StoreProducts_ProductId",
+                table: "StoreProducts",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceStoreProducts_StoreId_ProductId",
-                table: "EcommerceStoreProducts",
+                name: "IX_StoreProducts_StoreId_ProductId",
+                table: "StoreProducts",
                 columns: new[] { "StoreId", "ProductId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceStores_TenantId",
-                table: "EcommerceStores",
+                name: "IX_Stores_TenantId",
+                table: "Stores",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceTenantRoles_TenantId",
-                table: "EcommerceTenantRoles",
+                name: "IX_TenantRoles_TenantId",
+                table: "TenantRoles",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceTenantRoleUsers_UserId",
-                table: "EcommerceTenantRoleUsers",
+                name: "IX_TenantRoleUsers_UserId",
+                table: "TenantRoleUsers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceUsers_RoleName",
-                table: "EcommerceUsers",
+                name: "IX_Users_RoleName",
+                table: "Users",
                 column: "RoleName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceWarehouseProducts_ProductId",
-                table: "EcommerceWarehouseProducts",
+                name: "IX_WarehouseProducts_ProductId",
+                table: "WarehouseProducts",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceWarehouseProducts_WarehouseId_ProductId",
-                table: "EcommerceWarehouseProducts",
+                name: "IX_WarehouseProducts_WarehouseId_ProductId",
+                table: "WarehouseProducts",
                 columns: new[] { "WarehouseId", "ProductId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcommerceWarehouses_TenantId",
-                table: "EcommerceWarehouses",
+                name: "IX_Warehouses_TenantId",
+                table: "Warehouses",
                 column: "TenantId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EcommerceOrderProducts");
+                name: "OrderProducts");
 
             migrationBuilder.DropTable(
-                name: "EcommerceProductImages");
+                name: "ProductImages");
 
             migrationBuilder.DropTable(
-                name: "EcommerceProductPickupMethods");
+                name: "ProductPickupMethod");
 
             migrationBuilder.DropTable(
-                name: "EcommerceStoreProducts");
+                name: "StoreProducts");
 
             migrationBuilder.DropTable(
-                name: "EcommerceTenantRoleUsers");
+                name: "TenantRoleUsers");
 
             migrationBuilder.DropTable(
-                name: "EcommerceWarehouseProducts");
+                name: "WarehouseProducts");
 
             migrationBuilder.DropTable(
-                name: "EcommerceOrders");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "EcommerceStores");
+                name: "Stores");
 
             migrationBuilder.DropTable(
-                name: "EcommerceTenantRoles");
+                name: "TenantRoles");
 
             migrationBuilder.DropTable(
-                name: "EcommerceProducts");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "EcommerceWarehouses");
+                name: "Warehouses");
 
             migrationBuilder.DropTable(
-                name: "EcommercePickupMethods");
+                name: "PickupMethods");
 
             migrationBuilder.DropTable(
-                name: "EcommerceUsers");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "EcommerceProductCategories");
+                name: "ProductCategories");
 
             migrationBuilder.DropTable(
-                name: "EcommerceRoles");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "EcommerceTenants");
+                name: "Tenants");
         }
     }
 }

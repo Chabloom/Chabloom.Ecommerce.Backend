@@ -3,12 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Chabloom.Ecommerce.Backend.Models.Authorization;
 
 namespace Chabloom.Ecommerce.Backend.Models
 {
-    [Table("EcommerceProductCategories")]
     public class ProductCategory
     {
         [Required]
@@ -16,7 +14,6 @@ namespace Chabloom.Ecommerce.Backend.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [MaxLength(255)]
         public string Name { get; set; }
 
         [Required]
@@ -39,7 +36,7 @@ namespace Chabloom.Ecommerce.Backend.Models
         #region Auditing
 
         [Required]
-        public Guid CreatedUser { get; set; }
+        public Guid CreatedUser { get; set; } = Guid.Empty;
 
         [Required]
         public DateTimeOffset CreatedTimestamp { get; set; } = DateTimeOffset.UtcNow;

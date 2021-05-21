@@ -57,7 +57,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                         Id = x.Id,
                         Name = x.Name,
                         Description = x.Description,
-                        Price = x.Price,
+                        Amount = x.Amount,
+                        CurrencyId = x.CurrencyId,
                         OrderId = x.OrderId,
                         ProductId = x.ProductId,
                         Count = x.Count
@@ -95,7 +96,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = orderProduct.Id,
                 Name = orderProduct.Name,
                 Description = orderProduct.Description,
-                Price = orderProduct.Price,
+                Amount = orderProduct.Amount,
+                CurrencyId = orderProduct.CurrencyId,
                 OrderId = orderProduct.OrderId,
                 ProductId = orderProduct.ProductId,
                 Count = orderProduct.Count
@@ -164,7 +166,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = orderProduct.Id,
                 Name = orderProduct.Name,
                 Description = orderProduct.Description,
-                Price = orderProduct.Price,
+                Amount = orderProduct.Amount,
+                CurrencyId = orderProduct.CurrencyId,
                 OrderId = orderProduct.OrderId,
                 ProductId = orderProduct.ProductId,
                 Count = orderProduct.Count
@@ -217,7 +220,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             {
                 Name = product.Name,
                 Description = product.Description,
-                Price = product.Price,
+                Amount = product.Amount,
+                CurrencyId = product.CurrencyId,
                 OrderId = viewModel.OrderId,
                 ProductId = viewModel.ProductId,
                 Count = viewModel.Count,
@@ -233,7 +237,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = orderProduct.Id,
                 Name = orderProduct.Name,
                 Description = orderProduct.Description,
-                Price = orderProduct.Price,
+                Amount = orderProduct.Amount,
+                CurrencyId = orderProduct.CurrencyId,
                 OrderId = orderProduct.OrderId,
                 ProductId = orderProduct.ProductId,
                 Count = orderProduct.Count

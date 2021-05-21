@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20210511025330_EcommerceDbMigration1")]
+    [Migration("20210521030021_EcommerceDbMigration1")]
     partial class EcommerceDbMigration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,18 +18,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Authorization.Role", b =>
                 {
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("Name");
 
-                    b.ToTable("EcommerceRoles");
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -56,8 +55,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -67,7 +65,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("EcommerceTenants");
+                    b.ToTable("Tenants");
 
                     b.HasData(
                         new
@@ -104,8 +102,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
@@ -120,7 +117,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("EcommerceTenantRoles");
+                    b.ToTable("TenantRoles");
 
                     b.HasData(
                         new
@@ -177,7 +174,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EcommerceTenantRoleUsers");
+                    b.ToTable("TenantRoleUsers");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Authorization.User", b =>
@@ -197,7 +194,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasColumnType("text");
 
                     b.Property<string>("RoleName")
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -209,7 +206,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("RoleName");
 
-                    b.ToTable("EcommerceUsers");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Inventory.Store", b =>
@@ -234,8 +231,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
@@ -250,7 +246,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("EcommerceStores");
+                    b.ToTable("Stores");
 
                     b.HasData(
                         new
@@ -313,7 +309,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.HasIndex("StoreId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("EcommerceStoreProducts");
+                    b.ToTable("StoreProducts");
 
                     b.HasData(
                         new
@@ -472,8 +468,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
@@ -488,7 +483,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("EcommerceWarehouses");
+                    b.ToTable("Warehouses");
 
                     b.HasData(
                         new
@@ -551,7 +546,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.HasIndex("WarehouseId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("EcommerceWarehouseProducts");
+                    b.ToTable("WarehouseProducts");
 
                     b.HasData(
                         new
@@ -702,7 +697,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.Property<string>("PickupMethodName")
                         .IsRequired()
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -726,7 +721,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EcommerceOrders");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.OrderProduct", b =>
@@ -734,6 +729,9 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
 
                     b.Property<int>("Count")
                         .HasColumnType("integer");
@@ -744,20 +742,20 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.Property<Guid>("CreatedUser")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CurrencyId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric(18,2)");
 
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uuid");
@@ -775,18 +773,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.HasIndex("OrderId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("EcommerceOrderProducts");
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.PickupMethod", b =>
                 {
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("Name");
 
-                    b.ToTable("EcommercePickupMethods");
+                    b.ToTable("PickupMethods");
 
                     b.HasData(
                         new
@@ -813,6 +810,9 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
@@ -822,17 +822,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                     b.Property<Guid>("CreatedUser")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CurrencyId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric(18,2)");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -844,198 +844,214 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("EcommerceProducts");
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("323565d2-3c93-4e05-81ff-ac745e22af9e"),
+                            Amount = 299m,
                             CategoryId = new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.",
                             Name = "Organic Assam (25 tea bags)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("41e5e396-6757-42f3-9149-3b084976545a"),
+                            Amount = 299m,
                             CategoryId = new Guid("66272963-7577-4fb3-8cd6-a0bc411404e9"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our Organic Assam is a rich, full leaf, medium bodied black tea. It has a slightly lighter liquor, with sweet honey flavor.",
                             Name = "Organic Assam (cup)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"),
+                            Amount = 499m,
                             CategoryId = new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!",
                             Name = "Puttabong 1st Flush Darjeeling (25 tea bags)",
-                            Price = 4.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("4d0bcd02-9dab-499e-92cd-8ba9f252b2a9"),
+                            Amount = 499m,
                             CategoryId = new Guid("cf059c18-ec58-4c6e-ae61-4dddabd61a6d"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our friends at Puttabong have done a great job with this tea. It is owned by Jayshree and is located north of Darjeeling town.  This tea came towards the end of the First Flush season in April. Brisk yet flavorful. Hats off!",
                             Name = "Puttabong 1st Flush Darjeeling (cup)",
-                            Price = 4.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("cb949dda-57fb-4731-8379-b6f955b3102e"),
+                            Amount = 299m,
                             CategoryId = new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.",
                             Name = "Yuzu Sencha (25 tea bags)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("0418ae94-b020-4b2a-9697-7ddcbe2bd72a"),
+                            Amount = 299m,
                             CategoryId = new Guid("6470ca64-4d0a-4d94-8333-0f06d74e7ca1"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "It seems like it is Yuzu’s time to shine. People are really liking this citrus fruit from Japan. So when we saw a blend of nice Sencha and Yuzu, we thought we should try it.",
                             Name = "Yuzu Sencha (cup)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"),
+                            Amount = 399m,
                             CategoryId = new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.",
                             Name = "Organic Matcha (25 tea bags)",
-                            Price = 3.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("e95543da-bb67-4859-8b98-d92041d58d8d"),
+                            Amount = 399m,
                             CategoryId = new Guid("b5e4f99f-227e-49be-a82f-8b4e06d35d96"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Matcha powdered green tea has been the pride of Uji for several centuries. This organic grade is great for everyday use.",
                             Name = "Organic Matcha (cup)",
-                            Price = 3.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("ce3e245b-75c5-418e-98fe-3a115aa7395d"),
+                            Amount = 299m,
                             CategoryId = new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ",
                             Name = "Strawberry Kiwi Fruit Tea (25 tea bags)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("728617aa-ecd3-48ac-bdad-ccf660f775a3"),
+                            Amount = 299m,
                             CategoryId = new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ",
                             Name = "Strawberry Kiwi Fruit Tea (cup)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"),
+                            Amount = 299m,
                             CategoryId = new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.",
                             Name = "Blood Orange Fruit Tea (25 tea bags)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("2446bd16-df0a-4f7e-9e23-18cb1d5d008e"),
+                            Amount = 299m,
                             CategoryId = new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.",
                             Name = "Blood Orange Fruit Tea (cup)",
-                            Price = 2.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("9aa49ae2-53bb-417a-b1f7-1bd9f6578969"),
+                            Amount = 599m,
                             CategoryId = new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Bud Light is a premium beer with incredible drinkability that has made it a top selling American beer that everybody knows and loves. This light beer is brewed using a combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate refreshment with its delicate malt sweetness and crisp finish.",
                             Name = "Beer",
-                            Price = 5.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("0aecbbc7-0e6c-4727-bc05-9d3700397b00"),
+                            Amount = 499m,
                             CategoryId = new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Designed to be a great tasting water, our water is filtered by reverse osmosis to remove impurities, then enhanced with a special blend of minerals for a pure, crisp, fresh taste.",
                             Name = "Water",
-                            Price = 4.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("781d9646-1156-4cbb-a581-329f2ae34744"),
+                            Amount = 399m,
                             CategoryId = new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "The original burger starts with a 100% pure beef burger seasoned with just a pinch of salt and pepper. Then, the burger is topped with a tangy pickle, chopped onions, ketchup and mustard.",
                             Name = "Hamburger",
-                            Price = 3.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             Id = new Guid("c615100b-e2d9-48a4-81c1-824a3bb12cb7"),
+                            Amount = 199m,
                             CategoryId = new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"),
                             CreatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedUser = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CurrencyId = "USD",
                             Description = "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef that’s never given antibiotics.",
                             Name = "Hot dog",
-                            Price = 1.99m,
                             UpdatedTimestamp = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedUser = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -1059,8 +1075,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("ParentCategoryId")
                         .HasColumnType("uuid");
@@ -1080,7 +1095,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("EcommerceProductCategories");
+                    b.ToTable("ProductCategories");
 
                     b.HasData(
                         new
@@ -1205,7 +1220,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("EcommerceProductImages");
+                    b.ToTable("ProductImages");
 
                     b.HasData(
                         new
@@ -1376,13 +1391,13 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.EcommerceDb
                         .HasColumnType("uuid");
 
                     b.Property<string>("PickupMethodName")
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("ProductId", "PickupMethodName");
 
                     b.HasIndex("PickupMethodName");
 
-                    b.ToTable("EcommerceProductPickupMethods");
+                    b.ToTable("ProductPickupMethod");
 
                     b.HasData(
                         new

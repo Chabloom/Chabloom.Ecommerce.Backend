@@ -72,7 +72,8 @@ namespace Chabloom.Ecommerce.Backend.Data
                               "combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring " +
                               "a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate " +
                               "refreshment with its delicate malt sweetness and crisp finish.",
-                Price = 5.99M,
+                Amount = 599,
+                CurrencyId = "USD",
                 CategoryId = Guid.Parse("1DEF1630-85EF-4A97-A073-FD3BA814BAB0"),
                 CreatedUser = Guid.Empty,
                 CreatedTimestamp = DateTimeOffset.MinValue
@@ -84,7 +85,8 @@ namespace Chabloom.Ecommerce.Backend.Data
                 Description = "Designed to be a great tasting water, our water is filtered by reverse osmosis to " +
                               "remove impurities, then enhanced with a special blend of minerals for a pure, crisp, " +
                               "fresh taste.",
-                Price = 4.99M,
+                Amount = 499,
+                CurrencyId = "USD",
                 CategoryId = Guid.Parse("1DEF1630-85EF-4A97-A073-FD3BA814BAB0"),
                 CreatedUser = Guid.Empty,
                 CreatedTimestamp = DateTimeOffset.MinValue
@@ -96,7 +98,8 @@ namespace Chabloom.Ecommerce.Backend.Data
                 Description = "The original burger starts with a 100% pure beef burger seasoned with just a pinch of " +
                               "salt and pepper. Then, the burger is topped with a tangy pickle, chopped onions, " +
                               "ketchup and mustard.",
-                Price = 3.99M,
+                Amount = 399,
+                CurrencyId = "USD",
                 CategoryId = Guid.Parse("F2B822FC-4E6E-4C65-A5BB-74D080C9E33A"),
                 CreatedUser = Guid.Empty,
                 CreatedTimestamp = DateTimeOffset.MinValue
@@ -107,7 +110,8 @@ namespace Chabloom.Ecommerce.Backend.Data
                 Name = "Hot dog",
                 Description = "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef " +
                               "that’s never given antibiotics.",
-                Price = 1.99M,
+                Amount = 199,
+                CurrencyId = "USD",
                 CategoryId = Guid.Parse("F2B822FC-4E6E-4C65-A5BB-74D080C9E33A"),
                 CreatedUser = Guid.Empty,
                 CreatedTimestamp = DateTimeOffset.MinValue

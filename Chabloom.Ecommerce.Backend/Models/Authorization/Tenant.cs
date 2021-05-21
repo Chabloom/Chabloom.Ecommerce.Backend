@@ -3,12 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Chabloom.Ecommerce.Backend.Models.Inventory;
 
 namespace Chabloom.Ecommerce.Backend.Models.Authorization
 {
-    [Table("EcommerceTenants")]
     public class Tenant
     {
         [Required]
@@ -16,7 +14,6 @@ namespace Chabloom.Ecommerce.Backend.Models.Authorization
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [MaxLength(255)]
         public string Name { get; set; }
 
         public List<TenantRole> TenantRoles { get; set; }
@@ -28,7 +25,7 @@ namespace Chabloom.Ecommerce.Backend.Models.Authorization
         #region Auditing
 
         [Required]
-        public Guid CreatedUser { get; set; }
+        public Guid CreatedUser { get; set; } = Guid.Empty;
 
         [Required]
         public DateTimeOffset CreatedTimestamp { get; set; } = DateTimeOffset.UtcNow;

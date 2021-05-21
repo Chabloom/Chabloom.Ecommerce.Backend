@@ -55,7 +55,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                             Id = x.Id,
                             Name = x.Name,
                             Description = x.Description,
-                            Price = x.Price,
+                            Amount = x.Amount,
+                            CurrencyId = x.CurrencyId,
                             CategoryId = x.CategoryId,
                             Images = x.ProductImages
                                 .Select(y => y.Filename)
@@ -94,7 +95,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                Price = product.Price,
+                Amount = product.Amount,
+                CurrencyId = product.CurrencyId,
                 CategoryId = product.CategoryId,
                 Images = product.ProductImages
                     .Select(y => y.Filename)
@@ -149,7 +151,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             // Update the product
             product.Name = viewModel.Name;
             product.Description = viewModel.Description;
-            product.Price = viewModel.Price;
+            product.Amount = viewModel.Amount;
+            product.CurrencyId = viewModel.CurrencyId;
             product.CategoryId = viewModel.CategoryId;
             product.UpdatedUser = userId;
             product.UpdatedTimestamp = DateTimeOffset.UtcNow;
@@ -163,7 +166,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                Price = product.Price,
+                Amount = product.Amount,
+                CurrencyId = product.CurrencyId,
                 CategoryId = product.CategoryId,
                 Images = product.ProductImages
                     .Select(y => y.Filename)
@@ -211,7 +215,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
             {
                 Name = viewModel.Name,
                 Description = viewModel.Description,
-                Price = viewModel.Price,
+                Amount = viewModel.Amount,
+                CurrencyId = viewModel.CurrencyId,
                 CategoryId = viewModel.CategoryId,
                 CreatedUser = userId
             };
@@ -239,7 +244,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                Price = product.Price,
+                Amount = product.Amount,
+                CurrencyId = product.CurrencyId,
                 CategoryId = product.CategoryId,
                 Images = new List<string>(),
                 PickupMethods = productPickupMethods

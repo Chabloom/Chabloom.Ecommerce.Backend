@@ -11,14 +11,16 @@ namespace Chabloom.Ecommerce.Backend.ViewModels
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
         public string Name { get; set; }
 
         [Required]
         public string Description { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public ulong Amount { get; set; }
+
+        [Required]
+        public string CurrencyId { get; set; }
 
         [Required]
         public Guid CategoryId { get; set; }

@@ -12,7 +12,6 @@ namespace Chabloom.Ecommerce.Backend.ViewModels.Authorization
         [Required]
         public string Name { get; set; }
 
-        [Required]
         public string RoleName { get; set; }
     }
 }

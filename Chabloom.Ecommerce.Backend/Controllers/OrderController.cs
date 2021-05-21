@@ -217,7 +217,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers
                 {
                     Name = product.Name,
                     Description = product.Description,
-                    Price = product.Price,
+                    Amount = product.Amount,
+                    CurrencyId = product.CurrencyId,
                     OrderId = order.Id,
                     ProductId = product.Id,
                     Count = count,

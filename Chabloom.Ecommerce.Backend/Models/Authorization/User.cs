@@ -3,11 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabloom.Ecommerce.Backend.Models.Authorization
 {
-    [Table("EcommerceUsers")]
     public class User
     {
         [Required]
@@ -28,7 +26,7 @@ namespace Chabloom.Ecommerce.Backend.Models.Authorization
         #region Auditing
 
         [Required]
-        public Guid CreatedUser { get; set; }
+        public Guid CreatedUser { get; set; } = Guid.Empty;
 
         [Required]
         public DateTimeOffset CreatedTimestamp { get; set; } = DateTimeOffset.UtcNow;
