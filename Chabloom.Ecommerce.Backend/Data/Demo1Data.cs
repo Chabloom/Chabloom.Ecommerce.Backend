@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Chabloom.Ecommerce.Backend.Models;
-using Chabloom.Ecommerce.Backend.Models.Authorization;
+using Chabloom.Ecommerce.Backend.Models.Auth;
 using Chabloom.Ecommerce.Backend.Models.Inventory;
 
 // ReSharper disable StringLiteralTypo
@@ -15,28 +15,22 @@ namespace Chabloom.Ecommerce.Backend.Data
         public static Tenant Tenant { get; } = new()
         {
             Id = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
-            Name = "Joe's Tea Shop",
-            CreatedUser = Guid.Empty,
-            CreatedTimestamp = DateTimeOffset.MinValue
+            Name = "Joe's Tea Shop"
         };
 
-        public static List<TenantRole> TenantRoles { get; } = new()
+        public static List<Role> TenantRoles { get; } = new()
         {
-            new TenantRole
+            new Role
             {
                 Id = Guid.Parse("830C7015-AB6C-4988-A603-AE3DC532D3B7"),
                 Name = "Admin",
-                TenantId = Tenant.Id,
-                CreatedUser = Guid.Empty,
-                CreatedTimestamp = DateTimeOffset.MinValue
+                TenantId = Tenant.Id
             },
-            new TenantRole
+            new Role
             {
                 Id = Guid.Parse("30F42A18-8821-4913-B562-33D46D28F158"),
                 Name = "Manager",
-                TenantId = Tenant.Id,
-                CreatedUser = Guid.Empty,
-                CreatedTimestamp = DateTimeOffset.MinValue
+                TenantId = Tenant.Id
             }
         };
 

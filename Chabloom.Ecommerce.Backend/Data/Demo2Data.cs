@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Chabloom.Ecommerce.Backend.Models;
-using Chabloom.Ecommerce.Backend.Models.Authorization;
+using Chabloom.Ecommerce.Backend.Models.Auth;
 
 // ReSharper disable StringLiteralTypo
 
@@ -14,28 +14,22 @@ namespace Chabloom.Ecommerce.Backend.Data
         public static Tenant Tenant { get; } = new()
         {
             Id = Guid.Parse("9CAFCE7F-D4A1-4874-B3C9-339836FD082C"),
-            Name = "Augusta Green Jackets",
-            CreatedUser = Guid.Empty,
-            CreatedTimestamp = DateTimeOffset.MinValue
+            Name = "Augusta Green Jackets"
         };
 
-        public static List<TenantRole> TenantRoles { get; } = new()
+        public static List<Role> TenantRoles { get; } = new()
         {
-            new TenantRole
+            new Role
             {
                 Id = Guid.Parse("6F2183CB-401C-4D7C-9C3C-ABC0E420F4F3"),
                 Name = "Admin",
-                TenantId = Tenant.Id,
-                CreatedUser = Guid.Empty,
-                CreatedTimestamp = DateTimeOffset.MinValue
+                TenantId = Tenant.Id
             },
-            new TenantRole
+            new Role
             {
                 Id = Guid.Parse("F6079515-7ED4-4BCF-B476-E747E31EBDBB"),
                 Name = "Manager",
-                TenantId = Tenant.Id,
-                CreatedUser = Guid.Empty,
-                CreatedTimestamp = DateTimeOffset.MinValue
+                TenantId = Tenant.Id
             }
         };
 
@@ -67,11 +61,12 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 Id = Guid.Parse("9AA49AE2-53BB-417A-B1F7-1BD9F6578969"),
                 Name = "Beer",
-                Description = "Bud Light is a premium beer with incredible drinkability that has made it a top selling " +
-                              "American beer that everybody knows and loves. This light beer is brewed using a " +
-                              "combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring " +
-                              "a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate " +
-                              "refreshment with its delicate malt sweetness and crisp finish.",
+                Description =
+                    "Bud Light is a premium beer with incredible drinkability that has made it a top selling " +
+                    "American beer that everybody knows and loves. This light beer is brewed using a " +
+                    "combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring " +
+                    "a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate " +
+                    "refreshment with its delicate malt sweetness and crisp finish.",
                 Amount = 599,
                 CurrencyId = "USD",
                 CategoryId = Guid.Parse("1DEF1630-85EF-4A97-A073-FD3BA814BAB0"),

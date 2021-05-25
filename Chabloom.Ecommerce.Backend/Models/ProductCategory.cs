@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Chabloom.Ecommerce.Backend.Models.Authorization;
+using Chabloom.Ecommerce.Backend.Models.Auth;
 
 namespace Chabloom.Ecommerce.Backend.Models
 {

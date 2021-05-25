@@ -21,11 +21,11 @@ namespace Chabloom.Ecommerce.Backend.Controllers
     [Produces("application/json")]
     public class ProductImagesController : Controller
     {
-        private readonly EcommerceDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<ProductImagesController> _logger;
         private readonly IValidator _validator;
 
-        public ProductImagesController(EcommerceDbContext context, ILogger<ProductImagesController> logger,
+        public ProductImagesController(ApplicationDbContext context, ILogger<ProductImagesController> logger,
             IValidator validator)
         {
             _context = context;
