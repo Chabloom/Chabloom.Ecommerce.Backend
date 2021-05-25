@@ -1,18 +1,47 @@
 ﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using Chabloom.Ecommerce.Backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chabloom.Ecommerce.Backend.Services
 {
     public class Validator : IValidator
     {
-        private readonly ILogger<Validator> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public Validator(ILogger<Validator> logger)
+        public Validator(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
+        }
+
+        public async Task<List<string>> GetTenantRolesAsync(Guid userId, Guid tenantId)
+        {
+            // Attempt to find the user in the tenant users
+            var user = await _context.Users
+                .Where(x => x.TenantId == tenantId)
+                .FirstOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+            {
+                return new List<string>();
+            }
+
+            // Get the name of all user roles
+            var userRoles = await _context.UserRoles
+                .Join(
+                    _context.Roles,
+                    userRole => userRole.RoleId,
+                    role => role.Id,
+                    (userRole, role) => role)
+                .Where(x => x.TenantId == tenantId)
+                .Select(x => x.Name)
+                .ToListAsync();
+
+            return userRoles;
         }
 
         public Guid GetUserId(ClaimsPrincipal user)
@@ -21,25 +50,16 @@ namespace Chabloom.Ecommerce.Backend.Services
             var sid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(sid))
             {
-                _logger.LogWarning("User attempted call without an sid");
                 return Guid.Empty;
             }
 
             // Ensure the user id can be parsed
             if (!Guid.TryParse(sid, out var userId))
             {
-                _logger.LogWarning($"User sid {sid} could not be parsed as Guid");
                 return Guid.Empty;
             }
 
             return userId;
-        }
-
-        public string GetUserName(ClaimsPrincipal user)
-        {
-            // Get the user's name
-            var userName = user.FindFirst(ClaimTypes.Name)?.Value;
-            return string.IsNullOrEmpty(userName) ? "" : userName;
         }
     }
 }
