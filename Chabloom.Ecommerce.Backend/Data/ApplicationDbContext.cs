@@ -2,16 +2,18 @@
 
 using System;
 using System.Collections.Generic;
-using Chabloom.Ecommerce.Backend.Models;
-using Chabloom.Ecommerce.Backend.Models.Auth;
-using Chabloom.Ecommerce.Backend.Models.Inventory;
+using Chabloom.Ecommerce.Backend.Models.Orders;
+using Chabloom.Ecommerce.Backend.Models.Products;
+using Chabloom.Ecommerce.Backend.Models.Stores;
+using Chabloom.Ecommerce.Backend.Models.Tenants;
+using Chabloom.Ecommerce.Backend.Models.Warehouses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chabloom.Ecommerce.Backend.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
+    public class ApplicationDbContext : IdentityDbContext<TenantUser, TenantRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -19,6 +21,8 @@ namespace Chabloom.Ecommerce.Backend.Data
         }
 
         public DbSet<Tenant> Tenants { get; set; }
+
+        public DbSet<TenantHost> TenantHosts { get; set; }
 
         public DbSet<Product> Products { get; set; }
 
@@ -36,8 +40,6 @@ namespace Chabloom.Ecommerce.Backend.Data
 
         public DbSet<Store> Stores { get; set; }
 
-        public DbSet<StoreProduct> StoreProducts { get; set; }
-
         public DbSet<Warehouse> Warehouses { get; set; }
 
         public DbSet<WarehouseProduct> WarehouseProducts { get; set; }
@@ -48,26 +50,26 @@ namespace Chabloom.Ecommerce.Backend.Data
 
             #region Auth tables
 
-            modelBuilder.Entity<User>()
-                .ToTable("Users");
-            modelBuilder.Entity<Role>()
-                .ToTable("Roles");
+            modelBuilder.Entity<TenantUser>()
+                .ToTable("TenantUsers");
+            modelBuilder.Entity<TenantRole>()
+                .ToTable("TenantRoles");
             modelBuilder.Entity<IdentityUserClaim<Guid>>()
-                .ToTable("UserClaims");
+                .ToTable("TenantUserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>()
-                .ToTable("UserLogins");
+                .ToTable("TenantUserLogins");
             modelBuilder.Entity<IdentityUserRole<Guid>>()
-                .ToTable("UserRoles");
+                .ToTable("TenantUserRoles");
             modelBuilder.Entity<IdentityUserToken<Guid>>()
-                .ToTable("UserTokens");
+                .ToTable("TenantUserTokens");
             modelBuilder.Entity<IdentityRoleClaim<Guid>>()
-                .ToTable("RoleClaims");
+                .ToTable("TenantRoleClaims");
 
             // Use complex key based on name and tenant id
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<TenantUser>()
                 .HasAlternateKey(x => new {x.UserName, x.TenantId});
             // Use complex key based on name and tenant id
-            modelBuilder.Entity<Role>()
+            modelBuilder.Entity<TenantRole>()
                 .HasAlternateKey(x => new {x.Name, x.TenantId});
 
             #endregion
@@ -78,9 +80,9 @@ namespace Chabloom.Ecommerce.Backend.Data
                 .HasData(Demo1Data.Tenant);
             modelBuilder.Entity<Tenant>()
                 .HasData(Demo2Data.Tenant);
-            modelBuilder.Entity<Role>()
+            modelBuilder.Entity<TenantRole>()
                 .HasData(Demo1Data.TenantRoles);
-            modelBuilder.Entity<Role>()
+            modelBuilder.Entity<TenantRole>()
                 .HasData(Demo2Data.TenantRoles);
 
             #endregion
@@ -92,20 +94,13 @@ namespace Chabloom.Ecommerce.Backend.Data
                 .HasOne(x => x.ParentCategory)
                 .WithMany(x => x.SubCategories);
 
-            // Set up key for join table
-            modelBuilder.Entity<OrderProduct>()
-                .HasIndex(x => new {x.OrderId, x.ProductId})
-                .IsUnique();
-
-            // Set up key for join table
-            modelBuilder.Entity<StoreProduct>()
-                .HasIndex(x => new {x.StoreId, x.ProductId})
-                .IsUnique();
+            // Set up complex key
+            modelBuilder.Entity<ProductImage>()
+                .HasKey(x => new {x.Name, x.ProductId});
 
             // Set up key for join table
             modelBuilder.Entity<WarehouseProduct>()
-                .HasIndex(x => new {x.WarehouseId, x.ProductId})
-                .IsUnique();
+                .HasKey(x => new {x.WarehouseId, x.ProductId});
 
             modelBuilder.Entity<ProductPickupMethod>()
                 .HasKey(x => new {x.ProductId, x.PickupMethodName});
@@ -158,13 +153,15 @@ namespace Chabloom.Ecommerce.Backend.Data
 
             modelBuilder.Entity<Store>()
                 .HasData(Demo1Data.Stores);
-            modelBuilder.Entity<StoreProduct>()
-                .HasData(Demo1Data.StoreProducts);
+            modelBuilder.Entity<Store>()
+                .HasData(Demo2Data.Stores);
 
             modelBuilder.Entity<Warehouse>()
                 .HasData(Demo1Data.Warehouses);
             modelBuilder.Entity<WarehouseProduct>()
                 .HasData(Demo1Data.WarehouseProducts);
+            modelBuilder.Entity<Warehouse>()
+                .HasData(Demo2Data.Warehouses);
 
             #endregion
         }
