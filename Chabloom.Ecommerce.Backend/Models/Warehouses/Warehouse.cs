@@ -23,8 +23,6 @@ namespace Chabloom.Ecommerce.Backend.Models.Warehouses
         [Required]
         public string Address { get; set; }
 
-        public Guid? StoreId { get; set; }
-
         public Store Store { get; set; }
 
         [Required]
