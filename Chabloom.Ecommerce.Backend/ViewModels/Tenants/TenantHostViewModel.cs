@@ -2,12 +2,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 
-namespace Chabloom.Ecommerce.Backend.Models.Auth
+namespace Chabloom.Ecommerce.Backend.ViewModels.Tenants
 {
-    public class User : IdentityUser<Guid>
+    public class TenantHostViewModel
     {
+        [Required]
+        public string Hostname { get; set; }
+
         [Required]
         public Guid TenantId { get; set; }
     }

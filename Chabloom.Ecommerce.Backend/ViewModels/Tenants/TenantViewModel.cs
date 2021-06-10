@@ -3,13 +3,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Chabloom.Ecommerce.Backend.Models.Auth
+namespace Chabloom.Ecommerce.Backend.ViewModels.Tenants
 {
-    public class Tenant
+    public class TenantViewModel
     {
-        [Required]
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         [Required]
         public string Name { get; set; }

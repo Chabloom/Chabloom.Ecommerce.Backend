@@ -4,11 +4,14 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace Chabloom.Ecommerce.Backend.Models.Auth
+namespace Chabloom.Ecommerce.Backend.Models.Tenants
 {
-    public class Role : IdentityRole<Guid>
+    public class TenantUser : IdentityUser<Guid>
     {
         [Required]
         public Guid TenantId { get; set; }
+
+        [Required]
+        public Tenant Tenant { get; set; }
     }
 }
