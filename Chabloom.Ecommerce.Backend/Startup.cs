@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Chabloom.Ecommerce.Backend.Data;
-using Chabloom.Ecommerce.Backend.Models.Auth;
+using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -44,7 +44,7 @@ namespace Chabloom.Ecommerce.Backend
                 options.KnownProxies.Clear();
             });
 
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<TenantUser, TenantRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -63,7 +63,7 @@ namespace Chabloom.Ecommerce.Backend
                 .AddOperationalStore(options => options.ConfigureDbContext = x =>
                     x.UseNpgsql(Configuration.GetConnectionString("OperationConnection"),
                         y => y.MigrationsAssembly(audience)))
-                .AddAspNetIdentity<User>();
+                .AddAspNetIdentity<TenantUser>();
 
             const string signingKeyPath = "signing/cert.pfx";
             if (File.Exists(signingKeyPath))
