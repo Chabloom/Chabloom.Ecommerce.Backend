@@ -3,9 +3,8 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Chabloom.Accounts.Backend.ViewModels;
 using Chabloom.Ecommerce.Backend.Data;
-using Chabloom.Ecommerce.Backend.Models.Auth;
+using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Services;
 using Chabloom.Ecommerce.Backend.ViewModels.Auth;
 using IdentityServer4.Services;
@@ -22,26 +21,26 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
     [ApiController]
     [Route("[controller]")]
     [Produces("application/json")]
-    public class AccountController : ControllerBase
+    public class AuthController : ControllerBase
     {
-        private readonly IUserClaimsPrincipalFactory<User> _claimsPrincipalFactory;
+        private readonly IUserClaimsPrincipalFactory<TenantUser> _claimsPrincipalFactory;
         private readonly ApplicationDbContext _context;
         private readonly EmailSender _emailSender;
         private readonly IIdentityServerInteractionService _interactionService;
-        private readonly ILogger<AccountController> _logger;
-        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<AuthController> _logger;
+        private readonly SignInManager<TenantUser> _signInManager;
         private readonly SmsSender _smsSender;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<TenantUser> _userManager;
 
-        public AccountController(
-            IUserClaimsPrincipalFactory<User> claimsPrincipalFactory,
+        public AuthController(
+            IUserClaimsPrincipalFactory<TenantUser> claimsPrincipalFactory,
             ApplicationDbContext context,
             EmailSender emailSender,
             IIdentityServerInteractionService interactionService,
-            ILogger<AccountController> logger,
-            SignInManager<User> signInManager,
+            ILogger<AuthController> logger,
+            SignInManager<TenantUser> signInManager,
             SmsSender smsSender,
-            UserManager<User> userManager)
+            UserManager<TenantUser> userManager)
         {
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _context = context;
@@ -137,7 +136,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
             }
 
             // Initialize the user specified in the register request
-            var user = new User
+            var user = new TenantUser
             {
                 UserName = viewModel.Username,
                 Email = viewModel.Email,
@@ -175,7 +174,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
             return Ok();
         }
 
-        [HttpPost("Error/{id}")]
+        [HttpGet("Error/{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> AccountErrorAsync([FromRoute] string id)
