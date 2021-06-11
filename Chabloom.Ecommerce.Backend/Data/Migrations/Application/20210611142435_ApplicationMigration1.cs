@@ -139,7 +139,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    StoreId = table.Column<Guid>(type: "uuid", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedUser = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedTimestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -471,22 +470,31 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName", "TenantId" },
                 values: new object[,]
                 {
-                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), "6fa2d4e4-f022-46ab-843d-5b6943d33f85", "Admin", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
-                    { new Guid("30f42a18-8821-4913-b562-33d46d28f158"), "0bce3440-3bba-40fe-9fff-0521111ab84a", "Manager", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
-                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), "aeb230bc-8359-4e0c-8ee1-37f9b85641a5", "Admin", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") },
-                    { new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"), "f058d1f1-376e-4f54-8524-512b9d19b7cb", "Manager", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") }
+                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), "5bd31383-a5cd-42cd-8ee5-cab006bb0501", "Admin", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
+                    { new Guid("30f42a18-8821-4913-b562-33d46d28f158"), "45588aef-6b0c-4d74-ac46-5a4f1bb5804e", "Manager", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
+                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), "f230a6bf-ece9-4de8-ab81-1f9c25184c50", "Admin", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") },
+                    { new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"), "e0c89900-41b4-4832-a92b-ded60a5ff9b2", "Manager", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TenantUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TenantId", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { new Guid("dc9ff447-53ee-466d-9928-93d22d8495c0"), 0, "E069977E-0AC5-4E43-AC44-FA297AB43951", "mdcasey@chabloom.com", true, false, null, "MDCASEY@CHABLOOM.COM", "MDCASEY@CHABLOOM.COM", "AQAAAAEAACcQAAAAELYyWQtU3cVbIfdmk4LHrtYsKTiYVW7OAge27lolZ3I8D97OE4QQ6Yn4XwGhO8YPuQ==", "+18036179564", true, "C3KZM3I2WQCCAD7EVHRZQSGRFRX5MY3I", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), false, "mdcasey@chabloom.com" },
+                    { new Guid("dcd60458-2c66-4902-9861-4e6a3075a60c"), 0, "7265D536-0D5F-49EE-AE87-81C14D3D0BE1", "mdcasey@chabloom.com", true, false, null, "MDCASEY@CHABLOOM.COM", "MDCASEY@CHABLOOM.COM", "AQAAAAEAACcQAAAAELYyWQtU3cVbIfdmk4LHrtYsKTiYVW7OAge27lolZ3I8D97OE4QQ6Yn4XwGhO8YPuQ==", "+18036179564", true, "C3KZM3I2WQCCAD7EVHRZQSGRFRX5MY3I", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c"), false, "mdcasey@chabloom.com" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Warehouses",
-                columns: new[] { "Id", "Address", "CreatedTimestamp", "CreatedUser", "Description", "DisabledTimestamp", "DisabledUser", "Name", "StoreId", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
+                columns: new[] { "Id", "Address", "CreatedTimestamp", "CreatedUser", "Description", "DisabledTimestamp", "DisabledUser", "Name", "TenantId", "UpdatedTimestamp", "UpdatedUser" },
                 values: new object[,]
                 {
-                    { new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), "500 Great SW Pkwy SW, Atlanta, GA 30336", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Atlanta Warehouse", null, null, "Atlanta Warehouse", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
-                    { new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), "650 Gateway Center Dr, San Diego, CA 92102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Diego Warehouse", null, null, "San Diego Warehouse", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
-                    { new Guid("69070b35-9ed3-47dd-a919-300371f54634"), "201 N Tryon St, Charlotte, NC 28202", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Charlotte Store", null, null, "Charlotte Store", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
-                    { new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), "199 Gough St, San Francisco, CA 94102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Fransisco Store", null, null, "San Fransisco Store", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
-                    { new Guid("2ae5474a-4702-4bd0-b12e-90bc644ee223"), "187 Railroad Ave, North Augusta, SC 29841", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "SRP Park", null, null, "SRP Park", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c"), null, null }
+                    { new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), "500 Great SW Pkwy SW, Atlanta, GA 30336", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Atlanta Warehouse", null, null, "Atlanta Warehouse", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
+                    { new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), "650 Gateway Center Dr, San Diego, CA 92102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Diego Warehouse", null, null, "San Diego Warehouse", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
+                    { new Guid("69070b35-9ed3-47dd-a919-300371f54634"), "201 N Tryon St, Charlotte, NC 28202", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "Charlotte Store", null, null, "Charlotte Store", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
+                    { new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802"), "199 Gough St, San Francisco, CA 94102", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "San Fransisco Store", null, null, "San Fransisco Store", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"), null, null },
+                    { new Guid("2ae5474a-4702-4bd0-b12e-90bc644ee223"), "187 Railroad Ave, North Augusta, SC 29841", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), "SRP Park", null, null, "SRP Park", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c"), null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -510,10 +518,10 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                     { new Guid("728617aa-ecd3-48ac-bdad-ccf660f775a3"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), "USD", "For beautiful Strawberry Kiwi Fruit Tea, we blend strawberries and dried fruit pieces with strawberry and kiwi flavors to create a vibrant ruby red drink. It looks festive brewed in a glass teapot, and tastes delicious hot or iced. ", "Strawberry Kiwi Fruit Tea (cup)" },
                     { new Guid("0321e99e-dd3b-402f-9cf6-e2ba284862d0"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), "USD", "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.", "Blood Orange Fruit Tea (25 tea bags)" },
                     { new Guid("2446bd16-df0a-4f7e-9e23-18cb1d5d008e"), 299m, new Guid("7d582944-4e2f-42ee-8a1e-199fd58762a6"), "USD", "Our Blood Orange Fruit Tea, a brilliant blend of dried fruit, has the lovely and distinctive twist found in blood oranges. Delicious hot or cold, it brews an aromatic and vivid shade of orange.", "Blood Orange Fruit Tea (cup)" },
-                    { new Guid("9aa49ae2-53bb-417a-b1f7-1bd9f6578969"), 599m, new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), "USD", "Bud Light is a premium beer with incredible drinkability that has made it a top selling American beer that everybody knows and loves. This light beer is brewed using a combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate refreshment with its delicate malt sweetness and crisp finish.", "Beer" },
-                    { new Guid("0aecbbc7-0e6c-4727-bc05-9d3700397b00"), 499m, new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), "USD", "Designed to be a great tasting water, our water is filtered by reverse osmosis to remove impurities, then enhanced with a special blend of minerals for a pure, crisp, fresh taste.", "Water" },
+                    { new Guid("c615100b-e2d9-48a4-81c1-824a3bb12cb7"), 199m, new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), "USD", "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef that’s never given antibiotics.", "Hot dog" },
                     { new Guid("781d9646-1156-4cbb-a581-329f2ae34744"), 399m, new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), "USD", "The original burger starts with a 100% pure beef burger seasoned with just a pinch of salt and pepper. Then, the burger is topped with a tangy pickle, chopped onions, ketchup and mustard.", "Hamburger" },
-                    { new Guid("c615100b-e2d9-48a4-81c1-824a3bb12cb7"), 199m, new Guid("f2b822fc-4e6e-4c65-a5bb-74d080c9e33a"), "USD", "Our tasty all beef hot dogs are all natural, skinless, uncured and made with beef that’s never given antibiotics.", "Hot dog" }
+                    { new Guid("0aecbbc7-0e6c-4727-bc05-9d3700397b00"), 499m, new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), "USD", "Designed to be a great tasting water, our water is filtered by reverse osmosis to remove impurities, then enhanced with a special blend of minerals for a pure, crisp, fresh taste.", "Water" },
+                    { new Guid("9aa49ae2-53bb-417a-b1f7-1bd9f6578969"), 599m, new Guid("1def1630-85ef-4a97-a073-fd3ba814bab0"), "USD", "Bud Light is a premium beer with incredible drinkability that has made it a top selling American beer that everybody knows and loves. This light beer is brewed using a combination of barley malts, rice and a blend of premium aroma hop varieties. Featuring a fresh, clean taste with subtle hop aromas, this light lager delivers ultimate refreshment with its delicate malt sweetness and crisp finish.", "Beer" }
                 });
 
             migrationBuilder.InsertData(
@@ -521,9 +529,27 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 columns: new[] { "Id", "CreatedTimestamp", "CreatedUser", "DisabledTimestamp", "DisabledUser", "UpdatedTimestamp", "UpdatedUser", "WarehouseId" },
                 values: new object[,]
                 {
+                    { new Guid("9819e16b-be09-4b40-be9b-5e0d8b33280c"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), null, null, null, null, new Guid("2ae5474a-4702-4bd0-b12e-90bc644ee223") },
                     { new Guid("87ceed1b-c17d-4a46-b71e-a1b2b3417483"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), null, null, null, null, new Guid("69070b35-9ed3-47dd-a919-300371f54634") },
-                    { new Guid("030a985e-fdf3-40d5-84dd-d88011061fb2"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), null, null, null, null, new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") },
-                    { new Guid("9819e16b-be09-4b40-be9b-5e0d8b33280c"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), null, null, null, null, new Guid("2ae5474a-4702-4bd0-b12e-90bc644ee223") }
+                    { new Guid("030a985e-fdf3-40d5-84dd-d88011061fb2"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), null, null, null, null, new Guid("92a73aca-281a-4ce2-9970-a1d6fbb75802") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TenantUserClaims",
+                columns: new[] { "Id", "ClaimType", "ClaimValue", "UserId" },
+                values: new object[,]
+                {
+                    { 2, "name", "Matthew Casey", new Guid("dcd60458-2c66-4902-9861-4e6a3075a60c") },
+                    { 1, "name", "Matthew Casey", new Guid("dc9ff447-53ee-466d-9928-93d22d8495c0") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TenantUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), new Guid("dc9ff447-53ee-466d-9928-93d22d8495c0") },
+                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), new Guid("dcd60458-2c66-4902-9861-4e6a3075a60c") }
                 });
 
             migrationBuilder.InsertData(

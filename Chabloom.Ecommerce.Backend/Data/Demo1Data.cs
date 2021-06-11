@@ -6,6 +6,8 @@ using Chabloom.Ecommerce.Backend.Models.Products;
 using Chabloom.Ecommerce.Backend.Models.Stores;
 using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Models.Warehouses;
+using IdentityModel;
+using Microsoft.AspNetCore.Identity;
 
 // ReSharper disable StringLiteralTypo
 
@@ -33,6 +35,46 @@ namespace Chabloom.Ecommerce.Backend.Data
                 Name = "Manager",
                 TenantId = Tenant.Id
             }
+        };
+
+        public static List<TenantUser> TenantUsers { get; } = new()
+        {
+            new TenantUser
+            {
+                Id = Guid.Parse("DC9FF447-53EE-466D-9928-93D22D8495C0"),
+                UserName = "mdcasey@chabloom.com",
+                NormalizedUserName = "MDCASEY@CHABLOOM.COM",
+                Email = "mdcasey@chabloom.com",
+                NormalizedEmail = "MDCASEY@CHABLOOM.COM",
+                EmailConfirmed = true,
+                PhoneNumber = "+18036179564",
+                PhoneNumberConfirmed = true,
+                PasswordHash =
+                    "AQAAAAEAACcQAAAAELYyWQtU3cVbIfdmk4LHrtYsKTiYVW7OAge27lolZ3I8D97OE4QQ6Yn4XwGhO8YPuQ==",
+                SecurityStamp = "C3KZM3I2WQCCAD7EVHRZQSGRFRX5MY3I",
+                ConcurrencyStamp = "E069977E-0AC5-4E43-AC44-FA297AB43951",
+                TenantId = Tenant.Id
+            }
+        };
+
+        public static List<IdentityUserClaim<Guid>> TenantUserClaims { get; } = new()
+        {
+            new IdentityUserClaim<Guid>
+            {
+                Id = 1,
+                UserId = TenantUsers[0].Id,
+                ClaimType = JwtClaimTypes.Name,
+                ClaimValue = "Matthew Casey"
+            }
+        };
+
+        public static List<IdentityUserRole<Guid>> TenantUserRoles { get; } = new()
+        {
+            new IdentityUserRole<Guid>
+            {
+                UserId = TenantUsers[0].Id,
+                RoleId = TenantRoles[0].Id
+            },
         };
 
         public static List<ProductCategory> ProductCategories { get; } = new()

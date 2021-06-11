@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210610231322_ApplicationMigration2")]
-    partial class ApplicationMigration2
+    [Migration("20210611142435_ApplicationMigration1")]
+    partial class ApplicationMigration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -780,28 +780,28 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"),
-                            ConcurrencyStamp = "843ae13e-5abe-4eae-81e7-6725442a6cf6",
+                            ConcurrencyStamp = "5bd31383-a5cd-42cd-8ee5-cab006bb0501",
                             Name = "Admin",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
                         },
                         new
                         {
                             Id = new Guid("30f42a18-8821-4913-b562-33d46d28f158"),
-                            ConcurrencyStamp = "77831f89-4bda-4a80-95a9-147b7af19fbe",
+                            ConcurrencyStamp = "45588aef-6b0c-4d74-ac46-5a4f1bb5804e",
                             Name = "Manager",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
                         },
                         new
                         {
                             Id = new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"),
-                            ConcurrencyStamp = "a4f3be9d-84f3-4663-ae11-ef1279854de3",
+                            ConcurrencyStamp = "f230a6bf-ece9-4de8-ab81-1f9c25184c50",
                             Name = "Admin",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
                         },
                         new
                         {
                             Id = new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"),
-                            ConcurrencyStamp = "90716d72-bbf2-4ae0-bdbf-5637f89f2dac",
+                            ConcurrencyStamp = "e0c89900-41b4-4832-a92b-ded60a5ff9b2",
                             Name = "Manager",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
                         });
@@ -878,6 +878,44 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                     b.HasIndex("TenantId");
 
                     b.ToTable("TenantUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("dc9ff447-53ee-466d-9928-93d22d8495c0"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "E069977E-0AC5-4E43-AC44-FA297AB43951",
+                            Email = "mdcasey@chabloom.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MDCASEY@CHABLOOM.COM",
+                            NormalizedUserName = "MDCASEY@CHABLOOM.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAELYyWQtU3cVbIfdmk4LHrtYsKTiYVW7OAge27lolZ3I8D97OE4QQ6Yn4XwGhO8YPuQ==",
+                            PhoneNumber = "+18036179564",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "C3KZM3I2WQCCAD7EVHRZQSGRFRX5MY3I",
+                            TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871"),
+                            TwoFactorEnabled = false,
+                            UserName = "mdcasey@chabloom.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("dcd60458-2c66-4902-9861-4e6a3075a60c"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7265D536-0D5F-49EE-AE87-81C14D3D0BE1",
+                            Email = "mdcasey@chabloom.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MDCASEY@CHABLOOM.COM",
+                            NormalizedUserName = "MDCASEY@CHABLOOM.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAELYyWQtU3cVbIfdmk4LHrtYsKTiYVW7OAge27lolZ3I8D97OE4QQ6Yn4XwGhO8YPuQ==",
+                            PhoneNumber = "+18036179564",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "C3KZM3I2WQCCAD7EVHRZQSGRFRX5MY3I",
+                            TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c"),
+                            TwoFactorEnabled = false,
+                            UserName = "mdcasey@chabloom.com"
+                        });
                 });
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Warehouses.Warehouse", b =>
@@ -1114,6 +1152,22 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                     b.HasIndex("UserId");
 
                     b.ToTable("TenantUserClaims");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClaimType = "name",
+                            ClaimValue = "Matthew Casey",
+                            UserId = new Guid("dc9ff447-53ee-466d-9928-93d22d8495c0")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClaimType = "name",
+                            ClaimValue = "Matthew Casey",
+                            UserId = new Guid("dcd60458-2c66-4902-9861-4e6a3075a60c")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
@@ -1150,6 +1204,18 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                     b.HasIndex("RoleId");
 
                     b.ToTable("TenantUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("dc9ff447-53ee-466d-9928-93d22d8495c0"),
+                            RoleId = new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7")
+                        },
+                        new
+                        {
+                            UserId = new Guid("dcd60458-2c66-4902-9861-4e6a3075a60c"),
+                            RoleId = new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
