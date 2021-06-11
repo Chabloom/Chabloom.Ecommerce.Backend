@@ -751,11 +751,11 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -764,10 +764,9 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name", "TenantId");
+                    b.HasAlternateKey("NormalizedName", "TenantId");
 
                     b.HasIndex("NormalizedName")
-                        .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
                     b.HasIndex("TenantId");
@@ -778,29 +777,33 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"),
-                            ConcurrencyStamp = "5bd31383-a5cd-42cd-8ee5-cab006bb0501",
+                            ConcurrencyStamp = "38c0fc9b-4470-4a90-97b9-6f3fb53ca1e4",
                             Name = "Admin",
+                            NormalizedName = "ADMIN",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
                         },
                         new
                         {
                             Id = new Guid("30f42a18-8821-4913-b562-33d46d28f158"),
-                            ConcurrencyStamp = "45588aef-6b0c-4d74-ac46-5a4f1bb5804e",
+                            ConcurrencyStamp = "f2b61b3f-7ec8-4362-95d0-2339a0be17dc",
                             Name = "Manager",
+                            NormalizedName = "MANAGER",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
                         },
                         new
                         {
                             Id = new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"),
-                            ConcurrencyStamp = "f230a6bf-ece9-4de8-ab81-1f9c25184c50",
+                            ConcurrencyStamp = "8c88d7f8-4a07-4984-89c5-38ca852af91a",
                             Name = "Admin",
+                            NormalizedName = "ADMIN",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
                         },
                         new
                         {
                             Id = new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"),
-                            ConcurrencyStamp = "e0c89900-41b4-4832-a92b-ded60a5ff9b2",
+                            ConcurrencyStamp = "b04d3a93-9b97-4a67-9ae4-b8f30e60370a",
                             Name = "Manager",
+                            NormalizedName = "MANAGER",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
                         });
                 });
@@ -836,6 +839,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -858,19 +862,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserName", "TenantId");
+                    b.HasAlternateKey("NormalizedUserName", "TenantId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
-                        .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
                     b.HasIndex("TenantId");

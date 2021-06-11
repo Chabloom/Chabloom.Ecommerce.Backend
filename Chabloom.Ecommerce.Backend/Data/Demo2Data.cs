@@ -27,12 +27,14 @@ namespace Chabloom.Ecommerce.Backend.Data
             {
                 Id = Guid.Parse("6F2183CB-401C-4D7C-9C3C-ABC0E420F4F3"),
                 Name = "Admin",
+                NormalizedName = "ADMIN",
                 TenantId = Tenant.Id
             },
             new TenantRole
             {
                 Id = Guid.Parse("F6079515-7ED4-4BCF-B476-E747E31EBDBB"),
                 Name = "Manager",
+                NormalizedName = "MANAGER",
                 TenantId = Tenant.Id
             }
         };

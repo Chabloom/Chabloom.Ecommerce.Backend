@@ -82,14 +82,14 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TenantRoles", x => x.Id);
-                    table.UniqueConstraint("AK_TenantRoles_Name_TenantId", x => new { x.Name, x.TenantId });
+                    table.UniqueConstraint("AK_TenantRoles_NormalizedName_TenantId", x => new { x.NormalizedName, x.TenantId });
                     table.ForeignKey(
                         name: "FK_TenantRoles_Tenants_TenantId",
                         column: x => x.TenantId,
@@ -104,8 +104,8 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
@@ -122,7 +122,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TenantUsers", x => x.Id);
-                    table.UniqueConstraint("AK_TenantUsers_UserName_TenantId", x => new { x.UserName, x.TenantId });
+                    table.UniqueConstraint("AK_TenantUsers_NormalizedUserName_TenantId", x => new { x.NormalizedUserName, x.TenantId });
                     table.ForeignKey(
                         name: "FK_TenantUsers_Tenants_TenantId",
                         column: x => x.TenantId,
@@ -470,10 +470,10 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName", "TenantId" },
                 values: new object[,]
                 {
-                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), "5bd31383-a5cd-42cd-8ee5-cab006bb0501", "Admin", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
-                    { new Guid("30f42a18-8821-4913-b562-33d46d28f158"), "45588aef-6b0c-4d74-ac46-5a4f1bb5804e", "Manager", null, new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
-                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), "f230a6bf-ece9-4de8-ab81-1f9c25184c50", "Admin", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") },
-                    { new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"), "e0c89900-41b4-4832-a92b-ded60a5ff9b2", "Manager", null, new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") }
+                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), "38c0fc9b-4470-4a90-97b9-6f3fb53ca1e4", "Admin", "ADMIN", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
+                    { new Guid("30f42a18-8821-4913-b562-33d46d28f158"), "f2b61b3f-7ec8-4362-95d0-2339a0be17dc", "Manager", "MANAGER", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
+                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), "8c88d7f8-4a07-4984-89c5-38ca852af91a", "Admin", "ADMIN", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") },
+                    { new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"), "b04d3a93-9b97-4a67-9ae4-b8f30e60370a", "Manager", "MANAGER", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") }
                 });
 
             migrationBuilder.InsertData(
@@ -725,8 +725,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "TenantRoles",
-                column: "NormalizedName",
-                unique: true);
+                column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TenantUserClaims_UserId",
@@ -756,8 +755,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "TenantUsers",
-                column: "NormalizedUserName",
-                unique: true);
+                column: "NormalizedUserName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WarehouseProducts_ProductId",
