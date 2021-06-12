@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Chabloom.Ecommerce.Backend
 {
@@ -157,6 +158,22 @@ namespace Chabloom.Ecommerce.Backend
                 });
             });
 
+            // Setup generated OpenAPI documentation
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Chabloom Ecommerce",
+                    Description = "Chabloom Ecommerce v1 API",
+                    Version = "v1"
+                });
+                options.AddSecurityDefinition("openid", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OpenIdConnect,
+                    OpenIdConnectUrl = new Uri($"{frontendPublicAddress}/.well-known/openid-configuration")
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -179,6 +196,12 @@ namespace Chabloom.Ecommerce.Backend
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSwagger(options => options.RouteTemplate = "/swagger/{documentName}/chabloom-ecommerce-api.json");
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/chabloom-ecommerce-api.json", "Chabloom Ecommerce v1 API");
+            });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers().RequireAuthorization("ApiScope"); });
         }
