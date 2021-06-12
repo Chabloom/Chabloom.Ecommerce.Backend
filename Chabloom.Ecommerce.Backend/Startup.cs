@@ -50,7 +50,8 @@ namespace Chabloom.Ecommerce.Backend
                     .ProtectKeysWithAzureKeyVault(
                         new Uri(
                             "https://chb-dev-1.vault.azure.net/keys/key-ecommerce/3659282e50f24191b6281d8549662d19"),
-                        new DefaultAzureCredential());
+                        new DefaultAzureCredential())
+                    .PersistKeysToDbContext<ApplicationDbContext>();
             }
 
             services.AddDbContext<ApplicationDbContext>(options =>

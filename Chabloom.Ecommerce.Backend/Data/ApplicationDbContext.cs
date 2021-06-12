@@ -7,13 +7,14 @@ using Chabloom.Ecommerce.Backend.Models.Products;
 using Chabloom.Ecommerce.Backend.Models.Stores;
 using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Models.Warehouses;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chabloom.Ecommerce.Backend.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<TenantUser, TenantRole, Guid>
+    public class ApplicationDbContext : IdentityDbContext<TenantUser, TenantRole, Guid>, IDataProtectionKeyContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -43,6 +44,8 @@ namespace Chabloom.Ecommerce.Backend.Data
         public DbSet<Warehouse> Warehouses { get; set; }
 
         public DbSet<WarehouseProduct> WarehouseProducts { get; set; }
+
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
