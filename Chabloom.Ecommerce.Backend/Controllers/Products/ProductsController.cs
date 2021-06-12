@@ -36,50 +36,69 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<List<ProductViewModel>>> GetProducts([FromQuery] Guid? categoryId,
-            [FromQuery] string method)
+        public async Task<IActionResult> GetProductsAsync([FromQuery] Guid categoryId, [FromQuery] string pickupMethod)
         {
-            // Populate the return data
-            var viewModels = new List<ProductViewModel>();
-            if (categoryId.HasValue)
+            // Get the current tenant id
+            var tenantId = await _validator.GetTenantIdAsync(Request);
+            if (!tenantId.HasValue)
             {
-                if (!string.IsNullOrEmpty(method))
-                {
-                    viewModels = await _context.Products
-                        .Include(x => x.ProductImages)
-                        .Where(x => x.CategoryId == categoryId.Value)
-                        .Where(x => x.ProductPickupMethods.Select(y => y.PickupMethodName).Contains(method))
-                        .Select(x => new ProductViewModel
-                        {
-                            Id = x.Id,
-                            Name = x.Name,
-                            Description = x.Description,
-                            Amount = x.Amount,
-                            CurrencyId = x.CurrencyId,
-                            CategoryId = x.CategoryId,
-                            Images = x.ProductImages
-                                .Select(y => y.Name)
-                                .ToList(),
-                            PickupMethods = x.ProductPickupMethods
-                                .Select(y => y.PickupMethodName)
-                                .ToList()
-                        })
-                        .ToListAsync();
-                }
+                return Forbid();
             }
+
+            if (string.IsNullOrEmpty(pickupMethod))
+            {
+                return Ok(new List<Product>());
+            }
+
+            var products = await _context.Products
+                .Include(x => x.Category)
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductPickupMethods)
+                .Where(x => x.CategoryId == categoryId)
+                .Where(x => x.ProductPickupMethods.Select(y => y.PickupMethodName).Contains(pickupMethod))
+                .Where(x => x.Category.TenantId == tenantId)
+                .ToListAsync();
+            if (products.Count == 0)
+            {
+                return Ok(new List<Product>());
+            }
+
+            // Populate the return data
+            var viewModels = products
+                .Select(x => new ProductViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Amount = x.Amount,
+                    CurrencyId = x.CurrencyId,
+                    CategoryId = x.CategoryId,
+                    Images = x.ProductImages
+                        .Select(y => y.Name)
+                        .ToList(),
+                    PickupMethods = x.ProductPickupMethods
+                        .Select(y => y.PickupMethodName)
+                        .ToList()
+                })
+                .ToList();
 
             return Ok(viewModels);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [AllowAnonymous]
         [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<ProductViewModel>> GetProduct(Guid id)
+        public async Task<IActionResult> GetProductAsync([FromRoute] Guid id)
         {
+            // Get the current tenant id
+            var tenantId = await _validator.GetTenantIdAsync(Request);
+            if (!tenantId.HasValue)
+            {
+                return Forbid();
+            }
+
             // Find the specified product
             var product = await _context.Products
                 .Include(x => x.ProductImages)
@@ -91,7 +110,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
             }
 
             // Populate the return data
-            var viewModel = new ProductViewModel
+            var retViewModel = new ProductViewModel
             {
                 Id = product.Id,
                 Name = product.Name,
@@ -107,26 +126,27 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
                     .ToList()
             };
 
-            return Ok(viewModel);
+            return Ok(retViewModel);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<ProductViewModel>> PutProduct(Guid id, ProductViewModel viewModel)
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> PutProductAsync([FromRoute] Guid id, [FromBody] ProductViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
+            // Get the user and tenant id
+            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
+            if (!userId.HasValue || !tenantId.HasValue)
             {
-                return Forbid();
+                return userTenantResult;
             }
 
             // Find the specified product
@@ -156,8 +176,24 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
             product.CurrencyId = viewModel.CurrencyId;
             product.CategoryId = viewModel.CategoryId;
 
+            // Validate that the endpoint is called from the correct tenant
+            var (tenantValid, tenantResult) = await ValidateTenantAsync(product, tenantId.Value);
+            if (!tenantValid)
+            {
+                return tenantResult;
+            }
+
+            // Ensure the user is authorized at the requested level
+            var (roleValid, roleResult) = await ValidateRoleAccessAsync(userId.Value, tenantId.Value);
+            if (!roleValid)
+            {
+                return roleResult;
+            }
+
             _context.Update(product);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"User {userId} updated product {product.Id}");
 
             // Populate the return data
             var retViewModel = new ProductViewModel
@@ -176,28 +212,26 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
                     .ToList()
             };
 
-            _logger.LogInformation($"User {userId} updated product {product.Id}");
-
             return Ok(retViewModel);
         }
 
         [HttpPost]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<ProductViewModel>> PostProduct(ProductViewModel viewModel)
+        public async Task<IActionResult> PostProductAsync([FromBody] ProductViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
+            // Get the user and tenant id
+            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
+            if (!userId.HasValue || !tenantId.HasValue)
             {
-                return Forbid();
+                return userTenantResult;
             }
 
             // Find the specified category
@@ -219,6 +253,20 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
                 CategoryId = viewModel.CategoryId
             };
 
+            // Validate that the endpoint is called from the correct tenant
+            var (tenantValid, tenantResult) = await ValidateTenantAsync(product, tenantId.Value);
+            if (!tenantValid)
+            {
+                return tenantResult;
+            }
+
+            // Ensure the user is authorized at the requested level
+            var (roleValid, roleResult) = await ValidateRoleAccessAsync(userId.Value, tenantId.Value);
+            if (!roleValid)
+            {
+                return roleResult;
+            }
+
             await _context.AddAsync(product);
             await _context.SaveChangesAsync();
 
@@ -236,6 +284,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
             await _context.AddRangeAsync(productPickupMethods);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation($"User {userId} created product {product.Id}");
+
             // Populate the return data
             var retViewModel = new ProductViewModel
             {
@@ -251,23 +301,21 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
                     .ToList()
             };
 
-            _logger.LogInformation($"User {userId} created product {product.Id}");
-
-            return CreatedAtAction("GetProduct", new {id = retViewModel.Id}, retViewModel);
+            return Ok(retViewModel);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteProductAsync([FromRoute] Guid id)
         {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
+            // Get the user and tenant id
+            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
+            if (!userId.HasValue || !tenantId.HasValue)
             {
-                return Forbid();
+                return userTenantResult;
             }
 
             // Find the specified product
@@ -275,8 +323,21 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (product == null)
             {
-                _logger.LogWarning($"Could not find product {id} to delete");
                 return NotFound();
+            }
+
+            // Validate that the endpoint is called from the correct tenant
+            var (tenantValid, tenantResult) = await ValidateTenantAsync(product, tenantId.Value);
+            if (!tenantValid)
+            {
+                return tenantResult;
+            }
+
+            // Ensure the user is authorized at the requested level
+            var (roleValid, roleResult) = await ValidateRoleAccessAsync(userId.Value, tenantId.Value);
+            if (!roleValid)
+            {
+                return roleResult;
             }
 
             // Delete the product
@@ -286,6 +347,58 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Products
             _logger.LogInformation($"User {userId} deleted product {product.Id}");
 
             return NoContent();
+        }
+
+        private async Task<Tuple<Guid?, Guid?, IActionResult>> GetUserTenantAsync()
+        {
+            // Get the user id
+            var userId = _validator.GetUserId(User);
+            if (!userId.HasValue)
+            {
+                return new Tuple<Guid?, Guid?, IActionResult>(null, null, Forbid());
+            }
+
+            // Get the current tenant id
+            var tenantId = await _validator.GetTenantIdAsync(Request);
+            if (!tenantId.HasValue)
+            {
+                return new Tuple<Guid?, Guid?, IActionResult>(null, null, Forbid());
+            }
+
+            return new Tuple<Guid?, Guid?, IActionResult>(userId, tenantId, Forbid());
+        }
+
+        private async Task<Tuple<bool, IActionResult>> ValidateTenantAsync(Product product, Guid tenantId)
+        {
+            // Find the specified product category
+            var productCategory = await _context.ProductCategories
+                .FirstOrDefaultAsync(x => x.Id == product.CategoryId);
+            if (productCategory == null)
+            {
+                return new Tuple<bool, IActionResult>(false, NotFound());
+            }
+
+            // Ensure the user is calling this endpoint from the correct tenant
+            if (productCategory.TenantId != tenantId)
+            {
+                return new Tuple<bool, IActionResult>(false, Forbid());
+            }
+
+            return new Tuple<bool, IActionResult>(true, Ok());
+        }
+
+        private async Task<Tuple<bool, IActionResult>> ValidateRoleAccessAsync(Guid userId, Guid tenantId)
+        {
+            // Ensure the user is authorized at the requested level
+            var userRoles = await _validator.GetTenantRolesAsync(userId, tenantId);
+            if (!userRoles.Contains("Admin") &&
+                !userRoles.Contains("Manager"))
+            {
+                _logger.LogWarning($"User id {userId} was not authorized to perform requested operation");
+                return new Tuple<bool, IActionResult>(false, Forbid());
+            }
+
+            return new Tuple<bool, IActionResult>(true, Ok());
         }
     }
 }
