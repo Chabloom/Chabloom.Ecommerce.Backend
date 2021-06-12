@@ -45,7 +45,7 @@ namespace Chabloom.Ecommerce.Backend
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetValue<string>("db-ecommerce-application")));
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -68,10 +68,10 @@ namespace Chabloom.Ecommerce.Backend
                     options.UserInteraction.LogoutUrl = $"{frontendPublicAddress}/account/signOut";
                 })
                 .AddConfigurationStore(options => options.ConfigureDbContext = x =>
-                    x.UseNpgsql(Configuration.GetConnectionString("ConfigurationConnection"),
+                    x.UseNpgsql(Configuration.GetValue<string>("db-ecommerce-configuration"),
                         y => y.MigrationsAssembly(audience)))
                 .AddOperationalStore(options => options.ConfigureDbContext = x =>
-                    x.UseNpgsql(Configuration.GetConnectionString("OperationConnection"),
+                    x.UseNpgsql(Configuration.GetValue<string>("db-ecommerce-operation"),
                         y => y.MigrationsAssembly(audience)))
                 .AddAspNetIdentity<TenantUser>();
 
