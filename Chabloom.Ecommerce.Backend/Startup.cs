@@ -159,6 +159,7 @@ namespace Chabloom.Ecommerce.Backend
             });
 
             // Setup generated OpenAPI documentation
+            var authAddress = Environment.GetEnvironmentVariable("ECOMMERCE_BACKEND_ADDRESS");
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -170,7 +171,7 @@ namespace Chabloom.Ecommerce.Backend
                 options.AddSecurityDefinition("openid", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OpenIdConnect,
-                    OpenIdConnectUrl = new Uri($"{frontendPublicAddress}/.well-known/openid-configuration")
+                    OpenIdConnectUrl = new Uri($"{authAddress}/.well-known/openid-configuration")
                 });
             });
 
