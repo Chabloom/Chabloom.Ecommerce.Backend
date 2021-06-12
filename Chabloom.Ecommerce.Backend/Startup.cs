@@ -10,6 +10,7 @@ using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -38,9 +39,14 @@ namespace Chabloom.Ecommerce.Backend
             {
                 services.AddAzureClients(builder =>
                 {
+                    builder.AddKeyClient(new Uri(vaultAddress));
                     builder.AddSecretClient(new Uri(vaultAddress));
                     builder.UseCredential(new DefaultAzureCredential());
                 });
+
+                services
+                    .AddDataProtection()
+                    .ProtectKeysWithAzureKeyVault(new Uri("key-ecommerce"), new DefaultAzureCredential());
             }
 
             services.AddDbContext<ApplicationDbContext>(options =>
