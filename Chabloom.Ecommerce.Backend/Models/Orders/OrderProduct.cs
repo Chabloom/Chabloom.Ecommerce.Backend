@@ -8,8 +8,16 @@ namespace Chabloom.Ecommerce.Backend.Models.Orders
     public class OrderProduct
     {
         [Required]
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid OrderId { get; set; }
+
+        [Required]
+        public Order Order { get; set; }
+
+        [Required]
+        public Guid ProductId { get; set; }
+
+        [Required]
+        public int Count { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -22,14 +30,5 @@ namespace Chabloom.Ecommerce.Backend.Models.Orders
 
         [Required]
         public string CurrencyId { get; set; }
-
-        [Required]
-        public int Count { get; set; }
-
-        [Required]
-        public Guid OrderId { get; set; }
-
-        [Required]
-        public Order Order { get; set; }
     }
 }

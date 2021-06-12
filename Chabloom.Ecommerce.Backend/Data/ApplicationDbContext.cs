@@ -115,6 +115,8 @@ namespace Chabloom.Ecommerce.Backend.Data
 
             #region Application tables
 
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(x => new {x.OrderId, x.ProductId});
             // Set up subcategories
             modelBuilder.Entity<ProductCategory>()
                 .HasOne(x => x.ParentCategory)

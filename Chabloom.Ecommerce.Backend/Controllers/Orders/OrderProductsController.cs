@@ -1,8 +1,6 @@
 ﻿// Copyright 2020-2021 Chabloom LC. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Chabloom.Ecommerce.Backend.Data;
 using Chabloom.Ecommerce.Backend.Models.Orders;
@@ -33,175 +31,207 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
             _validator = validator;
         }
 
-        [HttpGet]
+        [HttpPost("Create")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        public async Task<ActionResult<List<OrderProductViewModel>>> GetOrderProducts([FromQuery] Guid? orderId)
-        {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
-            {
-                return Forbid();
-            }
-
-            // Populate the return data
-            var viewModels = new List<OrderProductViewModel>();
-            if (orderId.HasValue)
-            {
-                viewModels = await _context.OrderProducts
-                    .Where(x => x.OrderId == orderId.Value)
-                    .Select(x => new OrderProductViewModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Description = x.Description,
-                        Amount = x.Amount,
-                        CurrencyId = x.CurrencyId,
-                        OrderId = x.OrderId,
-                        Count = x.Count
-                    })
-                    .ToListAsync();
-            }
-
-            return Ok(viewModels);
-        }
-
-        [HttpGet("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        public async Task<ActionResult<OrderProductViewModel>> GetOrderProduct(Guid id)
-        {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
-            {
-                return Forbid();
-            }
-
-            // Find the specified order product
-            var orderProduct = await _context.OrderProducts
-                .FirstOrDefaultAsync(x => x.Id == id);
-            if (orderProduct == null)
-            {
-                return NotFound();
-            }
-
-            // Populate the return data
-            var viewModel = new OrderProductViewModel
-            {
-                Id = orderProduct.Id,
-                Name = orderProduct.Name,
-                Description = orderProduct.Description,
-                Amount = orderProduct.Amount,
-                CurrencyId = orderProduct.CurrencyId,
-                OrderId = orderProduct.OrderId,
-                Count = orderProduct.Count
-            };
-
-            return Ok(viewModel);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<ActionResult<OrderProductViewModel>> PostOrderProduct(OrderProductViewModel viewModel)
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> CreateOrderProductAsync([FromBody] OrderProductViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
+            // Get the user and tenant id
+            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
+            if (!userId.HasValue || !tenantId.HasValue)
             {
-                return Forbid();
+                return userTenantResult;
             }
 
             // Find the specified order
             var order = await _context.Orders
-                .FirstOrDefaultAsync(x => x.Id == viewModel.OrderId);
+                .FindAsync(viewModel.OrderId);
             if (order == null)
             {
-                _logger.LogWarning($"Could not find order {viewModel.OrderId} to create new order product");
                 return BadRequest("Invalid order");
+            }
+
+            // Ensure the order has not been processed
+            if (order.Status != "Pending")
+            {
+                return Forbid();
+            }
+
+            // Check if the user modifying the products created the order
+            if (order.CreatedUser != userId)
+            {
+                // Ensure the user is authorized at the requested level
+                var (roleValid, roleResult) = await ValidateRoleAccessAsync(userId.Value, tenantId.Value);
+                if (!roleValid)
+                {
+                    return roleResult;
+                }
             }
 
             // Find the specified product
             var product = await _context.Products
-                .FirstOrDefaultAsync(x => x.Id == viewModel.ProductId);
+                .FindAsync(viewModel.ProductId);
             if (product == null)
             {
-                _logger.LogWarning($"Could not find product {viewModel.ProductId} to create new order product");
                 return BadRequest("Invalid product");
             }
 
             // Create the order product
             var orderProduct = new OrderProduct
             {
+                OrderId = viewModel.OrderId,
+                ProductId = viewModel.ProductId,
+                Count = viewModel.Count,
                 Name = product.Name,
                 Description = product.Description,
                 Amount = product.Amount,
-                CurrencyId = product.CurrencyId,
-                OrderId = viewModel.OrderId,
-                Count = viewModel.Count
+                CurrencyId = product.CurrencyId
             };
+
+            // Validate that the endpoint is called from the correct tenant
+            var (tenantValid, tenantResult) = await ValidateTenantAsync(orderProduct, tenantId.Value);
+            if (!tenantValid)
+            {
+                return tenantResult;
+            }
 
             await _context.AddAsync(orderProduct);
             await _context.SaveChangesAsync();
 
-            // Populate the return data
-            var retViewModel = new OrderProductViewModel
-            {
-                Id = orderProduct.Id,
-                Name = orderProduct.Name,
-                Description = orderProduct.Description,
-                Amount = orderProduct.Amount,
-                CurrencyId = orderProduct.CurrencyId,
-                OrderId = orderProduct.OrderId,
-                Count = orderProduct.Count
-            };
+            _logger.LogInformation(
+                $"User {userId} added product {orderProduct.ProductId} to order {orderProduct.OrderId}");
 
-            _logger.LogInformation($"User {userId} created order product {orderProduct.Id}");
-
-            return CreatedAtAction("GetOrderProduct", new {id = retViewModel.Id}, retViewModel);
+            return Ok();
         }
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
+        [HttpPost("Delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteOrderProduct(Guid id)
+        public async Task<IActionResult> DeleteOrderProductAsync([FromBody] OrderProductViewModel viewModel)
         {
-            // Get the user id
-            var userId = _validator.GetUserId(User);
-            if (userId == Guid.Empty)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Get the user and tenant id
+            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
+            if (!userId.HasValue || !tenantId.HasValue)
+            {
+                return userTenantResult;
+            }
+
+            // Find the specified order
+            var order = await _context.Orders
+                .FindAsync(viewModel.OrderId);
+            if (order == null)
+            {
+                return BadRequest("Invalid order");
+            }
+
+            // Ensure the order has not been processed
+            if (order.Status != "Pending")
             {
                 return Forbid();
             }
 
+            // Check if the user modifying the products created the order
+            if (order.CreatedUser != userId)
+            {
+                // Ensure the user is authorized at the requested level
+                var (roleValid, roleResult) = await ValidateRoleAccessAsync(userId.Value, tenantId.Value);
+                if (!roleValid)
+                {
+                    return roleResult;
+                }
+            }
+
             // Find the specified order product
             var orderProduct = await _context.OrderProducts
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FindAsync(viewModel.OrderId, viewModel.ProductId);
             if (orderProduct == null)
             {
-                _logger.LogWarning($"Could not find order product {id} to delete");
                 return NotFound();
             }
 
-            // Delete the order product
+            // Validate that the endpoint is called from the correct tenant
+            var (tenantValid, tenantResult) = await ValidateTenantAsync(orderProduct, tenantId.Value);
+            if (!tenantValid)
+            {
+                return tenantResult;
+            }
+
             _context.Remove(orderProduct);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"User {userId} deleted order product {orderProduct.Id}");
+            _logger.LogInformation(
+                $"User {userId} deleted product {orderProduct.ProductId} from order {orderProduct.OrderId}");
 
-            return NoContent();
+            return Ok();
+        }
+
+        private async Task<Tuple<Guid?, Guid?, IActionResult>> GetUserTenantAsync()
+        {
+            // Get the user id
+            var userId = _validator.GetUserId(User);
+            if (!userId.HasValue)
+            {
+                return new Tuple<Guid?, Guid?, IActionResult>(null, null, Forbid());
+            }
+
+            // Get the current tenant id
+            var tenantId = await _validator.GetTenantIdAsync(Request);
+            if (!tenantId.HasValue)
+            {
+                return new Tuple<Guid?, Guid?, IActionResult>(null, null, Forbid());
+            }
+
+            return new Tuple<Guid?, Guid?, IActionResult>(userId, tenantId, Forbid());
+        }
+
+        private async Task<Tuple<bool, IActionResult>> ValidateTenantAsync(OrderProduct orderProduct, Guid tenantId)
+        {
+            // Find the specified product
+            var product = await _context.Products
+                .Include(x => x.Category)
+                .FirstOrDefaultAsync(x => x.Id == orderProduct.ProductId);
+            if (product == null)
+            {
+                return new Tuple<bool, IActionResult>(false, NotFound());
+            }
+
+            // Ensure the user is calling this endpoint from the correct tenant
+            if (product.Category.TenantId != tenantId)
+            {
+                return new Tuple<bool, IActionResult>(false, Forbid());
+            }
+
+            return new Tuple<bool, IActionResult>(true, Ok());
+        }
+
+        private async Task<Tuple<bool, IActionResult>> ValidateRoleAccessAsync(Guid userId, Guid tenantId)
+        {
+            // Ensure the user is authorized at the requested level
+            var userRoles = await _validator.GetTenantRolesAsync(userId, tenantId);
+            if (!userRoles.Contains("Admin") &&
+                !userRoles.Contains("Manager"))
+            {
+                _logger.LogWarning($"User id {userId} was not authorized to perform requested operation");
+                return new Tuple<bool, IActionResult>(false, Forbid());
+            }
+
+            return new Tuple<bool, IActionResult>(true, Ok());
         }
     }
 }

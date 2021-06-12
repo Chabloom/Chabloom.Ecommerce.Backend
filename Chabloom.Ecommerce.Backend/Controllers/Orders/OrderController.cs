@@ -62,18 +62,18 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
                     PickupMethod = x.PickupMethodName,
                     Status = x.Status,
                     ProductCounts = x.Products
-                        .ToDictionary(y => y.Id, y => y.Count)
+                        .ToDictionary(y => y.ProductId, y => y.Count)
                 })
                 .ToList();
 
             return Ok(viewModels);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<IActionResult> GetOrder(Guid id)
+        public async Task<IActionResult> GetOrder([FromRoute] Guid id)
         {
             // Get the user and tenant id
             var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
@@ -106,80 +106,10 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
                 PickupMethod = order.PickupMethodName,
                 Status = order.Status,
                 ProductCounts = order.Products
-                    .ToDictionary(x => x.Id, x => x.Count)
+                    .ToDictionary(x => x.ProductId, x => x.Count)
             };
 
             return Ok(viewModel);
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        public async Task<IActionResult> PutOrderAsync(Guid id, OrderViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Get the user and tenant id
-            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
-            if (!userId.HasValue || !tenantId.HasValue)
-            {
-                return userTenantResult;
-            }
-
-            // Find the specified order
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(x => x.Id == id);
-            if (order == null)
-            {
-                _logger.LogWarning($"Could not find order {viewModel.Id} to update");
-                return NotFound();
-            }
-
-            // Validate that the endpoint is called from the correct tenant
-            var (tenantValid, tenantResult) = await ValidateTenantAsync(order, tenantId.Value);
-            if (!tenantValid)
-            {
-                return tenantResult;
-            }
-
-            // Find the specified pickup method
-            var pickupMethod = await _context.PickupMethods
-                .FirstOrDefaultAsync(x => x.Name == viewModel.PickupMethod);
-            if (pickupMethod == null)
-            {
-                _logger.LogWarning($"Could not find pickup method {viewModel.PickupMethod} to update order {order.Id}");
-                return BadRequest("Invalid pickup method");
-            }
-
-            // Update the order
-            order.PaymentId = viewModel.PaymentId;
-            order.PickupMethodName = viewModel.PickupMethod;
-            order.Status = viewModel.Status;
-            order.UpdatedUser = userId;
-            order.UpdatedTimestamp = DateTimeOffset.UtcNow;
-
-            _context.Update(order);
-            await _context.SaveChangesAsync();
-
-            // Populate the return data
-            var retViewModel = new OrderViewModel
-            {
-                Id = order.Id,
-                PaymentId = order.PaymentId,
-                PickupMethod = order.PickupMethodName,
-                Status = order.Status,
-                ProductCounts = order.Products
-                    .ToDictionary(x => x.Id, x => x.Count)
-            };
-
-            _logger.LogInformation($"User {userId} updated order {order.Id}");
-
-            return Ok(retViewModel);
         }
 
         [HttpPost]
@@ -187,7 +117,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
-        public async Task<IActionResult> PostOrderAsync(OrderViewModel viewModel)
+        public async Task<IActionResult> PostOrderAsync([FromBody] OrderViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -212,7 +142,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
             {
                 PaymentId = viewModel.PaymentId,
                 PickupMethodName = viewModel.PickupMethod,
-                CreatedUser = Guid.Empty
+                StoreId = viewModel.StoreId,
+                CreatedUser = userId.Value
             };
 
             var orderProducts = new List<OrderProduct>();
@@ -222,18 +153,18 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
                     .FirstOrDefaultAsync(x => x.Id == productId);
                 if (product == null)
                 {
-                    _logger.LogWarning($"User {Guid.Empty} attempted to create order with unknown product {productId}");
                     return BadRequest($"Product {productId} does not exist");
                 }
 
                 orderProducts.Add(new OrderProduct
                 {
+                    OrderId = order.Id,
+                    ProductId = productId,
+                    Count = count,
                     Name = product.Name,
                     Description = product.Description,
                     Amount = product.Amount,
-                    CurrencyId = product.CurrencyId,
-                    OrderId = order.Id,
-                    Count = count
+                    CurrencyId = product.CurrencyId
                 });
             }
 
@@ -258,7 +189,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
                 PickupMethod = order.PickupMethodName,
                 Status = order.Status,
                 ProductCounts = order.Products
-                    .ToDictionary(x => x.Id, x => x.Count)
+                    .ToDictionary(x => x.ProductId, x => x.Count)
             };
 
             _logger.LogInformation($"User {userId} created order {order.Id}");
@@ -266,12 +197,12 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
             return Ok(retViewModel);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteOrderAsync(Guid id)
+        public async Task<IActionResult> DeleteOrderAsync([FromRoute] Guid id)
         {
             // Get the user and tenant id
             var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
