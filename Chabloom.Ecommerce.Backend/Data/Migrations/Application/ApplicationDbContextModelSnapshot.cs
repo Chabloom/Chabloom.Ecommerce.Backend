@@ -774,7 +774,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"),
-                            ConcurrencyStamp = "c64904e7-7f1e-43ef-9d19-922ea3f4b862",
+                            ConcurrencyStamp = "0c8bb047-f0a6-4523-8110-fd4fed52b4ae",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
@@ -782,7 +782,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("30f42a18-8821-4913-b562-33d46d28f158"),
-                            ConcurrencyStamp = "4ea3f30b-23ff-4214-a54a-11698e49db5a",
+                            ConcurrencyStamp = "4970a2ee-0273-4dc6-9775-0bd0b03bae29",
                             Name = "Manager",
                             NormalizedName = "MANAGER",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
@@ -790,7 +790,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"),
-                            ConcurrencyStamp = "6197c6ac-0d80-4690-9c4f-33c8c36f2e33",
+                            ConcurrencyStamp = "96309c79-49c7-470a-8c25-749cec10e97d",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
@@ -798,7 +798,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"),
-                            ConcurrencyStamp = "b3677c7f-e554-4b54-9874-9aa5b714cb84",
+                            ConcurrencyStamp = "1000c177-6c40-4dff-a853-c36332b89186",
                             Name = "Manager",
                             NormalizedName = "MANAGER",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")

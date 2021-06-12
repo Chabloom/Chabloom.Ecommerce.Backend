@@ -414,17 +414,17 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 name: "OrderProducts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Count = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    CurrencyId = table.Column<string>(type: "text", nullable: false),
-                    Count = table.Column<int>(type: "integer", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uuid", nullable: false)
+                    CurrencyId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderProducts", x => x.Id);
+                    table.PrimaryKey("PK_OrderProducts", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
                         name: "FK_OrderProducts_Orders_OrderId",
                         column: x => x.OrderId,
@@ -470,10 +470,10 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName", "TenantId" },
                 values: new object[,]
                 {
-                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), "38c0fc9b-4470-4a90-97b9-6f3fb53ca1e4", "Admin", "ADMIN", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
-                    { new Guid("30f42a18-8821-4913-b562-33d46d28f158"), "f2b61b3f-7ec8-4362-95d0-2339a0be17dc", "Manager", "MANAGER", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
-                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), "8c88d7f8-4a07-4984-89c5-38ca852af91a", "Admin", "ADMIN", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") },
-                    { new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"), "b04d3a93-9b97-4a67-9ae4-b8f30e60370a", "Manager", "MANAGER", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") }
+                    { new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"), "0c8bb047-f0a6-4523-8110-fd4fed52b4ae", "Admin", "ADMIN", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
+                    { new Guid("30f42a18-8821-4913-b562-33d46d28f158"), "4970a2ee-0273-4dc6-9775-0bd0b03bae29", "Manager", "MANAGER", new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871") },
+                    { new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"), "96309c79-49c7-470a-8c25-749cec10e97d", "Admin", "ADMIN", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") },
+                    { new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"), "1000c177-6c40-4dff-a853-c36332b89186", "Manager", "MANAGER", new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c") }
                 });
 
             migrationBuilder.InsertData(
@@ -660,11 +660,6 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                     { new Guid("5e152dc1-203d-45e0-9eee-acc6f8bb74ee"), new Guid("68a72052-18f4-4e2a-a165-c057f61f86b5"), 6655 },
                     { new Guid("78e540de-d2b3-4b1f-bb1e-988be3245088"), new Guid("95d98c98-8c88-4a15-b3ae-9ddb9b10848b"), 0 }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderProducts_OrderId",
-                table: "OrderProducts",
-                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_PickupMethodName",

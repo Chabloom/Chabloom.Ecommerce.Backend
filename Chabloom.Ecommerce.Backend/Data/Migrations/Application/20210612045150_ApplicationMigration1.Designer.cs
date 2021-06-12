@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210611152805_ApplicationMigration1")]
+    [Migration("20210612045150_ApplicationMigration1")]
     partial class ApplicationMigration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,8 +71,10 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
 
             modelBuilder.Entity("Chabloom.Ecommerce.Backend.Models.Orders.OrderProduct", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
@@ -93,12 +95,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
                     b.ToTable("OrderProducts");
                 });
@@ -779,7 +776,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("830c7015-ab6c-4988-a603-ae3dc532d3b7"),
-                            ConcurrencyStamp = "38c0fc9b-4470-4a90-97b9-6f3fb53ca1e4",
+                            ConcurrencyStamp = "0c8bb047-f0a6-4523-8110-fd4fed52b4ae",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
@@ -787,7 +784,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("30f42a18-8821-4913-b562-33d46d28f158"),
-                            ConcurrencyStamp = "f2b61b3f-7ec8-4362-95d0-2339a0be17dc",
+                            ConcurrencyStamp = "4970a2ee-0273-4dc6-9775-0bd0b03bae29",
                             Name = "Manager",
                             NormalizedName = "MANAGER",
                             TenantId = new Guid("6a7e29dc-9eff-4f0d-bb14-51f63f142871")
@@ -795,7 +792,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("6f2183cb-401c-4d7c-9c3c-abc0e420f4f3"),
-                            ConcurrencyStamp = "8c88d7f8-4a07-4984-89c5-38ca852af91a",
+                            ConcurrencyStamp = "96309c79-49c7-470a-8c25-749cec10e97d",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
@@ -803,7 +800,7 @@ namespace Chabloom.Ecommerce.Backend.Data.Migrations.Application
                         new
                         {
                             Id = new Guid("f6079515-7ed4-4bcf-b476-e747e31ebdbb"),
-                            ConcurrencyStamp = "b04d3a93-9b97-4a67-9ae4-b8f30e60370a",
+                            ConcurrencyStamp = "1000c177-6c40-4dff-a853-c36332b89186",
                             Name = "Manager",
                             NormalizedName = "MANAGER",
                             TenantId = new Guid("9cafce7f-d4a1-4874-b3c9-339836fd082c")
