@@ -2,12 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using Azure.Identity;
+using Azure.Security.KeyVault.Keys;
 using Chabloom.Ecommerce.Backend.Data;
 using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Services;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -20,6 +20,7 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Chabloom.Ecommerce.Backend
 {
@@ -34,7 +35,7 @@ namespace Chabloom.Ecommerce.Backend
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var vaultAddress = Environment.GetEnvironmentVariable("AZURE_VAULT_ADDRESS");
+            var vaultAddress = "https://chb-dev-1.vault.azure.net/";
             if (!string.IsNullOrEmpty(vaultAddress))
             {
                 services.AddAzureClients(builder =>
@@ -46,7 +47,10 @@ namespace Chabloom.Ecommerce.Backend
 
                 services
                     .AddDataProtection()
-                    .ProtectKeysWithAzureKeyVault(new Uri("key-ecommerce"), new DefaultAzureCredential());
+                    .ProtectKeysWithAzureKeyVault(
+                        new Uri(
+                            "https://chb-dev-1.vault.azure.net/keys/key-ecommerce/3659282e50f24191b6281d8549662d19"),
+                        new DefaultAzureCredential());
             }
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -81,11 +85,20 @@ namespace Chabloom.Ecommerce.Backend
                         y => y.MigrationsAssembly(audience)))
                 .AddAspNetIdentity<TenantUser>();
 
-            const string signingKeyPath = "signing/cert.pfx";
-            if (File.Exists(signingKeyPath))
+            if (!string.IsNullOrEmpty(vaultAddress))
             {
-                var signingKeyCert = new X509Certificate2(File.ReadAllBytes(signingKeyPath));
-                identityServerBuilder.AddSigningCredential(signingKeyCert);
+                var keyClient = new KeyClient(new Uri(vaultAddress), new DefaultAzureCredential());
+                var vaultKey = keyClient.GetKey("key-ecommerce").Value;
+                if (vaultKey.KeyType == KeyType.Rsa)
+                {
+                    var rsa = vaultKey.Key.ToRSA();
+                    var key = new RsaSecurityKey(rsa)
+                    {
+                        KeyId = vaultKey.Properties.Version
+                    };
+
+                    identityServerBuilder.AddSigningCredential(key, IdentityServerConstants.RsaSigningAlgorithm.PS256);
+                }
             }
             else
             {
