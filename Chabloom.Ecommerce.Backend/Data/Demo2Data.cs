@@ -21,6 +21,30 @@ namespace Chabloom.Ecommerce.Backend.Data
             Name = "Augusta Green Jackets"
         };
 
+        public static List<TenantHost> TenantHosts { get; } = new()
+        {
+            new TenantHost
+            {
+                Hostname = "ecommerce-dev-1.chabloom.com",
+                TenantId = Tenant.Id
+            },
+            new TenantHost
+            {
+                Hostname = "ecommerce-uat-1.chabloom.com",
+                TenantId = Tenant.Id
+            },
+            new TenantHost
+            {
+                Hostname = "greenjackets.dev-1.chabloom.com",
+                TenantId = Tenant.Id
+            },
+            new TenantHost
+            {
+                Hostname = "greenjackets.uat-1.chabloom.com",
+                TenantId = Tenant.Id
+            }
+        };
+
         public static List<TenantRole> TenantRoles { get; } = new()
         {
             new TenantRole

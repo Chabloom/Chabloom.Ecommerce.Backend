@@ -20,6 +20,20 @@ namespace Chabloom.Ecommerce.Backend.Data
             Id = Guid.Parse("6A7E29DC-9EFF-4F0D-BB14-51F63F142871"),
             Name = "Joe's Tea Shop"
         };
+        
+        public static List<TenantHost> TenantHosts { get; } = new()
+        {
+            new TenantHost
+            {
+                Hostname = "tea.dev-1.chabloom.com",
+                TenantId = Tenant.Id
+            },
+            new TenantHost
+            {
+                Hostname = "tea.uat-1.chabloom.com",
+                TenantId = Tenant.Id
+            }
+        };
 
         public static List<TenantRole> TenantRoles { get; } = new()
         {
