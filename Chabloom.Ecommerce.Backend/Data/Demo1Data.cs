@@ -42,6 +42,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                 Id = Guid.Parse("830C7015-AB6C-4988-A603-AE3DC532D3B7"),
                 Name = "Admin",
                 NormalizedName = "ADMIN",
+                ConcurrencyStamp = "cd5950f5-abf4-436c-96f3-72ae9ef650d0",
                 TenantId = Tenant.Id
             },
             new TenantRole
@@ -49,6 +50,7 @@ namespace Chabloom.Ecommerce.Backend.Data
                 Id = Guid.Parse("30F42A18-8821-4913-B562-33D46D28F158"),
                 Name = "Manager",
                 NormalizedName = "MANAGER",
+                ConcurrencyStamp = "4a9c08cb-d283-42f6-9fa0-face7d3606b9",
                 TenantId = Tenant.Id
             }
         };
