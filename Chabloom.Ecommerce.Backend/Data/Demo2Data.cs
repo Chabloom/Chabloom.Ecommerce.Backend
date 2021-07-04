@@ -25,6 +25,16 @@ namespace Chabloom.Ecommerce.Backend.Data
         {
             new TenantHost
             {
+                Hostname = "localhost",
+                TenantId = Tenant.Id
+            },
+            new TenantHost
+            {
+                Hostname = "localhost:3003",
+                TenantId = Tenant.Id
+            },
+            new TenantHost
+            {
                 Hostname = "ecommerce-dev-1.chabloom.com",
                 TenantId = Tenant.Id
             },
