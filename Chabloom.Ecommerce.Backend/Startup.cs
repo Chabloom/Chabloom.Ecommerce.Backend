@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Security.KeyVault.Keys;
 using Chabloom.Ecommerce.Backend.Data;
@@ -110,6 +111,17 @@ namespace Chabloom.Ecommerce.Backend
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.LoginPath = PathString.Empty;
+                    options.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnRedirectToAccessDenied = context =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
