@@ -69,6 +69,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
             return Ok(viewModels);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
@@ -76,8 +77,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
         public async Task<IActionResult> GetOrder([FromRoute] Guid id)
         {
             // Get the user and tenant id
-            var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
-            if (!userId.HasValue || !tenantId.HasValue)
+            var (_, tenantId, userTenantResult) = await GetUserTenantAsync();
+            if (!tenantId.HasValue)
             {
                 return userTenantResult;
             }
@@ -112,6 +113,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
             return Ok(viewModel);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
