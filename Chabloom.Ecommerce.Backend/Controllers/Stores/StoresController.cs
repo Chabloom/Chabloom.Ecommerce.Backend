@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using Chabloom.Ecommerce.Backend.Data;
 using Chabloom.Ecommerce.Backend.Services;
 using Chabloom.Ecommerce.Backend.ViewModels.Stores;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chabloom.Ecommerce.Backend.Controllers.Stores
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
