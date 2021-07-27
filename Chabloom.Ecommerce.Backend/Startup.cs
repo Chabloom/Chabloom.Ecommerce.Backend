@@ -137,6 +137,7 @@ namespace Chabloom.Ecommerce.Backend
             {
                 options.AddPolicy("ApiScope", policy =>
                 {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim("scope", audience);
                 });
