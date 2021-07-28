@@ -67,10 +67,9 @@ namespace Chabloom.Ecommerce.Backend
                 options.KnownProxies.Clear();
             });
 
-            services.AddIdentityCore<TenantUser>()
+            services.AddIdentity<TenantUser, TenantRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders()
-                .AddSignInManager<SignInManager<TenantUser>>();
+                .AddDefaultTokenProviders();
 
             const string audience = "Chabloom.Ecommerce.Backend";
 
