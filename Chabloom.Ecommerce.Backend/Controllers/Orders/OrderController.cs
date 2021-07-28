@@ -129,7 +129,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
 
             // Get the user and tenant id
             var (userId, tenantId, userTenantResult) = await GetUserTenantAsync();
-            if (!userId.HasValue || !tenantId.HasValue)
+            if (!tenantId.HasValue)
             {
                 return userTenantResult;
             }
@@ -146,7 +146,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
                 PaymentId = viewModel.PaymentId,
                 PickupMethodName = viewModel.PickupMethod,
                 StoreId = viewModel.StoreId,
-                CreatedUser = userId.Value
+                CreatedUser = userId.GetValueOrDefault(Guid.Empty)
             };
 
             var orderProducts = new List<OrderProduct>();
