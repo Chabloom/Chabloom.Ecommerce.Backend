@@ -9,7 +9,6 @@ using Chabloom.Ecommerce.Backend.Data;
 using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Services;
 using IdentityServer4;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -109,7 +108,7 @@ namespace Chabloom.Ecommerce.Backend
                 identityServerBuilder.AddDeveloperSigningCredential();
             }
 
-            services.AddAuthentication()
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.Cookie.HttpOnly = true;
@@ -127,7 +126,6 @@ namespace Chabloom.Ecommerce.Backend
             {
                 options.AddPolicy("ApiScope", policy =>
                 {
-                    policy.AuthenticationSchemes.Add(CookieAuthenticationDefaults.AuthenticationScheme);
                     policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim("scope", audience);
