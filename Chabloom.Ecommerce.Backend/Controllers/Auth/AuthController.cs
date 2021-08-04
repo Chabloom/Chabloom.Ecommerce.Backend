@@ -8,7 +8,6 @@ using Chabloom.Ecommerce.Backend.Models.Tenants;
 using Chabloom.Ecommerce.Backend.Services;
 using Chabloom.Ecommerce.Backend.ViewModels.Auth;
 using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
-        private readonly IUserClaimsPrincipalFactory<TenantUser> _claimsPrincipalFactory;
         private readonly ApplicationDbContext _context;
         private readonly EmailSender _emailSender;
         private readonly IIdentityServerInteractionService _interactionService;
@@ -34,7 +32,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
         private readonly IValidator _validator;
 
         public AuthController(
-            IUserClaimsPrincipalFactory<TenantUser> claimsPrincipalFactory,
             ApplicationDbContext context,
             EmailSender emailSender,
             IIdentityServerInteractionService interactionService,
@@ -44,7 +41,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
             UserManager<TenantUser> userManager,
             IValidator validator)
         {
-            _claimsPrincipalFactory = claimsPrincipalFactory;
             _context = context;
             _emailSender = emailSender;
             _interactionService = interactionService;
@@ -93,13 +89,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
                 return Unauthorized();
             }
 
-            // Get the user claims principal
-            var claimsPrincipal = await _claimsPrincipalFactory.CreateAsync(user);
-
-            // Cookie sign in
-            await HttpContext.SignInAsync(claimsPrincipal);
-
             _logger.LogInformation($"User {user.Id} sign in success");
+            _logger.LogInformation($"User authenticated: {User.Identity?.IsAuthenticated}");
 
             return NoContent();
         }
@@ -116,9 +107,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Auth
 
             // Get the logout context
             var context = await _interactionService.GetLogoutContextAsync(id);
-
-            // Cookie sign out
-            await HttpContext.SignOutAsync();
 
             // Application sign out
             await _signInManager.SignOutAsync();
