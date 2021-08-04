@@ -265,21 +265,22 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
 
         private async Task<Tuple<bool, IActionResult>> ValidateTenantAsync(Order order, Guid tenantId)
         {
-            // TODO: Enable store and warehouse checking
-            /*// Find the specified store
+            // Find the specified store
             var store = await _context.Stores
                 .Include(x => x.Warehouse)
                 .FirstOrDefaultAsync(x => x.Id == order.StoreId);
             if (store == null)
             {
+                _logger.LogWarning($"Could not find store {order.StoreId}");
                 return new Tuple<bool, IActionResult>(false, NotFound());
             }
 
             // Ensure the user is calling this endpoint from the correct tenant
             if (store.Warehouse.TenantId != tenantId)
             {
+                _logger.LogWarning($"Warehouse tenant {store.Warehouse.TenantId} does not match current tenant {tenantId}");
                 return new Tuple<bool, IActionResult>(false, Forbid());
-            }*/
+            }
 
             return new Tuple<bool, IActionResult>(true, Ok());
         }
