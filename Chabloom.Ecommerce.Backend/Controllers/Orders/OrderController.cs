@@ -252,10 +252,6 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
         {
             // Get the user id
             var userId = _validator.GetUserId(User);
-            if (!userId.HasValue)
-            {
-                return new Tuple<Guid?, Guid?, IActionResult>(null, null, Forbid());
-            }
 
             // Get the current tenant id
             var tenantId = await _validator.GetTenantIdAsync(Request);
