@@ -269,7 +269,8 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
 
         private async Task<Tuple<bool, IActionResult>> ValidateTenantAsync(Order order, Guid tenantId)
         {
-            // Find the specified store
+            // TODO: Enable store and warehouse checking
+            /*// Find the specified store
             var store = await _context.Stores
                 .Include(x => x.Warehouse)
                 .FirstOrDefaultAsync(x => x.Id == order.StoreId);
@@ -282,7 +283,7 @@ namespace Chabloom.Ecommerce.Backend.Controllers.Orders
             if (store.Warehouse.TenantId != tenantId)
             {
                 return new Tuple<bool, IActionResult>(false, Forbid());
-            }
+            }*/
 
             return new Tuple<bool, IActionResult>(true, Ok());
         }
