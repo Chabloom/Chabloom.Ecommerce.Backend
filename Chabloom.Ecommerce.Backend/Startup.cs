@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Security.KeyVault.Keys;
 using Chabloom.Ecommerce.Backend.Data;
@@ -37,7 +36,7 @@ namespace Chabloom.Ecommerce.Backend
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var vaultAddress = "https://chb-dev-1.vault.azure.net/";
+            var vaultAddress = Environment.GetEnvironmentVariable("AZURE_VAULT_ADDRESS");
             if (!string.IsNullOrEmpty(vaultAddress))
             {
                 services.AddAzureClients(builder =>
@@ -50,8 +49,7 @@ namespace Chabloom.Ecommerce.Backend
                 services
                     .AddDataProtection()
                     .ProtectKeysWithAzureKeyVault(
-                        new Uri(
-                            "https://chb-dev-1.vault.azure.net/keys/key-ecommerce/3659282e50f24191b6281d8549662d19"),
+                        new Uri($"{vaultAddress}/keys/key-ecommerce/3659282e50f24191b6281d8549662d19"),
                         new DefaultAzureCredential())
                     .PersistKeysToDbContext<ApplicationDbContext>();
             }
